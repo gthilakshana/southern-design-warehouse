@@ -125,8 +125,8 @@ export default function ProductsClient({ content, categories }: { content: PageC
                 <div className="w-20 h-[2px] mb-10" style={{ backgroundColor: cat.color || '#b33e2f' }} />
 
                 <div 
-                    className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed font-light ql-editor !p-0 !min-h-0"
-                    style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                    className="prose prose-lg md:prose-xl max-w-none prose-slate mb-12 ql-editor !p-0 !min-h-0"
+                    style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
                     dangerouslySetInnerHTML={{ __html: cat.desc }} 
                 />
 

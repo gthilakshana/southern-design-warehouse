@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 // Using HiOutlineCheckCircle for the thin, professional double-circle look
 import { HiOutlineCheckCircle } from 'react-icons/hi' 
@@ -83,12 +84,15 @@ export const InfoSections = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="relative h-[600px] lg:h-[750px]"
+              className="relative h-[600px] lg:h-[750px] overflow-hidden rounded-xl shadow-lg border border-white/10"
             >
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=2070&auto=format&fit=crop" 
                 alt="Materials showcase"
-                className="w-full h-full object-cover rounded-xl shadow-lg"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
               />
             </motion.div>
           </div>

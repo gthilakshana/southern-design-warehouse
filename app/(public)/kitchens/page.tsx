@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { LuCheck } from "react-icons/lu";
 import { getPageContent } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
@@ -77,7 +78,13 @@ export default async function KitchensPage() {
           <div className="space-y-6">
             <div className="relative h-[350px] w-full shadow-2xl rounded-sm overflow-hidden border border-gray-100 bg-white">
               {/* Use the standard content image */}
-              <img src={contentImage} alt="Kitchen Showroom" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <Image
+                src={contentImage}
+                alt="Kitchen Showroom"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
             </div>
 
             {/* Showroom Card */}

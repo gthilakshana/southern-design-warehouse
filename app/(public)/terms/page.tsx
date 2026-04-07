@@ -64,10 +64,10 @@ export default async function TermsPage() {
               </div>
 
               {/* CONTENT */}
-              <div className="text-gray-700 leading-relaxed text-sm md:text-base whitespace-pre-line">
-                {page?.content ||
-                  'Terms are currently being updated. Please check again later.'}
-              </div>
+              <div 
+                className="prose prose-slate max-w-none text-gray-700 leading-relaxed text-sm md:text-base ql-editor !p-0"
+                dangerouslySetInnerHTML={{ __html: page?.content || '<p>Terms are currently being updated. Please check again later.</p>' }}
+              />
 
               {/* FOOTER */}
               <div className="mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">

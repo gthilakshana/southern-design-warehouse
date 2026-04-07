@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect, useMemo } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiUserAdd, HiMail, HiShieldCheck, HiTrash, HiDotsVertical, HiSearch, HiX, HiCheck, HiShieldExclamation, HiPencil, HiRefresh, HiLockClosed } from 'react-icons/hi'
 import { MdPerson, MdEmail, MdSecurity, MdDelete, MdHistory, MdEdit } from 'react-icons/md'
@@ -126,7 +127,7 @@ const UsersPage = () => {
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
              Identity & Access Management
-             <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded uppercase font-mono">SDW-IAM-v2</span>
+             <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded uppercase font-mono shadow-sm">Identity Network v1.0</span>
           </h2>
           <p className="text-xs font-medium text-slate-500">Manage user identities, security ranks, and administrative clearance protocols.</p>
         </div>
@@ -174,7 +175,15 @@ const UsersPage = () => {
                           className={`w-9 h-9 rounded flex items-center justify-center font-bold text-xs ring-1 ring-white/10 overflow-hidden cursor-pointer active:scale-95 transition-all ${user.role === 'ADMIN' ? 'bg-[#232f3e] text-[#ff9900]' : 'bg-slate-100 text-slate-600'}`}
                         >
                           {user.image ? (
-                            <img src={user.image} alt={user.name || 'User'} className="w-full h-full object-cover" />
+                            <div className="relative w-full h-full">
+                              <Image
+                                src={user.image}
+                                alt={user.name || 'User'}
+                                fill
+                                sizes="36px"
+                                className="object-cover"
+                              />
+                            </div>
                           ) : (
                             (user.name || 'U').charAt(0).toUpperCase()
                           )}
@@ -387,8 +396,14 @@ const UsersPage = () => {
                             
                             {editingUser.image && !isRemovingImage ? (
                               <div className="flex items-center gap-6 p-4 bg-gray-50 border border-gray-200 rounded">
-                                 <div className="w-16 h-16 rounded overflow-hidden border border-gray-300">
-                                    <img src={editingUser.image} alt="Current" className="w-full h-full object-cover" />
+                                 <div className="w-16 h-16 rounded relative overflow-hidden border border-gray-300">
+                                    <Image
+                                      src={editingUser.image}
+                                      alt="Current"
+                                      fill
+                                      sizes="64px"
+                                      className="object-cover"
+                                    />
                                  </div>
                                  <div className="flex-1 space-y-2">
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Operative Photo</p>
@@ -513,11 +528,14 @@ const UsersPage = () => {
                 <HiX size={32} />
               </button>
               
-              <div className="bg-[#232f3e] p-2 rounded shadow-2xl border-4 border-white/10 ring-1 ring-white/5">
-                <img 
-                  src={viewProfileImage} 
-                  alt="Operative Identity" 
-                  className="max-h-[70vh] w-auto object-contain rounded-sm"
+              <div className="bg-[#232f3e] p-2 rounded shadow-2xl border-4 border-white/10 ring-1 ring-white/5 relative min-w-[300px] min-h-[300px]">
+                <Image
+                  src={viewProfileImage}
+                  alt="Operative Identity"
+                  fill
+                  sizes="80vw"
+                  className="object-contain rounded-sm"
+                  priority
                 />
               </div>
               

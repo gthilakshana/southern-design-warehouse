@@ -67,20 +67,37 @@ async function deleteImageFromStorage(url: string | null) {
 
 export async function testSupabaseConnectivity() {
   try {
+    const startTime = Date.now()
     const { data, error } = await supabase.storage.listBuckets()
-    if (error) return { success: false, error: error.message }
+    const endTime = Date.now()
+    const latency = endTime - startTime
 
-    const bucketExists = data.some(b => b.name === 'images')
-    if (!bucketExists) {
-      return {
-        success: false,
-        error: "'images' bucket not found. Please create it in Supabase > Storage."
+    if (error) {
+      return { 
+        success: false, 
+        error: `${error.message} (Status: ${error.status || 'Unknown'})`,
+        latency
       }
     }
 
-    return { success: true, message: "Supabase connection and 'images' bucket verified!" }
+    const bucketNames = data.map(b => b.name)
+    const bucketExists = bucketNames.includes('images')
+
+    if (!bucketExists) {
+      return {
+        success: false,
+        error: `'images' bucket not found. Available buckets: [${bucketNames.join(', ') || 'None'}]. Please create it in Supabase > Storage.`,
+        latency
+      }
+    }
+
+    return { 
+      success: true, 
+      message: `Verified! Latency: ${latency}ms. Storage cluster reachable.`,
+      debug: { buckets: bucketNames, latency }
+    }
   } catch (err: any) {
-    return { success: false, error: err.message }
+    return { success: false, error: err.message || "Unknown network connection failure", latency: 0 }
   }
 }
 

@@ -65,6 +65,17 @@ export default function ContactPage() {
     fetchData();
   }, []);
 
+
+  useEffect(() => {
+  if (submissionResult) {
+    const timer = setTimeout(() => {
+      setSubmissionResult(null);
+    }, 4000); // 4 seconds
+
+    return () => clearTimeout(timer);
+  }
+}, [submissionResult]);
+
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   
@@ -243,17 +254,17 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             <form onSubmit={handleSubmit} className="space-y-8">
 
               {/* SUCCESS / ERROR */}
-              {submissionResult?.success && (
-                <div className="p-3 bg-green-100 text-green-700 border border-green-300 text-sm">
-                  {submissionResult.success}
-                </div>
-              )}
+             {submissionResult?.success && (
+  <div className="p-3 bg-green-100 text-green-700 border border-green-300 text-sm transition-opacity duration-500">
+    {submissionResult.success}
+  </div>
+)}
 
-              {submissionResult?.error && (
-                <div className="p-3 bg-red-100 text-red-700 border border-red-300 text-sm">
-                  {submissionResult.error}
-                </div>
-              )}
+{submissionResult?.error && (
+  <div className="p-3 bg-red-100 text-red-700 border border-red-300 text-sm transition-opacity duration-500">
+    {submissionResult.error}
+  </div>
+)}
 
               {/* GRID */}
               <div className="grid md:grid-cols-2 gap-6">

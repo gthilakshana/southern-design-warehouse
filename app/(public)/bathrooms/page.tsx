@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { TbMessageDots, TbArmchair } from 'react-icons/tb';
 import { getPageContent } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
@@ -70,10 +71,12 @@ export default async function BathroomsPage() {
 
             {/* Dynamic Content Illustration - SIZE FIX */}
             <div className="relative h-[250px] w-full shadow-lg overflow-hidden border border-gray-100 grayscale hover:grayscale-0 transition-all duration-700 bg-white">
-              <img
+              <Image
                 src={contentImage}
                 alt="Bathroom Materials"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
           </div>

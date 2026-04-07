@@ -61,7 +61,7 @@ const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-[#19222d] text-slate-300 overflow-hidden font-[arial]">
       <div className="px-6 py-4 flex items-center justify-between border-b border-white/5">
-        <h2 className="text-xs font-bold uppercase tracking-widest text-[#a68966]">SDW Management Sys</h2>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-[#a68966]">SDW Management v1.0</h2>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="hidden lg:flex items-center justify-center w-6 h-6 text-slate-500 hover:text-white transition-all bg-white/5 rounded"
@@ -128,7 +128,10 @@ const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
             </div>
             <div className="hidden sm:flex flex-col border-l border-white/20 pl-3 ml-1">
                 <span className="text-[11px] font-black uppercase tracking-widest leading-none">Dashboard</span>
-                <span className="text-[8px] font-bold text-[#ff9900] uppercase tracking-[0.2em] opacity-80">Warehouse Management</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-bold text-[#ff9900] uppercase tracking-[0.2em] opacity-80">Warehouse Management</span>
+                  <span className="text-[7px] font-black bg-[#ff9900] text-[#232f3e] px-1 rounded-[2px] leading-none mb-0.5 animate-pulse">v1.0</span>
+                </div>
             </div>
           </Link>
           <div className="hidden md:flex items-center bg-[#19222d] rounded px-3 py-1.5 w-80 border border-white/10 group focus-within:border-[#ff9900] transition-all relative">
@@ -163,9 +166,9 @@ const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
                 </>
               )}
           </Link>
-          <div className="hidden sm:flex items-center gap-1 hover:bg-white/10 px-3 py-2 rounded transition-all cursor-pointer group border-l border-white/10 ml-2">
+          <Link href="/admin/legal" title="System Documentation & FAQ" className="hidden sm:flex items-center gap-1 hover:bg-white/10 px-3 py-2 rounded transition-all cursor-pointer group border-l border-white/10 ml-2">
               <HiQuestionMarkCircle className="text-slate-400 group-hover:text-white" size={18} />
-          </div>
+          </Link>
 
           <div className="flex items-center gap-3 pl-4 border-l border-white/10 ml-2 group cursor-pointer hover:bg-white/10 py-1.5 px-3 rounded transition-all">
             <div className="text-right hidden sm:block">

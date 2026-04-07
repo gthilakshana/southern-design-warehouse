@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiOutlineSave, HiPhotograph, HiLink, HiLocationMarker, HiPhone, HiMail, HiCheck, HiRefresh, HiPlus, HiTrash, HiPencil, HiExternalLink, HiX } from 'react-icons/hi'
 import { MdOutlineTextSnippet, MdImage, MdOutlineSegment, MdAddCircleOutline, MdDelete, MdSettings, MdShare, MdCategory } from 'react-icons/md'
@@ -25,7 +26,14 @@ import { FaFacebook, FaInstagram, FaTiktok, FaLinkedin, FaYoutube, FaShareAlt } 
 import dynamic from 'next/dynamic'
 import 'react-quill-new/dist/quill.snow.css'
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
+const ReactQuill = dynamic(async () => {
+  const { default: RQ } = await import('react-quill-new')
+  const Quill = (await import('quill')).default
+  const Font = Quill.import('formats/font') as any
+  Font.whitelist = ['arial', 'serif', 'monospace']
+  Quill.register(Font, true)
+  return RQ
+}, { ssr: false })
 
 const SiteContentPage = () => {
   const [activeTab, setActiveTab] = useState('general')
@@ -70,12 +78,23 @@ const SiteContentPage = () => {
 
   const quillModules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
+      [{ 'header': [1, 2, 3, 4, false] }],
+      [{ 'font': ['arial', 'serif', 'monospace'] }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'align': [] }],
       ['clean']
     ],
   }
+
+  const quillFormats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike',
+    'color', 'background',
+    'list', 'bullet', 'align'
+  ]
 
   // Page Specific Content State
   const [selectedPage, setSelectedPage] = useState('kitchens')
@@ -231,7 +250,7 @@ const SiteContentPage = () => {
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
             Site Management Console
-            <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded uppercase">System Sync</span>
+            <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded shadow-sm">Content Engine v1.0</span>
           </h2>
           <p className="text-xs font-medium text-slate-500">Modify global site settings, media assets, and social links.</p>
         </div>
@@ -286,17 +305,21 @@ const SiteContentPage = () => {
                       <input name="siteName" value={settings.siteName} onChange={handleChange} type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[11px] font-black text-slate-500 uppercase">System Status</label>
+                      <label className="text-[11px] font-black text-slate-500 uppercase">System Status Diagnostics</label>
                       <button
                         type="button"
                         onClick={async () => {
                           const { testSupabaseConnectivity } = await import('@/lib/actions')
                           const res = await testSupabaseConnectivity()
-                          alert(res.success ? 'Supabase Connection: OK (200)' : `Supabase Error: ${res.error}`)
+                          if (res.success) {
+                            alert(`STORAGE CLUSTER: OK (200)\n\n${res.message}\n\nBuckets: [${res.debug?.buckets?.join(', ') || 'none'}]`)
+                          } else {
+                            alert(`STORAGE ERROR: (500)\n\n${res.error}\n\nLatency: ${res.latency || 0}ms`)
+                          }
                         }}
-                        className="w-full flex items-center justify-center gap-2 px-3 py-2 border border-blue-200 text-blue-600 bg-blue-50 text-[10px] font-black uppercase tracking-widest rounded hover:bg-blue-100 transition-all"
+                        className="w-full flex items-center justify-center gap-2 px-3 py-2 border border-blue-200 text-blue-600 bg-blue-50 text-[10px] font-black uppercase tracking-widest rounded hover:bg-blue-100 transition-all shadow-sm"
                       >
-                        <HiRefresh className="animate-spin-slow" size={14} /> Run Connection Test
+                        <HiRefresh size={14} /> Run Storage Diagnostic
                       </button>
                     </div>
                     <div className="space-y-2">
@@ -349,7 +372,13 @@ const SiteContentPage = () => {
                       >
                         {settings.heroUrl ? (
                           <>
-                            <img src={settings.heroUrl} alt="Home Hero" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                            <Image
+                              src={settings.heroUrl}
+                              alt="Home Hero"
+                              fill
+                              unoptimized={settings.heroUrl.startsWith('blob:')}
+                              className="absolute inset-0 object-cover opacity-80"
+                            />
                             <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/global-hero:opacity-100 transition-opacity">
                               <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Desktop</span>
                             </div>
@@ -391,7 +420,13 @@ const SiteContentPage = () => {
                       >
                         {settings.heroTabletUrl ? (
                           <>
-                            <img src={settings.heroTabletUrl} alt="Home Tablet Hero" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                            <Image
+                              src={settings.heroTabletUrl}
+                              alt="Home Tablet Hero"
+                              fill
+                              unoptimized={settings.heroTabletUrl.startsWith('blob:')}
+                              className="absolute inset-0 object-cover opacity-80"
+                            />
                             <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/global-tablet:opacity-100 transition-opacity">
                               <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Tablet</span>
                             </div>
@@ -433,7 +468,13 @@ const SiteContentPage = () => {
                       >
                         {settings.heroMobileUrl ? (
                           <>
-                            <img src={settings.heroMobileUrl} alt="Home Mobile Hero" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                            <Image
+                              src={settings.heroMobileUrl}
+                              alt="Home Mobile Hero"
+                              fill
+                              unoptimized={settings.heroMobileUrl.startsWith('blob:')}
+                              className="absolute inset-0 object-cover opacity-80"
+                            />
                             <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/global-mobile:opacity-100 transition-opacity">
                               <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Mobile</span>
                             </div>
@@ -530,7 +571,13 @@ const SiteContentPage = () => {
                           >
                             {pageContent?.heroUrl ? (
                               <>
-                                <img src={pageContent.heroUrl} alt="Hero" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                                <Image
+                                  src={pageContent.heroUrl}
+                                  alt="Hero"
+                                  fill
+                                  unoptimized={pageContent.heroUrl.startsWith('blob:')}
+                                  className="absolute inset-0 object-cover opacity-80"
+                                />
                                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/hero:opacity-100 transition-opacity">
                                   <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Image</span>
                                 </div>
@@ -596,7 +643,13 @@ const SiteContentPage = () => {
                           >
                             {pageContent?.heroTabletUrl ? (
                               <>
-                                <img src={pageContent.heroTabletUrl} alt="Tablet" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                                <Image
+                                  src={pageContent.heroTabletUrl}
+                                  alt="Tablet"
+                                  fill
+                                  unoptimized={pageContent.heroTabletUrl.startsWith('blob:')}
+                                  className="absolute inset-0 object-cover opacity-80"
+                                />
                                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/tablet:opacity-100 transition-opacity">
                                   <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Tablet</span>
                                 </div>
@@ -660,7 +713,13 @@ const SiteContentPage = () => {
                           >
                             {pageContent?.heroMobileUrl ? (
                               <>
-                                <img src={pageContent.heroMobileUrl} alt="Mobile" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                                <Image
+                                  src={pageContent.heroMobileUrl}
+                                  alt="Mobile"
+                                  fill
+                                  unoptimized={pageContent.heroMobileUrl.startsWith('blob:')}
+                                  className="absolute inset-0 object-cover opacity-80"
+                                />
                                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/mobile:opacity-100 transition-opacity">
                                   <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Mobile</span>
                                 </div>
@@ -724,7 +783,13 @@ const SiteContentPage = () => {
                           >
                             {pageContent?.contentUrl ? (
                               <>
-                                <img src={pageContent.contentUrl} alt="Content" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+                                <Image
+                                  src={pageContent.contentUrl}
+                                  alt="Content"
+                                  fill
+                                  unoptimized={pageContent.contentUrl.startsWith('blob:')}
+                                  className="absolute inset-0 object-cover opacity-80"
+                                />
                                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/content:opacity-100 transition-opacity">
                                   <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Change Image</span>
                                 </div>
@@ -759,7 +824,7 @@ const SiteContentPage = () => {
                         <div className="space-y-4">
                           <div className="p-4 bg-orange-50/30 border border-orange-100 rounded-sm">
                             <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest block mb-2">Page-Specific Font Size</label>
-                            <select 
+                            <select
                               name="fontSize"
                               defaultValue={pageContent?.fontSize || ''}
                               className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900] bg-white shadow-sm"
@@ -810,47 +875,50 @@ const SiteContentPage = () => {
 
                         {selectedPage === 'about' && (
                           <div className="space-y-8 pt-8 border-t border-gray-100 animate-in fade-in slide-in-from-top-4 duration-500">
-                             <div className="space-y-3">
-                                <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Mission Statement</label>
-                                <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
-                                  <ReactQuill 
-                                    theme="snow"
-                                    value={mission}
-                                    onChange={setMission}
-                                    modules={quillModules}
-                                    className="bg-white"
-                                  />
-                                </div>
-                                <input type="hidden" name="mission" value={mission} />
-                             </div>
+                            <div className="space-y-3">
+                              <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Mission Statement</label>
+                              <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
+                                <ReactQuill
+                                  theme="snow"
+                                  value={mission}
+                                  onChange={setMission}
+                                  modules={quillModules}
+                                  formats={quillFormats}
+                                  className="bg-white"
+                                />
+                              </div>
+                              <input type="hidden" name="mission" value={mission} />
+                            </div>
 
-                             <div className="space-y-3">
-                                <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Vision Statement</label>
-                                <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
-                                  <ReactQuill 
-                                    theme="snow"
-                                    value={vision}
-                                    onChange={setVision}
-                                    modules={quillModules}
-                                    className="bg-white"
-                                  />
-                                </div>
-                                <input type="hidden" name="vision" value={vision} />
-                             </div>
+                            <div className="space-y-3">
+                              <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Vision Statement</label>
+                              <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
+                                <ReactQuill
+                                  theme="snow"
+                                  value={vision}
+                                  onChange={setVision}
+                                  modules={quillModules}
+                                  formats={quillFormats}
+                                  className="bg-white"
+                                />
+                              </div>
+                              <input type="hidden" name="vision" value={vision} />
+                            </div>
 
-                             <div className="space-y-3">
-                                <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Story (Full Narrative)</label>
-                                <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
-                                  <ReactQuill 
-                                    theme="snow"
-                                    value={story}
-                                    onChange={setStory}
-                                    modules={quillModules}
-                                    className="bg-white"
-                                  />
-                                </div>
-                                <input type="hidden" name="story" value={story} />
-                             </div>
+                            <div className="space-y-3">
+                              <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest">Our Story (Full Narrative)</label>
+                              <div className="quill-container rounded-sm border border-gray-200 overflow-hidden shadow-inner">
+                                <ReactQuill
+                                  theme="snow"
+                                  value={story}
+                                  onChange={setStory}
+                                  modules={quillModules}
+                                  formats={quillFormats}
+                                  className="bg-white"
+                                />
+                              </div>
+                              <input type="hidden" name="story" value={story} />
+                            </div>
                           </div>
                         )}
                       </div>
@@ -982,7 +1050,13 @@ const SiteContentPage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                       {galleryImages.length > 0 ? galleryImages.map((img: any) => (
                         <div key={img.id} className="group relative aspect-square bg-slate-50 border border-gray-100 rounded overflow-hidden hover:border-[#ff9900]/40 transition-all shadow-sm">
-                          <img src={img.url} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700" alt={img.title} />
+                          <Image
+                            src={img.url}
+                            alt={img.title || 'Untitled Image'}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover transition-transform group-hover:scale-105 duration-700"
+                          />
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end gap-2">
                             <div className="flex flex-col">
                               <span className="text-[10px] font-black text-white uppercase truncate">{img.title || 'Untitled Image'}</span>
@@ -1137,7 +1211,7 @@ const SiteContentPage = () => {
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-300">
                   <span>Build Version</span>
-                  <span>SDW-4.1.0</span>
+                  <span>SDW-1.0.0</span>
                 </div>
               </div>
             </div>
@@ -1275,9 +1349,12 @@ const SiteContentPage = () => {
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Gallery Image Asset</label>
                   <div className="relative h-48 border-2 border-dashed border-gray-200 rounded bg-slate-50/30 flex flex-col items-center justify-center overflow-hidden group">
                     {(editingGallery?.url || pendingFiles['galleryImg']) ? (
-                      <img
+                      <Image
                         src={pendingFiles['galleryImg'] ? URL.createObjectURL(pendingFiles['galleryImg']) : editingGallery.url}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        alt="Gallery Preview"
+                        fill
+                        unoptimized
+                        className="absolute inset-0 object-cover"
                       />
                     ) : (
                       <div className="text-center space-y-2">
@@ -1368,7 +1445,7 @@ const SiteContentPage = () => {
                 const formData = new FormData(e.currentTarget)
                 if (editingCategory) formData.append('id', editingCategory.id)
                 formData.set('desc', categoryDesc)
-                
+
                 const res = await upsertProductCategory(formData)
                 if (res.success) {
                   setIsCategoryModalOpen(false)
@@ -1392,7 +1469,13 @@ const SiteContentPage = () => {
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Narrative Content (Supports Rich Styles)</label>
                   <div className="border border-gray-300 rounded overflow-hidden">
-                    <ReactQuill theme="snow" value={categoryDesc} onChange={setCategoryDesc} modules={quillModules} />
+                    <ReactQuill
+                      theme="snow"
+                      value={categoryDesc}
+                      onChange={setCategoryDesc}
+                      modules={quillModules}
+                      formats={quillFormats}
+                    />
                   </div>
                 </div>
 
@@ -1411,8 +1494,8 @@ const SiteContentPage = () => {
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Accent Color (Hex)</label>
                     <div className="flex gap-2">
-                       <input name="color" type="color" defaultValue={editingCategory?.color || '#a68966'} className="w-10 h-10 border border-gray-300 rounded p-1" />
-                       <input name="color_text" value={editingCategory?.color || '#a68966'} disabled className="flex-1 h-10 px-3 border border-gray-300 rounded text-xs font-bold bg-gray-50 opacity-50" />
+                      <input name="color" type="color" defaultValue={editingCategory?.color || '#a68966'} className="w-10 h-10 border border-gray-300 rounded p-1" />
+                      <input name="color_text" value={editingCategory?.color || '#a68966'} disabled className="flex-1 h-10 px-3 border border-gray-300 rounded text-xs font-bold bg-gray-50 opacity-50" />
                     </div>
                   </div>
                   <div className="space-y-1.5">

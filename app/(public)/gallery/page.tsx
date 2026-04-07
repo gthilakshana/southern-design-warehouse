@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiOutlineArrowNarrowRight, HiX, HiPhotograph } from 'react-icons/hi';
 import { getPageContent, getGalleryImages, type PageContent, type GalleryImage } from '@/lib/actions';
@@ -122,11 +123,15 @@ export default function GalleryPage() {
                     className="relative break-inside-avoid bg-white rounded-lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-shadow duration-300"
                     onClick={() => setSelectedImage(img)}
                   >
-                    <img
-                      src={img.url}
-                      alt={img.title}
-                      className="w-full h-auto object-cover group-hover:scale-105 transition duration-700"
-                    />
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <Image
+                        src={img.url}
+                        alt={img.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition duration-700"
+                      />
+                    </div>
 
                     {/* Overlay - Fixed positioning for relative parent */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -178,11 +183,14 @@ export default function GalleryPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
             >
-              <div className="bg-gray-200 h-[300px] md:h-full">
-                <img
+              <div className="bg-gray-200 h-[300px] md:h-full relative">
+                <Image
                   src={selectedImage.url}
                   alt={selectedImage.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                  priority
                 />
               </div>
 

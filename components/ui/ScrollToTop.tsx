@@ -36,7 +36,7 @@ export default function ScrollToTop() {
           <button
             onClick={scrollToTop}
             aria-label="Scroll to top"
-            className="group relative flex items-center justify-center w-12 h-12 bg-white border border-slate-200 text-slate-900 rounded-lg shadow-xl hover:bg-[#15803d] hover:text-white hover:border-[#15803d] transition-all duration-300 ease-in-out"
+            className="group relative flex items-center justify-center w-12 h-12 bg-white border border-slate-200 text-slate-900 rounded-lg shadow-xl hover:bg-[#085326] hover:text-white hover:border-[#15803d] transition-all duration-300 ease-in-out"
           >
             {/* The Arrow Icon */}
             <HiOutlineChevronUp className="text-xl font-bold transition-transform duration-300 group-hover:-translate-y-1" />

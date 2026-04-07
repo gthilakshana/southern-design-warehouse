@@ -1,20 +1,23 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createQuoteRequest } from '@/lib/actions';
 import { HiCheckCircle, HiExclamationCircle, HiRefresh } from 'react-icons/hi';
 
 // LABEL
 const labelClasses =
-  "block text-[11px] font-bold text-gray-800 uppercase tracking-widest mb-2";
+  "block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2";
 
-// INPUT
+// INPUT (UPDATED BOX STYLE)
 const inputClasses =
-  "w-full text-[15px] text-gray-700 placeholder-gray-400 bg-transparent border-0 border-b border-gray-300 pb-3 focus:ring-0 focus:border-red-600 transition-all outline-none";
+  "w-full text-[15px] text-gray-700 placeholder-gray-400 bg-gray-100 border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all outline-none";
+
+// SELECT (SAME STYLE)
+const selectClasses =
+  "w-full text-[15px] text-gray-700 bg-gray-100 border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all outline-none appearance-none";
 
 // TEXTAREA
 const textAreaClasses =
-  "w-full h-40 text-[15px] text-gray-700 placeholder-gray-400 bg-gray-100 border border-gray-300 p-4 focus:ring-0 focus:border-red-600 transition-all outline-none resize-none rounded-lg";
+  "w-full h-40 text-[15px] text-gray-700 placeholder-gray-400 bg-gray-100 border border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 transition-all outline-none resize-none";
 
 export default function QuotationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +58,17 @@ export default function QuotationForm() {
     setIsSubmitting(false);
   };
 
+
+  useEffect(() => {
+  if (status.type) {
+    const timer = setTimeout(() => {
+      setStatus({ type: null, message: '' });
+    }, 4000); // 4 seconds
+
+    return () => clearTimeout(timer);
+  }
+}, [status]);
+
   return (
     <section className="bg-gray-100 py-28 px-6 md:px-12 lg:px-24">
       <div className="max-w-6xl mx-auto">
@@ -62,7 +76,7 @@ export default function QuotationForm() {
         {/* CONTAINER */}
         <div className="bg-white max-w-5xl mx-auto shadow-xl rounded-2xl overflow-hidden border border-gray-200">
 
-          {/* TOP BAR (BROWN INDUSTRIAL ACCENT) */}
+          {/* TOP BAR */}
           <div className="h-2 w-full bg-[#4b2e2e]" />
 
           {/* HEADER */}
@@ -82,10 +96,10 @@ export default function QuotationForm() {
           </div>
 
           {/* FORM */}
-          <form onSubmit={handleSubmit} className="pb-20 px-8 md:px-16 lg:px-20 space-y-12">
+          <form onSubmit={handleSubmit} className="pb-20 px-8 md:px-16 lg:px-20 space-y-10">
 
             {/* NAME + PHONE */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className={labelClasses}>Name</label>
                 <input
@@ -114,7 +128,7 @@ export default function QuotationForm() {
             </div>
 
             {/* EMAIL + TYPE */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className={labelClasses}>Email</label>
                 <input
@@ -132,7 +146,7 @@ export default function QuotationForm() {
                 <label className={labelClasses}>Project Type</label>
                 <select
                   name="projectType"
-                  className={inputClasses}
+                  className={selectClasses}
                   value={formData.projectType}
                   onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                 >
@@ -142,8 +156,9 @@ export default function QuotationForm() {
                   <option>Contract Services</option>
                 </select>
 
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pt-5">
-                  <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* ICON */}
+                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+                  <svg className="h-4 w-4 text-gray-400 mt-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
@@ -177,13 +192,13 @@ export default function QuotationForm() {
 
             {/* STATUS */}
             {status.type && (
-              <div
-                className={`p-5 rounded-xl flex items-center gap-3 border text-sm font-medium
-                ${status.type === 'success'
-                    ? 'bg-green-50 border-green-200 text-green-700'
-                    : 'bg-red-50 border-red-200 text-red-600'}
-              `}
-              >
+             <div
+  className={`p-5 rounded-xl flex items-center gap-3 border text-sm font-medium transition-opacity duration-500
+  ${status.type === 'success'
+      ? 'bg-green-50 border-green-200 text-green-700'
+      : 'bg-red-50 border-red-200 text-red-600'}
+`}
+>
                 {status.type === 'success'
                   ? <HiCheckCircle size={22} />
                   : <HiExclamationCircle size={22} />}
@@ -192,7 +207,7 @@ export default function QuotationForm() {
             )}
 
             {/* BUTTON */}
-            <div className="text-center pt-6">
+            <div className="text-center pt-4">
               <button
                 type="submit"
                 disabled={isSubmitting}

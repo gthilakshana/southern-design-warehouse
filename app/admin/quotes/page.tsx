@@ -177,7 +177,7 @@ const QuotesPage = () => {
         <div className="space-y-1">
           <h2 className="text-xl font-bold tracking-tight flex items-center gap-3">
              Quotes & Inquiries
-             <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded uppercase">Central Archive</span>
+             <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded shadow-sm">Inquiry Network v1.0</span>
           </h2>
           <p className="text-xs font-medium text-slate-500">Manage incoming project quote requests and customer leads.</p>
         </div>

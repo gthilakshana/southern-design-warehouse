@@ -2,3 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Quill Rich Text Styles for Public Site */
+.ql-editor {
+  line-height: 1.6;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+}
+.ql-editor p {
+  margin-bottom: 1.5rem !important;
+}
+.ql-editor p:last-child {
+  margin-bottom: 0 !important;
+}
+.ql-align-center { text-align: center; }
+.ql-align-right { text-align: right; }
+.ql-align-justify { text-align: justify; }
+
+.prose .ql-size-small { font-size: 0.75em; }
+.prose .ql-size-large { font-size: 1.5em; }
+.prose .ql-size-huge { font-size: 2.5em; }
+
+.prose ul, .prose ol {
+  padding-left: 1.5rem !important;
+  list-style-type: disc !important;
+  margin-bottom: 1rem;
+}
+
+.prose ol {
+  list-style-type: decimal !important;
+}
+
+/* Custom Font Support (Arial) for Quill */
+.ql-font-arial { font-family: 'Arial', sans-serif !important; }
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=arial]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=arial]::before {
+  content: 'Arial';
+  font-family: 'Arial', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
+  content: 'Serif';
+  font-family: serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
+  content: 'Monospace';
+  font-family: monospace;
+}
+

@@ -102,10 +102,12 @@ export default async function ContractorsPage() {
             <div className="absolute top-0 right-0 w-4 h-full bg-[#2d4a3e]" />
 
             <div className="w-full relative h-[350px] shadow-xl overflow-hidden group border border-white/20 bg-white">
-              <img
+              <Image
                 src={contentImage}
                 alt="Contractor professional"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                fill
+                sizes="(max-width: 1280px) 100vw, 50vw"
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>
 

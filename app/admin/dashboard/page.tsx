@@ -74,7 +74,7 @@ const DashboardPage = () => {
       {/* 1. Page Header (SDW Style) */}
       <div className="bg-white border border-gray-200 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm rounded-sm">
          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Warehouse Dashboard Home</h2>
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Warehouse Dashboard v1.0</h2>
             <div className="flex items-center gap-3">
                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Main Warehouse HQ</span>
                <p className="text-xs text-slate-500 font-medium italic">Operational Health: <span className="text-green-600 font-bold uppercase tracking-widest text-[10px]">Optimal</span></p>

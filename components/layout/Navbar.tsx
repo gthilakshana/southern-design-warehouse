@@ -102,12 +102,15 @@ export const Navbar = () => {
 
       {/* 2. MAIN NAVIGATION */}
       <nav className={`transition-all duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-4'}`}>
-        <div className="container mx-auto px-6 flex items-center justify-between">
+        <div className="container mx-auto px-6 flex items-center justify-between relative">
           
-          {/* LOGO - FIXED SIZE */}
-          <div className="flex-shrink-0">
+          {/* Mobile Menu Placeholder (To balance flex layout) */}
+          <div className="w-10 lg:hidden" />
+
+          {/* LOGO - CENTERED ON MOBILE */}
+          <div className="flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:left-auto">
             <Link href="/" className="relative block w-[160px] md:w-[200px] h-[50px] md:h-[65px]">
-              <Image src="/logo.png" alt="Logo" fill priority className="object-contain object-left" />
+              <Image src="/logo.png" alt="Logo" fill priority className="object-contain" />
             </Link>
           </div>
 

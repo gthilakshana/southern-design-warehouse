@@ -66,7 +66,7 @@ export default async function PrivacyPage() {
 
               {/* CONTENT */}
               <div
-                className="text-gray-700 leading-relaxed text-sm md:text-base space-y-4"
+                className="prose prose-slate max-w-none text-gray-700 leading-relaxed text-sm md:text-base ql-editor !p-0"
                 dangerouslySetInnerHTML={{
                   __html:
                     page?.content ||

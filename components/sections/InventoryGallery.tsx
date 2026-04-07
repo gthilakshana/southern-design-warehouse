@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   HiChevronRight,
@@ -128,11 +129,15 @@ export default function InventoryGallery({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white border border-gray-200 shadow-lg p-6 rounded-xl">
 
-              <img
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                className="w-full h-[420px] object-cover rounded-lg border border-gray-200"
-              />
+              <div className="relative w-full h-[420px] rounded-lg border border-gray-200 overflow-hidden">
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
 
               <div className="flex flex-col justify-center">
 
@@ -224,10 +229,12 @@ export default function InventoryGallery({
                     className="group bg-white border border-gray-200 hover:shadow-xl hover:border-red-600 transition-all cursor-pointer rounded-sm overflow-hidden"
                   >
                     <div className="relative h-64 overflow-hidden">
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition duration-700"
                       />
 
                       <div className="absolute top-3 right-3 z-10">

@@ -9,7 +9,7 @@ import 'react-quill-new/dist/quill.snow.css'
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
 
 const AdminLegalPage = () => {
-  const [activeTab, setActiveTab] = useState<'privacy' | 'faq'>('privacy')
+  const [activeTab, setActiveTab] = useState<'privacy' | 'faq' | 'terms'>('privacy')
   const [isLoading, setIsLoading] = useState(false)
   const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   
@@ -65,7 +65,8 @@ const AdminLegalPage = () => {
     formData.append('slug', activeTab)
     const result = await updateLegalPage(formData)
     if (result.success) {
-      showNotification('success', `${activeTab === 'privacy' ? 'Privacy Policy' : 'Terms'} document updated successfully`)
+      const docName = activeTab === 'privacy' ? 'Privacy Policy' : (activeTab === 'terms' ? 'Terms of Service' : 'Legal Documentation')
+      showNotification('success', `${docName} updated successfully`)
     } else {
       showNotification('error', result.error || 'Update failed')
     }
@@ -112,7 +113,7 @@ const AdminLegalPage = () => {
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
              Documentation & FAQ
-             <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded uppercase font-mono">SDW-Docs-v1</span>
+             <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded uppercase font-mono shadow-sm">Legal Records v1.0</span>
           </h2>
           <p className="text-xs font-medium text-slate-500">Manage site documentation, legal policies, and the FAQ center.</p>
         </div>
@@ -136,6 +137,12 @@ const AdminLegalPage = () => {
           className={`px-8 py-4 text-[11px] font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'privacy' ? 'border-[#ff9900] text-[#ff9900] bg-orange-50/10' : 'border-transparent text-gray-500 hover:text-slate-900 hover:bg-gray-50'}`}
         >
           Privacy Policy
+        </button>
+        <button 
+          onClick={() => setActiveTab('terms')}
+          className={`px-8 py-4 text-[11px] font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'terms' ? 'border-[#ff9900] text-[#ff9900] bg-orange-50/10' : 'border-transparent text-gray-500 hover:text-slate-900 hover:bg-gray-50'}`}
+        >
+          Terms of Service
         </button>
         <button 
           onClick={() => setActiveTab('faq')}

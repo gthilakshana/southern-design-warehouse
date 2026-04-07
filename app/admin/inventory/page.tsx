@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect, useMemo } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   HiPlus,
@@ -161,7 +162,7 @@ const InventoryPage = () => {
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
              Stock Inventory
-             <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded">Stock Assets</span>
+             <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded shadow-sm">Asset Manifest v1.0</span>
           </h2>
           <p className="text-xs font-medium text-slate-500">Manage digital manifests and physical stock levels.</p>
         </div>
@@ -226,9 +227,15 @@ const InventoryPage = () => {
                 <tr key={item.id} className="hover:bg-gray-50/50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded border border-gray-200 bg-slate-50 overflow-hidden shrink-0 shadow-inner">
+                        <div className="w-10 h-10 rounded border border-gray-200 bg-slate-50 relative overflow-hidden shrink-0 shadow-inner">
                             {item.imageUrl ? (
-                                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={item.name}
+                                  fill
+                                  sizes="40px"
+                                  className="object-cover"
+                                />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-slate-300">
                                     <HiCube size={16} />
@@ -324,8 +331,14 @@ const InventoryPage = () => {
                        
                        {editingItem?.imageUrl && !isRemovingImage ? (
                           <div className="flex items-center gap-6 p-4 bg-gray-50 border border-gray-200 rounded group">
-                             <div className="w-24 h-24 rounded overflow-hidden border border-gray-300 shadow-sm bg-white">
-                                <img src={editingItem.imageUrl} alt="Current Asset" className="w-full h-full object-cover" />
+                             <div className="relative w-24 h-24 rounded overflow-hidden border border-gray-300 shadow-sm bg-white">
+                                <Image
+                                  src={editingItem.imageUrl}
+                                  alt="Current Asset"
+                                  fill
+                                  sizes="96px"
+                                  className="object-cover"
+                                />
                              </div>
                              <div className="flex-1 space-y-2">
                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Registered Manifest Image</p>
@@ -363,7 +376,15 @@ const InventoryPage = () => {
                                 onChange={(e) => handleFileChange(e.target.files?.[0])}
                              />
                              {previewUrl ? (
-                                 <img src={previewUrl} className="w-full h-40 object-cover group-hover:opacity-60 transition-all" />
+                                 <div className="relative w-full h-40">
+                                   <Image
+                                     src={previewUrl}
+                                     alt="Preview"
+                                     fill
+                                     unoptimized
+                                     className="object-cover group-hover:opacity-60 transition-all"
+                                   />
+                                 </div>
                              ) : (
                                  <div className="text-center space-y-2 p-6">
                                     <HiPhotograph size={32} className="mx-auto text-slate-300 group-hover:text-[#ff9900] transition-colors" />
