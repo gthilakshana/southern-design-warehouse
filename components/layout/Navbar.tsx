@@ -101,8 +101,8 @@ export const Navbar = () => {
 </div>
 
       {/* 2. MAIN NAVIGATION */}
-      <nav className={`transition-all duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-4'}`}>
-        <div className="container mx-auto px-6 flex items-center justify-between relative">
+      <nav className={`transition-all  duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
+        <div className="container mx-auto px-6 flex items-center justify-between relative ">
           
           {/* Mobile Menu Placeholder (To balance flex layout) */}
           <div className="w-10 lg:hidden" />

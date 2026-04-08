@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -40,6 +40,8 @@ const InventoryPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [isRemovingImage, setIsRemovingImage] = useState(false)
+  const [draggedFile, setDraggedFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // UX State
   const [isDragging, setIsDragging] = useState(false)
@@ -56,6 +58,7 @@ const InventoryPage = () => {
     setIsLoading(true)
     try {
       const data = await getInventory()
+      console.log("Fetched Inventory Data Structure:", data[0]); // Debug first item
       setItems(data as any)
     } catch (err) {
       console.error("Failed to fetch inventory:", err)
@@ -104,6 +107,7 @@ const InventoryPage = () => {
   const handleFileChange = (file: File | undefined) => {
     if (file) {
       setPreviewUrl(URL.createObjectURL(file))
+      setDraggedFile(file)
       setIsRemovingImage(false)
     }
   }
@@ -112,6 +116,11 @@ const InventoryPage = () => {
     e.preventDefault()
     setIsLoading(true)
     const formData = new FormData(e.currentTarget)
+    
+    // Ensure dragged/dropped file is included
+    if (draggedFile) {
+      formData.set("image", draggedFile)
+    }
 
     if (!formData.get("sku") && formValues.sku) {
       formData.append("sku", formValues.sku)
@@ -129,6 +138,7 @@ const InventoryPage = () => {
       setIsModalOpen(false)
       setEditingItem(null)
       setPreviewUrl('')
+      setDraggedFile(null)
       setIsRemovingImage(false)
     } else {
       alert(result.error)
@@ -176,6 +186,7 @@ const InventoryPage = () => {
             onClick={() => {
               setEditingItem(null)
               setPreviewUrl('')
+              setDraggedFile(null)
               setIsModalOpen(true)
             }}
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 bg-[#ff9900] text-[#232f3e] text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#e68a00] transition-all shadow-sm active:scale-95"
@@ -228,9 +239,9 @@ const InventoryPage = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded border border-gray-200 bg-slate-50 relative overflow-hidden shrink-0 shadow-inner">
-                            {item.imageUrl ? (
+                            {(item.imageUrl || (item as any).image) ? (
                                 <Image
-                                  src={item.imageUrl}
+                                  src={item.imageUrl || (item as any).image}
                                   alt={item.name}
                                   fill
                                   sizes="40px"
@@ -329,11 +340,11 @@ const InventoryPage = () => {
                     <div className="space-y-4">
                        <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">A. Product Visualization</h3>
                        
-                       {editingItem?.imageUrl && !isRemovingImage ? (
+                       {(editingItem?.imageUrl || (editingItem as any)?.image) && !isRemovingImage ? (
                           <div className="flex items-center gap-6 p-4 bg-gray-50 border border-gray-200 rounded group">
                              <div className="relative w-24 h-24 rounded overflow-hidden border border-gray-300 shadow-sm bg-white">
                                 <Image
-                                  src={editingItem.imageUrl}
+                                  src={(editingItem?.imageUrl || (editingItem as any)?.image) || ''}
                                   alt="Current Asset"
                                   fill
                                   sizes="96px"

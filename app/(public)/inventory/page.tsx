@@ -15,7 +15,7 @@ export default async function ProductPage() {
     category: item.category,
     price: `$${item.price.toLocaleString()}`,
     stock: item.status !== "OUT OF STOCK",
-    image: item.imageUrl || ""
+    image: item.imageUrl || item.image || null
   }));
 
   // Extract unique categories from both the database and add "All Products"

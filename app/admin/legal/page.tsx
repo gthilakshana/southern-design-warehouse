@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiOutlineDocumentText, HiOutlineQuestionMarkCircle, HiOutlinePlus, HiOutlinePencil, HiOutlineTrash, HiCheckCircle, HiXCircle, HiRefresh, HiShieldCheck, HiX, HiPlus } from 'react-icons/hi'
-import { getFAQs, upsertFAQ, deleteFAQ, getLegalPage, updateLegalPage, type FAQ, type LegalPage } from '@/lib/actions'
+import { getLegalPage, updateLegalPage, type LegalPage, getFAQs, upsertFAQ, deleteFAQ, type FAQ } from '@/lib/actions'
 import dynamic from 'next/dynamic'
 import 'react-quill-new/dist/quill.snow.css'
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
 
 const AdminLegalPage = () => {
-  const [activeTab, setActiveTab] = useState<'privacy' | 'faq' | 'terms'>('privacy')
+  const [activeTab, setActiveTab] = useState<'privacy' | 'terms' | 'faq'>('privacy')
   const [isLoading, setIsLoading] = useState(false)
   const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   
@@ -20,6 +20,8 @@ const AdminLegalPage = () => {
   const [faqs, setFaqs] = useState<FAQ[]>([])
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [faqToDelete, setFaqToDelete] = useState<FAQ | null>(null)
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message })
@@ -33,11 +35,51 @@ const AdminLegalPage = () => {
     setIsLoading(false)
   }
 
+  // FAQ handlers
   const fetchFaqs = async () => {
     setIsLoading(true)
     const data = await getFAQs()
     setFaqs(data)
     setIsLoading(false)
+  }
+
+  const handleFaqSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    const formData = new FormData(e.target as HTMLFormElement)
+    if (editingFaq) formData.append('id', editingFaq.id)
+    
+    const result = await upsertFAQ(formData)
+    if (result.success) {
+      showNotification('success', editingFaq ? 'FAQ entry updated' : 'FAQ entry added')
+      setIsFaqModalOpen(false)
+      setEditingFaq(null)
+      fetchFaqs()
+    } else {
+      showNotification('error', result.error || 'Operation failed')
+    }
+    setIsLoading(false)
+  }
+
+  const handleDeleteFaq = async (faq: FAQ) => {
+    setFaqToDelete(faq)
+    setIsDeleteModalOpen(true)
+  }
+
+  const confirmDeleteFaq = async () => {
+    if (!faqToDelete) return
+
+    setIsLoading(true)
+    const result = await deleteFAQ(faqToDelete.id)
+    if (result.success) {
+      showNotification('success', 'FAQ entry removed')
+      fetchFaqs()
+    } else {
+      showNotification('error', result.error || 'Deletion failed')
+    }
+    setIsLoading(false)
+    setIsDeleteModalOpen(false)
+    setFaqToDelete(null)
   }
 
   useEffect(() => {
@@ -65,44 +107,12 @@ const AdminLegalPage = () => {
     formData.append('slug', activeTab)
     const result = await updateLegalPage(formData)
     if (result.success) {
-      const docName = activeTab === 'privacy' ? 'Privacy Policy' : (activeTab === 'terms' ? 'Terms of Service' : 'Legal Documentation')
+      const docName = activeTab === 'privacy' ? 'Privacy Policy' : 'Terms of Service'
       showNotification('success', `${docName} updated successfully`)
     } else {
       showNotification('error', result.error || 'Update failed')
     }
     setIsLoading(false)
-  }
-
-  const handleFaqSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    const formData = new FormData(e.target as HTMLFormElement)
-    if (editingFaq) formData.append('id', editingFaq.id)
-    
-    const result = await upsertFAQ(formData)
-    if (result.success) {
-      showNotification('success', editingFaq ? 'FAQ entry updated' : 'FAQ entry added')
-      setIsFaqModalOpen(false)
-      setEditingFaq(null)
-      fetchFaqs()
-    } else {
-      showNotification('error', result.error || 'Operation failed')
-    }
-    setIsLoading(false)
-  }
-
-  const handleDeleteFaq = async (id: string) => {
-    if (confirm('Permanently delete this FAQ entry?')) {
-      setIsLoading(true)
-      const result = await deleteFAQ(id)
-      if (result.success) {
-        showNotification('success', 'FAQ entry removed')
-        fetchFaqs()
-      } else {
-        showNotification('error', result.error || 'Deletion failed')
-      }
-      setIsLoading(false)
-    }
   }
 
   return (
@@ -112,10 +122,10 @@ const AdminLegalPage = () => {
       <div className="bg-white border border-gray-200 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm rounded-sm">
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-             Documentation & FAQ
+             Legal Documentation
              <span className="text-[10px] font-black text-[#232f3e] bg-[#ff9900]/10 border border-[#ff9900]/20 px-2 py-0.5 rounded uppercase font-mono shadow-sm">Legal Records v1.0</span>
           </h2>
-          <p className="text-xs font-medium text-slate-500">Manage site documentation, legal policies, and the FAQ center.</p>
+          <p className="text-xs font-medium text-slate-500">Manage site documentation and legal policies.</p>
         </div>
         
         {notification && (
@@ -148,7 +158,7 @@ const AdminLegalPage = () => {
           onClick={() => setActiveTab('faq')}
           className={`px-8 py-4 text-[11px] font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'faq' ? 'border-[#ff9900] text-[#ff9900] bg-orange-50/10' : 'border-transparent text-gray-500 hover:text-slate-900 hover:bg-gray-50'}`}
         >
-          Support & FAQ Center
+          FAQ Center
         </button>
       </div>
 
@@ -245,7 +255,7 @@ const AdminLegalPage = () => {
                               <HiOutlinePencil size={14} className="text-slate-400 hover:text-slate-900 shadow-sm" />
                             </button>
                             <button 
-                              onClick={() => handleDeleteFaq(faq.id)}
+                              onClick={() => handleDeleteFaq(faq)}
                               className="p-2 border border-gray-200 hover:bg-white rounded transition-all"
                             >
                               <HiOutlineTrash size={14} className="text-slate-400 hover:text-red-600 shadow-sm" />
@@ -307,8 +317,9 @@ const AdminLegalPage = () => {
                   <textarea 
                     name="answer"
                     defaultValue={editingFaq?.answer}
-                    className="w-full h-40 p-4 border border-gray-300 rounded text-xs font-medium leading-relaxed outline-none focus:border-[#ff9900] resize-none"
-                    placeholder="Provide the answer to the question..."
+                    rows={6}
+                    className="w-full px-4 py-2 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900] resize-none"
+                    placeholder="Enter FAQ answer"
                     required
                   />
                 </div>
@@ -317,23 +328,79 @@ const AdminLegalPage = () => {
                   <input 
                     name="order"
                     type="number"
-                    defaultValue={editingFaq?.order || 0}
+                    defaultValue={editingFaq?.order || 1}
+                    min="1"
                     className="w-full px-4 py-2 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]"
                     required
                   />
                 </div>
-              </form>
 
-              <div className="bg-gray-50 border-t border-gray-200 p-6 flex justify-end gap-4">
-                 <button type="button" onClick={() => setIsFaqModalOpen(false)} className="px-5 py-2 text-xs font-bold text-slate-600 hover:underline uppercase tracking-widest">Abort Action</button>
-                 <button type="submit" onClick={(e) => {
-                     // Trigger form submit manually since button is outside if we wanted, 
-                     // but here it's inside the flex-col root
-                 }}
-                 className="px-8 py-2 bg-[#ff9900] text-[#232f3e] font-black text-[11px] uppercase tracking-widest rounded shadow-sm hover:bg-[#e68a00]"
-                 >
-                   Save FAQ Entry
-                 </button>
+                <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                  <button 
+                    type="button"
+                    onClick={() => setIsFaqModalOpen(false)}
+                    className="px-6 py-2 border border-gray-300 text-slate-600 font-bold text-[11px] uppercase tracking-widest rounded hover:bg-gray-50 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="px-6 py-2 bg-[#232f3e] text-white font-bold text-[11px] uppercase tracking-widest rounded hover:bg-slate-900 transition-all flex items-center gap-2"
+                  >
+                    <HiCheckCircle size={16} /> {editingFaq ? 'Update FAQ' : 'Add FAQ'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {isDeleteModalOpen && faqToDelete && (
+          <div className="fixed inset-0 z-[100] flex justify-center items-center">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsDeleteModalOpen(false)}
+              className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative bg-white rounded-lg shadow-2xl max-w-md w-full mx-4"
+            >
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <HiOutlineTrash className="text-red-600" size={20} />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900">Delete FAQ Entry</h3>
+                </div>
+
+                <p className="text-sm text-slate-600 mb-6">
+                  Are you sure you want to permanently delete the FAQ entry <strong>"{faqToDelete.question}"</strong>? 
+                  This action cannot be undone.
+                </p>
+
+                <div className="flex justify-end gap-3">
+                  <button 
+                    onClick={() => setIsDeleteModalOpen(false)}
+                    className="px-4 py-2 border border-gray-300 text-slate-600 font-bold text-sm rounded hover:bg-gray-50 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={confirmDeleteFaq}
+                    className="px-4 py-2 bg-red-600 text-white font-bold text-sm rounded hover:bg-red-700 transition-all flex items-center gap-2"
+                  >
+                    <HiOutlineTrash size={16} /> Delete FAQ
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

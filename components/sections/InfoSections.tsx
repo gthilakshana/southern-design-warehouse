@@ -73,7 +73,16 @@ export const InfoSections = () => {
               </motion.div>
 
               {/* Dark Green Button */}
-              <button className="w-fit bg-[#34533d] hover:bg-[#2a4231] text-white px-10 py-5 font-bold text-[13px] uppercase tracking-widest transition-colors">
+              <button
+                type="button"
+                onClick={() => {
+                  const quoteSection = document.getElementById('quotation-form')
+                  if (quoteSection) {
+                    quoteSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className="w-fit bg-[#34533d] hover:bg-[#2a4231] text-white px-10 py-5 font-bold text-[13px] uppercase tracking-widest transition-colors"
+              >
                 Contractor Quote Request
               </button>
             </motion.div>
@@ -87,7 +96,7 @@ export const InfoSections = () => {
               className="relative h-[600px] lg:h-[750px] overflow-hidden rounded-xl shadow-lg border border-white/10"
             >
               <Image
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=2070&auto=format&fit=crop" 
+                src="/images/contractors.jpg" 
                 alt="Materials showcase"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

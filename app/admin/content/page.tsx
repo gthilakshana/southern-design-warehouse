@@ -69,6 +69,7 @@ const SiteContentPage = () => {
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false)
   const [editingGallery, setEditingGallery] = useState<any | null>(null)
   const [categoryDesc, setCategoryDesc] = useState('')
+  const [categoryShortDesc, setCategoryShortDesc] = useState('')
   const [galleryLoading, setGalleryLoading] = useState(false)
 
   // About Page Rich Text States
@@ -93,7 +94,7 @@ const SiteContentPage = () => {
     'header', 'font', 'size',
     'bold', 'italic', 'underline', 'strike',
     'color', 'background',
-    'list', 'bullet', 'align'
+    'list', 'align'
   ]
 
   // Page Specific Content State
@@ -312,7 +313,11 @@ const SiteContentPage = () => {
                           const { testSupabaseConnectivity } = await import('@/lib/actions')
                           const res = await testSupabaseConnectivity()
                           if (res.success) {
-                            alert(`STORAGE CLUSTER: OK (200)\n\n${res.message}\n\nBuckets: [${res.debug?.buckets?.join(', ') || 'none'}]`)
+                            // Handle both Supabase and AWS response formats
+                            const debugData = res.debug as any
+                            const debugInfo = debugData?.buckets ? `Buckets: [${debugData.buckets.join(', ')}]` : 
+                                             debugData?.locations ? `Locations: [${debugData.locations.map((l: any) => `${l.location}(${l.success ? 'OK' : 'FAIL'})`).join(', ')}]` : 'No debug info'
+                            alert(`STORAGE CLUSTER: OK (200)\n\n${res.message}\n\n${debugInfo}`)
                           } else {
                             alert(`STORAGE ERROR: (500)\n\n${res.error}\n\nLatency: ${res.latency || 0}ms`)
                           }
@@ -1116,7 +1121,7 @@ const SiteContentPage = () => {
                     </div>
                     <button
                       type="button"
-                      onClick={() => { setEditingCategory(null); setIsCategoryModalOpen(true); setCategoryDesc(''); }}
+                      onClick={() => { setEditingCategory(null); setIsCategoryModalOpen(true); setCategoryDesc(''); setCategoryShortDesc(''); }}
                       className="px-6 py-2 bg-[#232f3e] text-white text-[10px] font-black uppercase tracking-widest rounded hover:bg-slate-900 transition-all flex items-center gap-2 shadow-md hover:shadow-[#232f3e]/20"
                     >
                       <HiPlus size={14} /> Global Taxonomy +
@@ -1145,7 +1150,7 @@ const SiteContentPage = () => {
                         <div className="flex items-center gap-2 opacity-10 md:opacity-0 group-hover:opacity-100 transition-all duration-300">
                           <button
                             type="button"
-                            onClick={() => { setEditingCategory(cat); setIsCategoryModalOpen(true); setCategoryDesc(cat.desc); }}
+                            onClick={() => { setEditingCategory(cat); setIsCategoryModalOpen(true); setCategoryDesc(cat.desc); setCategoryShortDesc(cat.shortDesc || ''); }}
                             className="p-2 border border-gray-200 hover:bg-[#ff9900]/10 hover:border-[#ff9900]/30 rounded transition-all group/btn"
                           >
                             <HiPencil size={14} className="text-slate-400 group-hover/btn:text-[#ff9900]" />
@@ -1239,14 +1244,15 @@ const SiteContentPage = () => {
       {/* Social Endpoint Modal */}
       <AnimatePresence>
         {isSocialModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm shadow-2xl">
+          <div className="fixed inset-0 z-[100] flex justify-end bg-slate-900/40 backdrop-blur-sm shadow-2xl">
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              className="bg-white w-full max-w-sm border border-gray-200 rounded shadow-2xl overflow-hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="bg-white w-full max-w-sm h-full border-l border-gray-200 shadow-2xl overflow-hidden flex flex-col"
             >
-              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between">
+              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between shrink-0">
                 <h2 className="text-xs font-bold uppercase tracking-widest">{editingSocial ? 'Edit Social Link' : 'Add Social Link'}</h2>
                 <button onClick={() => setIsSocialModalOpen(false)} className="p-1 hover:bg-white/10 rounded">
                   <HiX size={18} />
@@ -1266,7 +1272,7 @@ const SiteContentPage = () => {
                 } else {
                   alert(result.error)
                 }
-              }} className="p-8 space-y-6">
+              }} className="p-8 space-y-6 flex-1 overflow-y-auto">
                 <div className="space-y-2">
                   <label className="text-[11px] font-black text-slate-500 uppercase">Target Platform</label>
                   <select
@@ -1303,14 +1309,15 @@ const SiteContentPage = () => {
       {/* Gallery Image Modal */}
       <AnimatePresence>
         {isGalleryModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm shadow-2xl">
+          <div className="fixed inset-0 z-[100] flex justify-end bg-slate-900/40 backdrop-blur-sm shadow-2xl">
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              className="bg-white w-full max-w-md border border-gray-200 rounded shadow-2xl overflow-hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="bg-white w-full max-w-md h-full border-l border-gray-200 shadow-2xl overflow-hidden flex flex-col"
             >
-              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between">
+              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between shrink-0">
                 <h2 className="text-xs font-bold uppercase tracking-widest">{editingGallery ? 'Edit Gallery Image' : 'Add Gallery Image'}</h2>
                 <button onClick={() => { setIsGalleryModalOpen(false); setEditingGallery(null); setPendingFiles({}); }} className="p-1 hover:bg-white/10 rounded">
                   <HiX size={18} />
@@ -1343,7 +1350,7 @@ const SiteContentPage = () => {
                   alert(result.error)
                 }
                 setIsSaving(false)
-              }} className="p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+              }} className="p-8 space-y-6 flex-1 overflow-y-auto">
 
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Gallery Image Asset</label>
@@ -1425,14 +1432,15 @@ const SiteContentPage = () => {
       {/* Product Category Mutation Modal */}
       <AnimatePresence>
         {isCategoryModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm shadow-2xl">
+          <div className="fixed inset-0 z-[100] flex justify-end bg-slate-900/40 backdrop-blur-sm shadow-2xl">
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              className="bg-white w-full max-w-2xl border border-gray-200 rounded shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="bg-white w-full max-w-2xl h-full border-l border-gray-200 shadow-2xl overflow-hidden flex flex-col"
             >
-              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between">
+              <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between shrink-0">
                 <h2 className="text-xs font-bold uppercase tracking-widest">{editingCategory ? 'Modify Taxonomy Unit' : 'Define New Category'}</h2>
                 <button onClick={() => setIsCategoryModalOpen(false)} className="p-1 hover:bg-white/10 rounded">
                   <HiX size={18} />
@@ -1445,6 +1453,7 @@ const SiteContentPage = () => {
                 const formData = new FormData(e.currentTarget)
                 if (editingCategory) formData.append('id', editingCategory.id)
                 formData.set('desc', categoryDesc)
+                formData.set('shortDesc', categoryShortDesc)
 
                 const res = await upsertProductCategory(formData)
                 if (res.success) {
@@ -1464,6 +1473,18 @@ const SiteContentPage = () => {
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Subtitle / Headline</label>
                     <input name="subtitle" defaultValue={editingCategory?.subtitle} className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" placeholder="Natural Materials..." />
                   </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Short Description</label>
+                  <textarea
+                    name="shortDesc"
+                    value={categoryShortDesc}
+                    onChange={(e) => setCategoryShortDesc(e.target.value)}
+                    rows={2}
+                    className="w-full p-3 border border-gray-300 rounded text-xs font-medium outline-none focus:border-[#ff9900]"
+                    placeholder="Brief category summary for homepage cards..."
+                  />
                 </div>
 
                 <div className="space-y-1.5">

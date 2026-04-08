@@ -1,8 +1,10 @@
 "use client";
 
 import { HiOutlineArrowRight } from "react-icons/hi";
+import { useRouter } from "next/navigation";
+import { ProductCategory } from "@/lib/actions";
 
-const categories = [
+const defaultCategories: { title: string; desc: string; shortDesc?: string }[] = [
   {
     title: "Wood Products",
     desc: "High-quality wood materials are used for flooring, accent walls, cabinetry, and architectural design.",
@@ -42,7 +44,32 @@ const categories = [
 
 ];
 
-export default function Categories() {
+type CategoriesProps = {
+  categories: ProductCategory[];
+};
+
+const decodeHtmlEntities = (value: string) =>
+  value
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+const getPlainText = (value: string) =>
+  decodeHtmlEntities(value)
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const summarize = (text: string, length = 135) =>
+  text.length > length ? `${text.slice(0, length).trim()}…` : text;
+
+export default function Categories({ categories }: CategoriesProps) {
+  const router = useRouter();
+  const displayedCategories = categories && categories.length > 0 ? categories : defaultCategories;
+
   return (
     <section className="bg-[#f5f2ed] py-24">
       <div className="max-w-7xl mx-auto px-6 text-center">
@@ -61,9 +88,9 @@ export default function Categories() {
 
         {/* Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 text-left">
-          {categories.map((cat, i) => (
+          {displayedCategories.map((cat, i) => (
             <div
-              key={i}
+              key={cat.title || i}
               className="bg-white p-8 shadow-sm hover:shadow-lg transition duration-300 border-l-4 border-[#c9a46c]"
             >
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
@@ -71,13 +98,17 @@ export default function Categories() {
               </h3>
 
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                {cat.desc}
+                {cat.shortDesc ? summarize(getPlainText(cat.shortDesc), 120) : summarize(getPlainText(cat.desc), 120)}
               </p>
 
-              <div className="flex items-center text-sm font-medium text-gray-800 cursor-pointer group">
+              <button
+                type="button"
+                onClick={() => router.push(`/products?category=${encodeURIComponent(cat.title)}`)}
+                className="flex items-center text-sm font-medium text-gray-800 group"
+              >
                 <span>Explore</span>
                 <HiOutlineArrowRight className="ml-2 group-hover:translate-x-1 transition" />
-              </div>
+              </button>
             </div>
           ))}
         </div>

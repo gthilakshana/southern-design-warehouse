@@ -69,6 +69,7 @@ const AboutPage = () => {
             src={content.heroUrl}
             alt="About Hero"
             fill
+            sizes="100vw"
             className="object-cover brightness-[0.4]"
             priority
           />
@@ -77,6 +78,7 @@ const AboutPage = () => {
             src="/about-hero.png"
             alt="Warehouse"
             fill
+            sizes="100vw"
             className="object-cover brightness-[0.4]"
             priority
           />

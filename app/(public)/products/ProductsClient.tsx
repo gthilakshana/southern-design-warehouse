@@ -1,6 +1,6 @@
 'use client';
 import ScrollToTop from '@/components/ui/ScrollToTop';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
@@ -8,8 +8,9 @@ import { PageContent, ProductCategory } from '@/lib/actions';
 import 'react-quill-new/dist/quill.snow.css'; // Corrected for the installed package
 
 // --- Internal Animated Component ---
-const AnimatedSection = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+const AnimatedSection = ({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) => (
   <motion.div
+    id={id}
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -46,6 +47,23 @@ const CustomButton = ({
 
 export default function ProductsClient({ content, categories }: { content: PageContent | null, categories: ProductCategory[] }) {
   const router = useRouter();
+
+  const normalizeCategoryId = (value: string) =>
+    `category-${value.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get('category') ?? '';
+    if (!categoryParam) return;
+
+    const normalizedParam = normalizeCategoryId(categoryParam);
+    const element = document.getElementById(normalizedParam);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
   const defaultHero = "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&q=80";
 
@@ -100,6 +118,7 @@ export default function ProductsClient({ content, categories }: { content: PageC
         <div className="space-y-24">
           {categories.map((cat, idx) => (
             <AnimatedSection
+              id={normalizeCategoryId(cat.title)}
               key={cat.id}
               className={`bg-white p-10 md:p-16 relative overflow-hidden group shadow-sm border border-transparent hover:border-[#a68966]/30 transition-all duration-500 ${
                 idx % 2 !== 0 ? 'bg-gray-50/50' : ''
@@ -125,7 +144,7 @@ export default function ProductsClient({ content, categories }: { content: PageC
                 <div className="w-20 h-[2px] mb-10" style={{ backgroundColor: cat.color || '#b33e2f' }} />
 
                 <div 
-                    className="prose prose-lg md:prose-xl max-w-none prose-slate mb-12 ql-editor !p-0 !min-h-0"
+                    className="prose prose-lg md:prose-xl  max-w-none prose-slate mb-12 ql-editor !p-0 !min-h-0"
                     style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
                     dangerouslySetInnerHTML={{ __html: cat.desc }} 
                 />

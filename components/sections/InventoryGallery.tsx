@@ -20,7 +20,7 @@ interface Product {
   category: string;
   price: string;
   stock: boolean;
-  image: string;
+  image: string | null;
 }
 
 interface InventoryGalleryProps {
@@ -129,14 +129,21 @@ export default function InventoryGallery({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white border border-gray-200 shadow-lg p-6 rounded-xl">
 
-              <div className="relative w-full h-[420px] rounded-lg border border-gray-200 overflow-hidden">
-                <Image
-                  src={selectedProduct.image}
-                  alt={selectedProduct.name}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
+              <div className="relative w-full h-[420px] rounded-lg border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
+                {selectedProduct.image ? (
+                  <Image
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center text-gray-300">
+                    <HiSearch size={64} />
+                    <span className="text-[10px] font-black uppercase tracking-widest mt-2">No Visual Asset</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-col justify-center">
@@ -228,14 +235,21 @@ export default function InventoryGallery({
                     }}
                     className="group bg-white border border-gray-200 hover:shadow-xl hover:border-red-600 transition-all cursor-pointer rounded-sm overflow-hidden"
                   >
-                    <div className="relative h-64 overflow-hidden">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-110 transition duration-700"
-                      />
+                    <div className="relative h-64 overflow-hidden bg-gray-50 flex items-center justify-center">
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          className="object-cover group-hover:scale-110 transition duration-700"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center text-gray-200">
+                           <HiSearch size={48} />
+                           <span className="text-[8px] font-black uppercase tracking-widest mt-2">No Image</span>
+                        </div>
+                      )}
 
                       <div className="absolute top-3 right-3 z-10">
                         {product.stock ? (

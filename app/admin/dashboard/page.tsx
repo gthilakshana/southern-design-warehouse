@@ -10,7 +10,7 @@ import {
 } from 'react-icons/hi'
 import { MdInventory, MdPeople, MdAttachMoney, MdMessage } from 'react-icons/md'
 import Link from 'next/link'
-import { getInventory, getUsers, getQuoteRequests } from '@/lib/actions'
+import { getInventory, getUsers, getQuoteRequests, getSystemHealth } from '@/lib/actions'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -22,14 +22,16 @@ const DashboardPage = () => {
   ])
   const [categoryData, setCategoryData] = useState<any[]>([])
   const [velocityData, setVelocityData] = useState<number[]>([20, 45, 28, 80, 40, 90, 60, 40, 70, 55, 95, 80])
+  const [systemLogs, setSystemLogs] = useState<any[]>([])
 
   const fetchDashboardData = async () => {
     setIsLoading(true)
     try {
-      const [inventory, users, quotes] = await Promise.all([
+      const [inventory, users, quotes, health] = await Promise.all([
         getInventory(),
         getUsers(),
-        getQuoteRequests()
+        getQuoteRequests(),
+        getSystemHealth()
       ])
 
       const totalValuation = inventory.reduce((acc: number, item: any) => acc + (item.price * item.stock), 0)
@@ -53,9 +55,27 @@ const DashboardPage = () => {
         percentage: (count as number / inventory.length) * 100
       })).sort((a, b) => b.count - a.count))
 
-      // Simulate velocity from actual quotes
-      const mockVelocity = Array.from({ length: 12 }, () => Math.floor(Math.random() * 80) + 20)
-      setVelocityData(mockVelocity)
+      // Calculate velocity from actual quotes (last 12 months)
+      const now = new Date()
+      const months = Array.from({ length: 12 }, (_, i) => {
+        const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1)
+        return d.toISOString().substring(0, 7) // YYYY-MM
+      })
+
+      const velocityCounts = months.map(month => {
+        const count = quotes.filter((q: any) => {
+          const qDate = new Date(q.createdAt)
+          return qDate.toISOString().substring(0, 7) === month
+        }).length
+        // Scale the data: 0 counts should show a small baseline (20), 
+        // and we scale up the rest to fit the 150px SVG height nicely.
+        // If there are many quotes, we might want to normalize.
+        // For now, let's just do: baseline + (count * factor)
+        return 20 + (count * 15) // Adjust multiplier based on expected volume
+      })
+
+      setVelocityData(velocityCounts)
+      setSystemLogs(health)
 
     } catch (err) {
       console.error("Failed to fetch dashboard data:", err)
@@ -258,13 +278,7 @@ const DashboardPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {[
-                  { name: 'SDW-Inventory-Service', status: 'Running', metric: 'Lat-24ms', time: '99.9%' },
-                  { name: 'SDW-Sync-Engine', status: 'Synced', metric: 'Opt-92%', time: '100%' },
-                  { name: 'SDW-Security-Auth', status: 'Healthy', metric: '200 OK', time: '98.5%' },
-                  { name: 'SDW-Resource-Worker', status: 'Standby', metric: 'IDLE', time: '100%' },
-                  { name: 'SDW-Network-Gateway', status: 'Running', metric: 'SSL-Secure', time: '99.4%' },
-                ].map((item, idx) => (
+                {systemLogs.length > 0 ? systemLogs.map((item, idx) => (
                   <tr key={idx} className="hover:bg-gray-50/50 transition-colors group cursor-default">
                     <td className="px-6 py-4">
                       <p className="text-xs font-bold text-slate-800 flex items-center gap-3">
@@ -273,7 +287,13 @@ const DashboardPage = () => {
                       </p>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-[9px] font-black tracking-[0.1em] px-2 py-0.5 rounded border uppercase border-green-200 text-green-700 bg-green-50">
+                      <span className={`text-[9px] font-black tracking-[0.1em] px-2 py-0.5 rounded border uppercase ${
+                        item.status === 'Running' || item.status === 'Healthy' || item.status === 'Synced'
+                          ? 'border-green-200 text-green-700 bg-green-50'
+                          : item.status === 'Warning' || item.status === 'Standby'
+                          ? 'border-amber-200 text-amber-700 bg-amber-50'
+                          : 'border-red-200 text-red-700 bg-red-50'
+                      }`}>
                         {item.status}
                       </span>
                     </td>
@@ -284,7 +304,13 @@ const DashboardPage = () => {
                       {item.time}
                     </td>
                   </tr>
-                ))}
+                )) : (
+                  [...Array(5)].map((_, i) => (
+                    <tr key={i} className="animate-pulse">
+                       <td colSpan={4} className="px-6 py-4 h-12 bg-gray-50/50" />
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

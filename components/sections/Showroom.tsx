@@ -48,7 +48,7 @@ export default function ShowroomSection() {
           <div className="relative z-10 shadow-2xl">
             <div className="border-[12px] border-white">
               <Image
-                src="/render-image.jpg"
+                src="/images/20260225_093348.jpg"
                 alt="Modern living room design"
                 width={700}
                 height={500}
@@ -67,7 +67,7 @@ export default function ShowroomSection() {
           >
             <div className="border-[8px] border-white">
               <Image
-                src="/showroom-photo.jpg"
+                src="/images/20260225_093351.jpg"
                 alt="Inside our showroom"
                 width={400}
                 height={300}
@@ -92,7 +92,7 @@ export default function ShowroomSection() {
 
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-serif text-slate-900 mb-8 leading-tight italic"
+            className="text-4xl md:text-5xl font-medium text-[#1a1a1a] mb-8 tracking-tight "
           >
             Visit Our Showroom
           </motion.h2>
@@ -138,4 +138,4 @@ export default function ShowroomSection() {
       </div>
     </section>
   );
-}
+}

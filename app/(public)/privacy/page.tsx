@@ -12,9 +12,10 @@ export default async function PrivacyPage() {
       {/* HERO SECTION */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
         <Image
-          src="/legal/privacy_policy_hero_1775409235547.png"
+          src="/images/20260225_092039.jpg"
           alt="Privacy Policy Background"
           fill
+          sizes="100vw"
           className="object-cover brightness-[0.4]"
           priority
         />
@@ -23,7 +24,7 @@ export default async function PrivacyPage() {
         <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-white">
+          <h1 className="text-4xl md:text-6xl uppercase font-bold text-white">
             Privacy Policy
           </h1>
 

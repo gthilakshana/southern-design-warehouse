@@ -70,7 +70,7 @@ export default function QuotationForm() {
 }, [status]);
 
   return (
-    <section className="bg-gray-100 py-28 px-6 md:px-12 lg:px-24">
+    <section id="quotation-form" className="bg-gray-100 py-28 px-6 md:px-12 lg:px-24">
       <div className="max-w-6xl mx-auto">
 
         {/* CONTAINER */}

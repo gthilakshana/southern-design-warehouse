@@ -12,9 +12,10 @@ export default async function TermsPage() {
       {/* HERO SECTION */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
         <Image
-          src="/legal/terms_of_service_hero_1775409257153.png"
+          src="/images/20260225_092039.jpg"
           alt="Terms Background"
           fill
+          sizes="100vw"
           className="object-cover brightness-[0.4]"
           priority
         />
@@ -22,7 +23,7 @@ export default async function TermsPage() {
         <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-white">
+          <h1 className="text-4xl md:text-6xl uppercase font-bold text-white">
             Terms of Service
           </h1>
 
