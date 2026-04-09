@@ -46,12 +46,13 @@ const SiteContentPage = () => {
     address: '123 Southern Ave, Design District',
     phone: '1-800-555-0199',
     email: 'support@southerndesign.com',
+    logoUrl: '',
     heroUrl: '',
     heroMobileUrl: '',
     heroTabletUrl: '',
     heroTitle: '',
     heroDescription: '',
-    heroText: '',
+    heroText: 'Products.Kitchens.Bathrooms.Cabinets.Showroom',
     footerText: '© 2024 Southern Design Warehouse. All rights reserved.',
     footerBtnText: 'Plan Your Visit',
     footerBtnLink: '/contact',
@@ -71,6 +72,8 @@ const SiteContentPage = () => {
   const [categoryDesc, setCategoryDesc] = useState('')
   const [categoryShortDesc, setCategoryShortDesc] = useState('')
   const [galleryLoading, setGalleryLoading] = useState(false)
+  const [isAddingNewGalleryCategory, setIsAddingNewGalleryCategory] = useState(false)
+  const [customGalleryCategory, setCustomGalleryCategory] = useState('')
 
   // About Page Rich Text States
   const [mission, setMission] = useState('')
@@ -114,12 +117,13 @@ const SiteContentPage = () => {
           address: data.address || '',
           phone: data.phone || '',
           email: data.email || '',
+          logoUrl: data.logoUrl || '',
           heroUrl: data.heroUrl || '',
           heroMobileUrl: data.heroMobileUrl || '',
           heroTabletUrl: data.heroTabletUrl || '',
           heroTitle: data.heroTitle || '',
           heroDescription: data.heroDescription || '',
-          heroText: data.heroText || '',
+          heroText: data.heroText || 'Products.Kitchens.Bathrooms.Cabinets.Showroom',
           footerText: data.footerText || '',
           footerBtnText: data.footerBtnText || '',
           footerBtnLink: data.footerBtnLink || '',
@@ -300,6 +304,55 @@ const SiteContentPage = () => {
                   className="space-y-6"
                 >
                   <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-gray-100 pb-3 mb-6">Business Identity</h3>
+                  
+                  <div className="mb-10 space-y-4">
+                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Business Logo (Header/Footer)</label>
+                    <div
+                      className={`relative group/logo w-full max-w-[300px] h-24 border-2 border-dashed rounded-sm flex flex-col items-center justify-center transition-all overflow-hidden ${dragActive === 'logo' ? 'border-[#ff9900] bg-[#ff9900]/5' : 'border-gray-200 bg-slate-50/30 hover:border-[#ff9900]/40'
+                        }`}
+                      onDragOver={(e) => { e.preventDefault(); setDragActive('logo') }}
+                      onDragLeave={() => setDragActive(null)}
+                      onDrop={(e) => {
+                        e.preventDefault(); setDragActive(null);
+                        const file = e.dataTransfer.files?.[0];
+                        if (file) {
+                          setSettings(prev => ({ ...prev, logoUrl: URL.createObjectURL(file) }));
+                          setPendingFiles(prev => ({ ...prev, logoImage: file }));
+                        }
+                      }}
+                    >
+                      {settings.logoUrl ? (
+                        <>
+                          <Image
+                            src={settings.logoUrl}
+                            alt="Business Logo"
+                            fill
+                            unoptimized={settings.logoUrl.startsWith('blob:')}
+                            className="absolute inset-0 object-contain p-4 transition-all duration-300 group-hover/logo:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover/logo:opacity-100 transition-opacity">
+                            <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black uppercase tracking-widest">Update Logo</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-center space-y-1">
+                          <MdImage size={24} className={`mx-auto transition-colors ${dragActive === 'logo' ? 'text-[#ff9900]' : 'text-slate-300'}`} />
+                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                            {dragActive === 'logo' ? 'Drop Image' : 'Provision Logo'}
+                          </p>
+                        </div>
+                      )}
+                      <input name="logoImage" type="file" accept="image/*" onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setSettings(prev => ({ ...prev, logoUrl: URL.createObjectURL(file) }));
+                          setPendingFiles(prev => ({ ...prev, logoImage: file }));
+                        }
+                      }} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                    </div>
+                    <p className="text-[9px] text-slate-400 font-bold uppercase italic tracking-tighter">Recommended: 400x120px Transparent PNG (Wide)</p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[11px] font-black text-slate-500 uppercase">Business Name</label>
@@ -523,6 +576,7 @@ const SiteContentPage = () => {
                     >
                       <option value="kitchens">Kitchens</option>
                       <option value="bathrooms">Bathrooms</option>
+                      <option value="cabinets">Cabinets</option>
                       <option value="showroom">Showroom</option>
                       <option value="gallery">Gallery Page</option>
                       <option value="products">Products</option>
@@ -1090,9 +1144,6 @@ const SiteContentPage = () => {
                               </button>
                             </div>
                           </div>
-                          <div className="absolute top-2 left-2 px-2 py-0.5 bg-white/80 backdrop-blur-md border border-gray-100 rounded text-[8px] font-black uppercase tracking-tighter text-slate-900">
-                            #{img.order}
-                          </div>
                         </div>
                       )) : (
                         <div className="col-span-full py-16 text-center border-2 border-dashed border-gray-100 rounded">
@@ -1319,37 +1370,48 @@ const SiteContentPage = () => {
             >
               <div className="bg-[#232f3e] text-white px-6 py-4 flex items-center justify-between shrink-0">
                 <h2 className="text-xs font-bold uppercase tracking-widest">{editingGallery ? 'Edit Gallery Image' : 'Add Gallery Image'}</h2>
-                <button onClick={() => { setIsGalleryModalOpen(false); setEditingGallery(null); setPendingFiles({}); }} className="p-1 hover:bg-white/10 rounded">
+                <button 
+                  onClick={() => { 
+                    setIsGalleryModalOpen(false); 
+                    setEditingGallery(null); 
+                    setPendingFiles({}); 
+                    setIsAddingNewGalleryCategory(false); 
+                    setCustomGalleryCategory(''); 
+                  }} 
+                  className="p-1 hover:bg-white/10 rounded"
+                >
                   <HiX size={18} />
                 </button>
               </div>
 
               <form onSubmit={async (e) => {
-                e.preventDefault()
-                setIsSaving(true)
-                const formData = new FormData(e.currentTarget)
-                if (editingGallery) formData.append('id', editingGallery.id)
+                e.preventDefault();
+                setIsSaving(true);
+                const formData = new FormData(e.currentTarget);
+                if (editingGallery) formData.append('id', editingGallery.id);
 
                 // Add pending image if exists
                 if (pendingFiles['galleryImg']) {
-                  formData.set('image', pendingFiles['galleryImg'])
+                  formData.set('image', pendingFiles['galleryImg']);
                 }
 
-                formData.append('isActive', 'true')
+                formData.append('isActive', 'true');
 
                 const result = editingGallery
                   ? await updateGalleryImage(editingGallery.id, formData)
-                  : await createGalleryImage(formData)
+                  : await createGalleryImage(formData);
 
                 if (result.success) {
-                  setIsGalleryModalOpen(false)
-                  fetchGalleryImages()
-                  setEditingGallery(null)
-                  setPendingFiles({})
+                  setIsGalleryModalOpen(false);
+                  fetchGalleryImages();
+                  setEditingGallery(null);
+                  setPendingFiles({});
+                  setIsAddingNewGalleryCategory(false);
+                  setCustomGalleryCategory('');
                 } else {
-                  alert(result.error)
+                  alert(result.error);
                 }
-                setIsSaving(false)
+                setIsSaving(false);
               }} className="p-8 space-y-6 flex-1 overflow-y-auto">
 
                 <div className="space-y-4">
@@ -1357,7 +1419,7 @@ const SiteContentPage = () => {
                   <div className="relative h-48 border-2 border-dashed border-gray-200 rounded bg-slate-50/30 flex flex-col items-center justify-center overflow-hidden group">
                     {(editingGallery?.url || pendingFiles['galleryImg']) ? (
                       <Image
-                        src={pendingFiles['galleryImg'] ? URL.createObjectURL(pendingFiles['galleryImg']) : editingGallery.url}
+                        src={pendingFiles['galleryImg'] ? URL.createObjectURL(pendingFiles['galleryImg']) : editingGallery?.url || ''}
                         alt="Gallery Preview"
                         fill
                         unoptimized
@@ -1374,8 +1436,8 @@ const SiteContentPage = () => {
                       name="image"
                       className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        if (file) setPendingFiles(prev => ({ ...prev, galleryImg: file }))
+                        const file = e.target.files?.[0];
+                        if (file) setPendingFiles(prev => ({ ...prev, galleryImg: file }));
                       }}
                     />
                     {(editingGallery?.url || pendingFiles['galleryImg']) && (
@@ -1386,35 +1448,62 @@ const SiteContentPage = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-[11px] font-black text-slate-500 uppercase">Image Title</label>
-                    <input name="title" defaultValue={editingGallery?.title} className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" placeholder="Portfolio Title..." />
+                    <input name="title" defaultValue={editingGallery?.title} required className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" placeholder="Portfolio Title..." />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-black text-slate-500 uppercase">Category</label>
-                    <select name="category" defaultValue={editingGallery?.category || 'general'} className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold uppercase outline-none focus:border-[#ff9900]">
-                      <option value="general">General</option>
-                      <option value="kitchen">Kitchen</option>
-                      <option value="bathroom">Bathroom</option>
-                      <option value="showroom">Showroom</option>
-                      <option value="flooring">Flooring</option>
-                    </select>
+                    <label className="text-[11px] font-black text-slate-500 uppercase">Classification</label>
+                    <div className="space-y-2">
+                      {!isAddingNewGalleryCategory ? (
+                        <select 
+                          name="category" 
+                          defaultValue={editingGallery?.category || 'general'} 
+                          onChange={(e) => {
+                            if (e.target.value === 'ADD_NEW') {
+                              setIsAddingNewGalleryCategory(true);
+                            }
+                          }}
+                          className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold uppercase outline-none focus:border-[#ff9900]"
+                        >
+                          <option value="general">General</option>
+                          {/* Unique categories from existing images */}
+                          {Array.from(new Set(galleryImages.map((img: any) => img.category))).filter((c: any) => c && c !== 'general').map((cat: any) => (
+                            <option key={cat} value={cat}>{cat}</option>
+                          ))}
+                          <option value="ADD_NEW" className="text-[#ff9900] font-black underline">+ Add New Category</option>
+                        </select>
+                      ) : (
+                        <div className="flex gap-2 animate-in slide-in-from-right-2 duration-300">
+                          <input 
+                            name="category" 
+                            value={customGalleryCategory} 
+                            onChange={(e) => setCustomGalleryCategory(e.target.value)}
+                            placeholder="Type new category..."
+                            className="flex-1 h-10 px-3 border border-[#ff9900] rounded text-xs font-bold uppercase outline-none"
+                            autoFocus
+                          />
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                              setIsAddingNewGalleryCategory(false);
+                              setCustomGalleryCategory('');
+                            }}
+                            className="px-3 text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 border border-gray-200 rounded"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[11px] font-black text-slate-500 uppercase">Narrative Description</label>
-                  <textarea name="description" defaultValue={editingGallery?.description} rows={2} className="w-full px-3 py-2 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" placeholder="Brief context for this image..." />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-[11px] font-black text-slate-500 uppercase">Sort Priority (Order)</label>
-                  <input name="order" type="number" defaultValue={editingGallery?.order || 0} className="w-full h-10 px-3 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900]" />
-                </div>
+                {/* Narrative Description and Sort Priority removed */}
 
                 <div className="pt-4 flex gap-3">
-                  <button type="button" onClick={() => { setIsGalleryModalOpen(false); setEditingGallery(null); setPendingFiles({}); }} className="flex-1 py-2 text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest">Cancel</button>
+                  <button type="button" onClick={() => { setIsGalleryModalOpen(false); setEditingGallery(null); setPendingFiles({}); setIsAddingNewGalleryCategory(false); setCustomGalleryCategory(''); }} className="flex-1 py-2 text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest">Cancel</button>
                   <button type="submit" disabled={isSaving} className="flex-[2] py-2 bg-[#ff9900] text-[#232f3e] font-black text-[10px] uppercase tracking-widest rounded shadow hover:bg-[#e68a00] transition-all disabled:opacity-50">
                     {isSaving ? (
                       <span className="flex items-center justify-center gap-2">

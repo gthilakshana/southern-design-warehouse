@@ -8,7 +8,7 @@ export default async function ShowroomPage() {
   const content = await getPageContent('showroom');
 
   const dynamicCategories = content?.heroText
-    ? content.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
     : [
       "Kitchen Displays",
       "Bathroom Settings",
@@ -41,6 +41,17 @@ export default async function ShowroomPage() {
           <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto font-light">
             {content?.description || "Experience the quality and craftsmanship of Southern Design Warehouse in person. Our showroom features curated displays designed to inspire your next home transformation."}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {dynamicCategories.map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

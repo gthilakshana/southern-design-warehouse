@@ -10,7 +10,7 @@ export default function PublicLayout({
   return (
     <>
       <Navbar />
-      <div className="flex-grow pt-20">
+      <div className="flex-grow">
         <PageTransition>
           {children}
         </PageTransition>

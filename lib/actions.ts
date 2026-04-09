@@ -324,6 +324,7 @@ export interface SiteSettings {
   footerText: string;
   footerBtnText: string;
   footerBtnLink: string;
+  logoUrl?: string | null;
   heroUrl?: string | null;
   heroTabletUrl?: string | null;
   heroMobileUrl?: string | null;
@@ -347,6 +348,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         footerText: "© 2024 Southern Design Warehouse. All rights reserved.",
         footerBtnText: "Plan Your Visit",
         footerBtnLink: "/contact",
+        heroText: "Products.Kitchens.Bathrooms.Cabinets.Showroom",
         updatedAt: new Date().toISOString()
       }
       return { ...defaultSettings, id: "temp-id" } as any
@@ -361,12 +363,13 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       footerText: settings.footerText,
       footerBtnText: settings.footerBtnText,
       footerBtnLink: settings.footerBtnLink,
+      logoUrl: settings.logoUrl,
       heroUrl: settings.heroUrl,
       heroTabletUrl: settings.heroTabletUrl,
       heroMobileUrl: settings.heroMobileUrl,
       heroTitle: settings.heroTitle,
       heroDescription: settings.heroDescription,
-      heroText: settings.heroText,
+      heroText: settings.heroText || "Products.Kitchens.Bathrooms.Cabinets.Showroom",
       updatedAt: settings.updatedAt instanceof Date ? settings.updatedAt.toISOString() : settings.updatedAt
     })
   } catch (error) {
@@ -381,6 +384,17 @@ export async function updateSiteSettings(formData: FormData) {
     const settings = await db.collection("SiteSettings").findOne({})
 
     const data: any = {}
+
+    // Process Business Logo
+    const logoFile = formData.get("logoImage") as File | null
+    if (logoFile && logoFile.size > 0) {
+      const { url, error } = await uploadImage(logoFile)
+      if (error) return { error: `Logo Image: ${error}` }
+      if (url) {
+        if (settings?.logoUrl) await deleteImageFromStorage(settings.logoUrl)
+        data.logoUrl = url
+      }
+    }
 
     // Process Desktop Image
     const heroFile = formData.get("heroImage") as File | null
@@ -1032,7 +1046,7 @@ export interface GalleryImage {
 export async function getGalleryImages(): Promise<GalleryImage[]> {
   try {
     const db = await getDirectDb()
-    const images = await db.collection("GalleryImage").find({}).sort({ order: 1 }).toArray()
+    const images = await db.collection("GalleryImage").find({}).sort({ updatedAt: -1 }).toArray()
     return serialize(images.map(img => ({
       id: img._id.toString(),
       url: img.url,
@@ -1074,7 +1088,7 @@ export async function createGalleryImage(formData: FormData) {
       title: title || "",
       description: description || "",
       category: category || "general",
-      order: order || 0,
+      order: 0, // Order field removed from UI, defaulting to 0
       createdAt: new Date(),
       updatedAt: new Date()
     })
@@ -1105,7 +1119,7 @@ export async function updateGalleryImage(id: string, formData: FormData) {
     const existing = await db.collection("GalleryImage").findOne({ _id: new ObjectId(id) })
     if (!existing) return { error: "Image not found" }
 
-    const updateData: any = { title, description, category, order, isActive, updatedAt: new Date() }
+    const updateData: any = { title, description: description || "", category, order: 0, isActive, updatedAt: new Date() }
 
     const imageFile = formData.get("image") as File | null
     if (imageFile && imageFile.size > 0) {

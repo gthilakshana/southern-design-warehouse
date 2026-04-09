@@ -63,13 +63,24 @@ export default function InventoryGallery({
           brightness="brightness-[0.4]"
         />
 
-        <div className="relative z-10 max-w-3xl">
+        <div className="relative z-10 max-w-3xl space-y-4">
           <h1 className="text-3xl md:text-5xl font-bold uppercase tracking-widest mt-20 md:mt-10 leading-tight">
             {heroContent?.title || "Warehouse Inventory"}
           </h1>
-          <p className="text-gray-300 mt-3 text-sm md:text-base font-bold uppercase tracking-tighter">
+          <p className="text-gray-300 mt-1 text-sm md:text-base font-bold uppercase tracking-tighter">
             {heroContent?.description || "Curated selection of premium materials ready for shipment."}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            {(heroContent?.heroText || "Inventory.Materials.Selection.Support").split(/[•·,.]/).map((s: string) => s.trim()).filter(Boolean).map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -10,14 +10,14 @@ export default async function BathroomsPage() {
   const content = await getPageContent('bathrooms');
   
   const dynamicMaterials = content?.heroText
-    ? content.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
     : [
-        "Tiles",
-        "Bathroom vanities",
-        "Shower doors",
-        "Flooring",
-        "Wall materials"
-      ];
+         "Tiles",
+         "Bathroom vanities",
+         "Shower doors",
+         "Flooring",
+         "Wall materials"
+       ];
 
  
   const contentImage = content?.contentUrl || "/images/20260225_094204.jpg";
@@ -43,6 +43,17 @@ export default async function BathroomsPage() {
           <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto font-light">
             {content?.description || "Bathrooms combine functionality with relaxation and style. Southern Design Warehouse helps homeowners design bathrooms that feel modern, comfortable, and visually appealing."}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {dynamicMaterials.map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

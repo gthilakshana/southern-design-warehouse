@@ -49,6 +49,10 @@ export default function GalleryPage() {
     }
   };
 
+  const galleryMaterials = content?.heroText
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    : ["Project Showcase", "Material Applications", "Design Portfolio", "Installation Gallery"];
+
   const defaultHero = "https://images.unsplash.com/photo-1620626011761-9963d7b69763?q=80&w=2000&auto=format&fit=crop";
 
   return (
@@ -65,18 +69,29 @@ export default function GalleryPage() {
           brightness="brightness-[0.4]"
         />
 
-        <div className="relative z-10 max-w-3xl">
+        <div className="relative z-10 max-w-3xl space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight"
+            className="text-4xl md:text-6xl font-bold tracking-tight uppercase"
           >
             {content?.title || "Project Gallery"}
           </motion.h1>
 
-          <p className="text-gray-200 mt-4 text-lg">
+          <p className="text-gray-200 mt-4 text-lg max-w-2xl mx-auto font-light leading-relaxed">
             {content?.description || "Explore our completed warehouse and material projects."}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {galleryMaterials.map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -164,58 +179,45 @@ export default function GalleryPage() {
       <AnimatePresence>
         {selectedImage && (
           <motion.div
-            className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 md:p-10"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-16 bg-black/80 backdrop-blur-2xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
           >
-            <button
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-[110]"
+            {/* Close Button */}
+            <button 
+              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
               onClick={() => setSelectedImage(null)}
             >
-              <HiX size={32} />
+              <HiX size={40} />
             </button>
 
             <motion.div
-              className="bg-white max-w-6xl w-full max-h-[90vh] overflow-hidden rounded-lg grid md:grid-cols-2 shadow-2xl"
+              className="relative w-full h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
-              <div className="bg-gray-200 h-[300px] md:h-full relative">
+              <div className="relative w-full h-full group">
                 <Image
                   src={selectedImage.url}
                   alt={selectedImage.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  sizes="100vw"
+                  className="object-contain drop-shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                   priority
                 />
-              </div>
-
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <div className="mb-6">
-                  <span className="bg-red-100 text-red-600 font-bold px-3 py-1 rounded text-xs uppercase tracking-widest">
-                    {selectedImage.category}
-                  </span>
+                
+                {/* Subtle Overlay Label */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 pt-20 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[#ff9900] text-[10px] font-black uppercase tracking-[0.2em]">{selectedImage.category}</span>
+                    <h3 className="text-white text-xl font-bold tracking-tight">{selectedImage.title}</h3>
+                  </div>
                 </div>
-
-                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
-                  {selectedImage.title}
-                </h2>
-
-                <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                  {selectedImage.description || "Detailed view of our professional warehouse installation and material handling project."}
-                </p>
-
-                <Link 
-                  href={`/contact?project=${encodeURIComponent(selectedImage.title)}`}
-                  className="bg-red-600 text-white font-bold py-4 px-8 rounded-md hover:bg-red-700 transition-colors shadow-lg shadow-red-100 self-start text-center"
-                >
-                  Inquire About This Project
-                </Link>
               </div>
             </motion.div>
           </motion.div>

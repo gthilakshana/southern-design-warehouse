@@ -130,7 +130,7 @@ function ContactForm({ content, settings, socialLinks, loading, defaultHero }: a
           alt="Contact"
           brightness="brightness-[0.4]"
         />
-        <div className="relative z-10 max-w-3xl">
+        <div className="relative z-10 max-w-3xl space-y-6">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -143,10 +143,21 @@ function ContactForm({ content, settings, socialLinks, loading, defaultHero }: a
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-gray-200 mt-4 text-lg"
+            className="text-gray-200 mt-4 text-lg max-w-2xl mx-auto font-light leading-relaxed"
           >
             {content?.description || "Have questions about materials or planning a project? We’re here to help."}
           </motion.p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {(content?.heroText || "Materials.Logistics.Design.Support").split(/[•·,.]/).map((s: string) => s.trim()).filter(Boolean).map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

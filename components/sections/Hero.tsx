@@ -8,7 +8,7 @@ import { getSiteSettings } from '@/lib/actions';
 import ResponsiveHero from '../ui/ResponsiveHero';
 
 export const Hero = () => {
-  const defaultProducts = ['Flooring', 'Cabinets', 'Tile', 'Vanities', 'Materials'];
+  const defaultProducts = ['Products', 'Kitchens', 'Bathrooms', 'Cabinets', 'Showroom'];
 
   const [settings, setSettings] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
@@ -27,7 +27,7 @@ export const Hero = () => {
   }, []);
 
   const products = settings?.heroText
-    ? settings.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter(Boolean)
+    ? settings.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter(Boolean)
     : defaultProducts;
 
   const containerVariants = {
@@ -51,7 +51,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative h-screen min-h-[750px] flex items-center overflow-hidden text-white">
+    <section className="relative  h-screen min-h-[750px] flex items-center overflow-hidden text-white">
 
       {/* HERO IMAGE - Cinematic Scale */}
       {mounted ? (

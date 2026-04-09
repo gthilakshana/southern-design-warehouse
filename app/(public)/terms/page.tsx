@@ -22,17 +22,28 @@ export default async function TermsPage() {
 
         <div className="absolute inset-0 bg-black/60" />
 
-        <div className="relative z-10 text-center px-6">
+        <div className="relative z-10 text-center px-6 space-y-4">
           <h1 className="text-4xl md:text-6xl uppercase font-bold text-white">
             Terms of Service
           </h1>
 
-          <p className="mt-4 text-gray-200 text-sm md:text-base max-w-xl mx-auto">
+          <p className="mt-4 text-gray-200 text-sm md:text-base max-w-xl mx-auto font-light">
             Legal agreements and operational guidelines for using our warehouse system.
           </p>
 
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            {("Agreement.Guidelines.Policy.Support").split(/[•·,.]/).map((s: string) => s.trim()).filter(Boolean).map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+
           {/* STATUS BADGE */}
-          <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded">
+          <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded shadow-lg">
             <span className="w-2 h-2 bg-white rounded-full"></span>
             Legal Agreement
           </div>

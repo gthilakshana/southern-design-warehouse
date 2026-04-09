@@ -16,7 +16,7 @@ export default async function KitchensPage() {
   ];
 
   const showroomOptions = content?.heroText
-    ? content.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
     : ["Cabinets", "Granite", "Flooring", "Backsplash tiles"];
 
   
@@ -43,6 +43,17 @@ export default async function KitchensPage() {
           <p className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto font-light">
             {content?.description || "Planning a kitchen renovation requires careful material selection and layout planning. Southern Design Warehouse helps homeowners and contractors design kitchens that balance beauty, functionality, and durability."}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {showroomOptions.map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

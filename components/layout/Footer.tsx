@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image' // Added for the logo
 import { motion } from 'framer-motion'
-import { getSiteSettings, getSocialLinks, submitLead } from '@/lib/actions'
+import { getSiteSettings, getSocialLinks, submitLead, type SiteSettings } from '@/lib/actions'
 import { FaFacebook, FaInstagram, FaTiktok, FaLinkedin, FaYoutube } from 'react-icons/fa'
 import { HiCheckCircle, HiExclamationCircle, HiArrowRight } from 'react-icons/hi'
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear()
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Partial<SiteSettings>>({
+    siteName: 'Southern Design Warehouse',
+    logoUrl: '/logo.png',
     footerText: `© ${currentYear} Southern Design Warehouse.`,
     phone: '',
     email: '',
@@ -31,6 +33,9 @@ export const Footer = () => {
 
         if (settingsData) {
           setSettings({
+            ...settings,
+            siteName: settingsData.siteName || settings.siteName,
+            logoUrl: settingsData.logoUrl || settings.logoUrl,
             footerText: settingsData.footerText || settings.footerText,
             phone: settingsData.phone || '',
             email: settingsData.email || '',
@@ -81,7 +86,7 @@ export const Footer = () => {
         { name: 'Wood Products', href: '' },
         { name: 'Wall Panels', href: '' },
         { name: 'Tiles & Granite', href: '' },
-        { name: 'Cabinets & Vanities', href: '' },
+        { name: 'Cabinets & Vanities', href: '/cabinets' },
         { name: 'Doors & Showers', href: '' },
       ]
     },
@@ -90,6 +95,7 @@ export const Footer = () => {
       links: [
         { name: 'Kitchen Design', href: '/kitchens' },
         { name: 'Bathroom Design', href: '/bathrooms' },
+        { name: 'Cabinetry Solutions', href: '/cabinets' },
         { name: 'Contractor Supply', href: '/contractors' },
         { name: 'Showroom Tour', href: '/showroom' },
       ]
@@ -155,8 +161,8 @@ export const Footer = () => {
               {/* FIXED: Logo replaces "SDW." text */}
               <div className="relative w-[200px] h-[60px]">
                 <Image 
-                  src="/logo.png" 
-                  alt="Southern Design Warehouse" 
+                  src={settings.logoUrl || "/logo.png"} 
+                  alt={settings.siteName || "Southern Design Warehouse"} 
                   fill 
                   className="object-contain object-left brightness-0 invert" // Ensures it shows white/silver on dark background
                 />

@@ -59,6 +59,10 @@ const AboutPage = () => {
 
   const metadata = (content?.metadata as any) || {}
 
+  const designMaterials = content?.heroText
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    : ["Global Sourcing", "Massive Inventory", "Expert Logistics", "Premium Materials"];
+
   return (
     <div className="min-h-screen bg-gray-100 font-[arial]" style={{ fontSize: content?.fontSize || 'inherit' }}>
 
@@ -86,13 +90,24 @@ const AboutPage = () => {
         <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 text-center px-6">
-          <span className="text-red-500 font-bold uppercase tracking-widest text-sm">{content?.heroText || 'Established Excellence'}</span>
+          <span className="text-red-500 font-bold uppercase tracking-widest text-sm">{content?.heroText ? "" : (content?.heroText || 'Established Excellence')}</span>
           <h1 className="text-3xl md:text-6xl font-bold  uppercase tracking-tighter text-white mt-2">
             {content?.title || 'About Our Warehouse'}
           </h1>
-          <p className="mt-4 text-gray-200 max-w-2xl mx-auto text-lg">
+          <p className="mt-4 text-gray-200 max-w-2xl mx-auto text-lg leading-relaxed">
             {content?.description || 'Leading the industry with precision logistics, massive inventory scales, and a commitment to quality that builds the future.'}
           </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {designMaterials.map((item: string) => (
+              <span
+                key={item}
+                className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

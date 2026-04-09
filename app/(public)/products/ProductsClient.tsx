@@ -95,16 +95,14 @@ export default function ProductsClient({ content, categories }: { content: PageC
 
             {/* Dynamic Featured Categories List */}
             {content?.heroText && (
-              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 mt-8">
-                {content.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0).map((item: string, index: number, arr: any[]) => (
-                  <React.Fragment key={item}>
-                    <span className="text-[#a68966] font-black text-[10px] uppercase tracking-[0.2em]">
-                      {item}
-                    </span>
-                    {index < arr.length - 1 && (
-                      <span className="text-[#a68966] text-lg px-2">•</span>
-                    )}
-                  </React.Fragment>
+              <div className="flex flex-wrap justify-center gap-3 mt-8">
+                {content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter(Boolean).map((item: string) => (
+                  <span
+                    key={item}
+                    className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+                  >
+                    {item}
+                  </span>
                 ))}
               </div>
             )}

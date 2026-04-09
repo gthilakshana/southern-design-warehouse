@@ -29,6 +29,7 @@ export const Navbar = () => {
     { name: 'Products', href: '/products' },
     { name: 'Kitchens', href: '/kitchens' },
     { name: 'Bathrooms', href: '/bathrooms' },
+    { name: 'Cabinets', href: '/cabinets' },
     { name: 'Contractors', href: '/contractors' },
     { name: 'Showroom', href: '/showroom' },
     { name: 'Inventory', href: '/inventory' },
@@ -36,14 +37,14 @@ export const Navbar = () => {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 font-sans">
+    <header className="sticky top-0 left-0 right-0 z-50 font-sans">
       {/* 1. TOP BAR (Only on Desktop) */}
 <div
   className={`hidden md:block transition-all duration-500 overflow-hidden ${
-    isScrolled ? "h-0 opacity-0" : "min-h-10 opacity-100"
+    isScrolled ? "max-h-0 opacity-0" : "max-h-20 opacity-100"
   }`}
 >
-  <div className="bg-[#111111]/95 backdrop-blur-md border-b border-white/10">
+  <div className="bg-[#111111]/95 backdrop-blur-md border-b border-white/5">
     <div className="container mx-auto px-6 py-2 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-wider font-semibold">
 
       {/* LEFT SIDE */}
@@ -101,7 +102,7 @@ export const Navbar = () => {
 </div>
 
       {/* 2. MAIN NAVIGATION */}
-      <nav className={`transition-all  duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
+      <nav className={`transition-all    duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between relative ">
           
           {/* Mobile Menu Placeholder (To balance flex layout) */}
@@ -110,7 +111,13 @@ export const Navbar = () => {
           {/* LOGO - CENTERED ON MOBILE */}
           <div className="flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:left-auto">
             <Link href="/" className="relative block w-[160px] md:w-[200px] h-[50px] md:h-[65px]">
-              <Image src="/logo.png" alt="Logo" fill priority className="object-contain" />
+              <Image 
+                src={settings?.logoUrl || "/logo.png"} 
+                alt={settings?.siteName || "Logo"} 
+                fill 
+                priority 
+                className="object-contain" 
+              />
             </Link>
           </div>
 

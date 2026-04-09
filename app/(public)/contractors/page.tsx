@@ -17,7 +17,10 @@ export default async function ContractorsPage() {
     { name: 'Quick warehouse pickup', icon: TbTruck },
   ];
 
-  
+  const dynamicMaterials = content?.heroText
+    ? content.heroText.split(/[•·,.]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+    : ["Reliability", "Pricing", "Bulk Supply", "Pickup"];
+
   const contentImage = content?.contentUrl || "/images/contractors2.jpg";
 
   return (
@@ -34,27 +37,11 @@ export default async function ContractorsPage() {
           brightness="brightness-[0.25]"
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center gap-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+        <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000">
           <div className="flex items-center gap-4 bg-[#212121]/80 backdrop-blur-md inline-flex self-center py-2 px-6 border border-white/10 rounded-full">
             <TbHammer className="text-[#a68966] w-5 h-5" />
             <span className="text-gray-200 text-[10px] font-black uppercase tracking-[0.2em]">{content?.title || "Contractor Logistics Center"}</span>
           </div>
-
-          {/* Dynamic Hero Text Dot-List */}
-          {content?.heroText && (
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-              {content.heroText.split(/[•·,]/).map((s: string) => s.trim()).filter((s: string) => s.length > 0).map((item: string, index: number, arr: any[]) => (
-                <React.Fragment key={item}>
-                  <span className="text-[#a68966] font-black text-[10px] uppercase tracking-[0.3em]">
-                    {item}
-                  </span>
-                  {index < arr.length - 1 && (
-                    <span className="text-[#a68966] text-lg px-2">•</span>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          )}
 
           <div className="space-y-6 text-center">
             <h1 className="text-3xl md:text-6xl font-bold  uppercase  text-white ">
@@ -63,9 +50,18 @@ export default async function ContractorsPage() {
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
               {content?.description || "Southern Design Warehouse is built to support contractors, builders, and remodelers. We provide a reliable supply of remodeling materials used in kitchens, bathrooms, and interior renovation projects."}
             </p>
-          </div>
 
-          
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              {dynamicMaterials.map((item: string) => (
+                <span
+                  key={item}
+                  className="bg-white/5 border border-white/10 text-white text-[10px] font-black px-4 py-2 uppercase tracking-widest backdrop-blur-sm"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
