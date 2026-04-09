@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useActionState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -8,23 +8,8 @@ import { loginUser } from '@/lib/actions'
 import Image from 'next/image'
 
 const LoginPage = () => {
-  const router = useRouter()
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [state, formAction, isPending] = useActionState(loginUser, undefined)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
-
-    const formData = new FormData(e.currentTarget)
-    const result = await loginUser(null, formData)
-
-    if (result?.error) {
-      setError(result.error)
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4">
@@ -73,16 +58,16 @@ const LoginPage = () => {
         </div>
 
         {/* ERROR */}
-        {error && (
+        {state?.error && (
           <div className="mb-4 p-3 border-l-4 border-red-600 bg-red-50">
             <p className="text-xs text-red-600 font-semibold uppercase">
-              {error}
+              {state.error}
             </p>
           </div>
         )}
 
         {/* FORM */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form action={formAction} className="space-y-6">
 
           {/* EMAIL */}
           <div>
@@ -124,10 +109,10 @@ const LoginPage = () => {
           {/* BUTTON */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-full bg-red-600 hover:bg-red-700 text-white py-3 text-sm font-semibold uppercase transition active:scale-95 disabled:opacity-70"
           >
-            {isLoading ? 'Checking...' : 'Login'}
+            {isPending ? 'Checking...' : 'Login'}
           </button>
 
         </form>

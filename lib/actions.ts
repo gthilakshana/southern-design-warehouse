@@ -16,6 +16,12 @@ export async function testSupabaseConnectivity() {
   return testStorageConnectivity()
 }
 
+// Serialization helper to ensure data is safe for Next.js Server Actions
+function serialize<T>(data: T): T {
+  if (!data) return data;
+  return JSON.parse(JSON.stringify(data));
+}
+
 // --- AUTH ACTIONS ---
 
 export async function registerUser(formData: FormData) {
@@ -61,9 +67,11 @@ export async function registerUser(formData: FormData) {
 
 export async function loginUser(prevState: any, formData: FormData) {
   try {
+    console.log(`Action: loginUser initiated for ${formData.get("email")}`);
     await signIn("credentials", formData)
   } catch (error) {
     if (error instanceof AuthError) {
+      console.log(`Action: AuthError caught - ${error.type}`);
       switch (error.type) {
         case "CredentialsSignin":
           return { error: "Invalid credentials." }
@@ -71,6 +79,7 @@ export async function loginUser(prevState: any, formData: FormData) {
           return { error: "Something went wrong." }
       }
     }
+    // IMPORTANT: Re-throw the error so Next.js can handle redirects
     throw error
   }
 }
@@ -88,7 +97,9 @@ export async function getInventory() {
     return items.map(i => ({
       ...i,
       id: i._id.toString(),
-      _id: undefined
+      _id: undefined,
+      createdAt: i.createdAt instanceof Date ? i.createdAt.toISOString() : i.createdAt,
+      updatedAt: i.updatedAt instanceof Date ? i.updatedAt.toISOString() : i.updatedAt
     }))
   } catch (error) {
     console.error("Fetch Inventory Error:", error)
@@ -195,24 +206,34 @@ export async function deleteInventoryItem(id: string) {
   }
 }
 
-// --- USER MANAGEMENT ACTIONS ---
-
 export async function getUsers() {
-  const session = await auth()
-  if ((session?.user as any)?.role !== 'ADMIN') {
-    throw new Error("Unauthorized Access")
+  try {
+    const session = await auth()
+    if ((session?.user as any)?.role !== 'ADMIN') {
+      console.warn("Unauthorized getUsers access attempt")
+      return [] // Return empty for non-admins to avoid crash
+    }
+
+    const db = await getDirectDb()
+    const users = await db.collection("User").find({}, {
+      projection: { password: 0 }
+    }).sort({ joined: -1 }).toArray()
+
+    return serialize(users.map(u => ({
+      id: u._id.toString(),
+      name: u.name,
+      email: u.email,
+      role: u.role,
+      image: u.image,
+      status: u.status,
+      joined: u.joined instanceof Date ? u.joined.toISOString() : u.joined,
+      createdAt: u.createdAt instanceof Date ? u.createdAt.toISOString() : u.createdAt,
+      updatedAt: u.updatedAt instanceof Date ? u.updatedAt.toISOString() : u.updatedAt
+    })))
+  } catch (error: any) {
+    console.error("Fetch Users Error:", error)
+    return []
   }
-
-  const db = await getDirectDb()
-  const users = await db.collection("User").find({}, {
-    projection: { password: 0 } // Exclude passwords
-  }).sort({ joined: -1 }).toArray()
-
-  return users.map(u => ({
-    ...u,
-    id: u._id.toString(),
-    _id: undefined
-  }))
 }
 
 export async function updateUserDetails(id: string, formData: FormData) {
@@ -291,7 +312,7 @@ export interface ProductCategory {
   uses: string[];
   color?: string;
   order: number;
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 export interface SiteSettings {
@@ -309,7 +330,7 @@ export interface SiteSettings {
   heroTitle?: string | null;
   heroDescription?: string | null;
   heroText?: string | null;
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
@@ -326,16 +347,28 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         footerText: "© 2024 Southern Design Warehouse. All rights reserved.",
         footerBtnText: "Plan Your Visit",
         footerBtnLink: "/contact",
-        updatedAt: new Date()
+        updatedAt: new Date().toISOString()
       }
-      return { ...defaultSettings, id: "temp-id" } as SiteSettings
+      return { ...defaultSettings, id: "temp-id" } as any
     }
 
-    return {
-      ...settings,
+    return serialize({
       id: settings._id.toString(),
-      _id: undefined
-    } as unknown as SiteSettings
+      siteName: settings.siteName,
+      address: settings.address,
+      phone: settings.phone,
+      email: settings.email,
+      footerText: settings.footerText,
+      footerBtnText: settings.footerBtnText,
+      footerBtnLink: settings.footerBtnLink,
+      heroUrl: settings.heroUrl,
+      heroTabletUrl: settings.heroTabletUrl,
+      heroMobileUrl: settings.heroMobileUrl,
+      heroTitle: settings.heroTitle,
+      heroDescription: settings.heroDescription,
+      heroText: settings.heroText,
+      updatedAt: settings.updatedAt instanceof Date ? settings.updatedAt.toISOString() : settings.updatedAt
+    })
   } catch (error) {
     console.error("Fetch Site Settings Error:", error)
     return null
@@ -429,7 +462,9 @@ export async function getQuoteRequests() {
     return requests.map(r => ({
       ...r,
       id: r._id.toString(),
-      _id: undefined // Don't pass non-serializable ObjectId to client
+      _id: undefined, // Don't pass non-serializable ObjectId to client
+      createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
+      updatedAt: r.updatedAt instanceof Date ? r.updatedAt.toISOString() : r.updatedAt
     }));
   } catch (error) {
     console.error("Failed to fetch quote requests:", error)
@@ -573,7 +608,8 @@ export async function getLeads() {
     return leads.map(l => ({
       ...l,
       id: l._id.toString(),
-      _id: undefined
+      _id: undefined,
+      createdAt: l.createdAt instanceof Date ? l.createdAt.toISOString() : l.createdAt
     }));
   } catch (error) {
     console.error("Fetch Leads Error:", error)
@@ -615,8 +651,8 @@ export interface FAQ {
   question: string;
   answer: string;
   order: number;
-  updatedAt: Date;
-  createdAt: Date;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export async function getFAQs(): Promise<FAQ[]> {
@@ -626,7 +662,9 @@ export async function getFAQs(): Promise<FAQ[]> {
     return faqs.map(f => ({
       ...f,
       id: f._id.toString(),
-      _id: undefined
+      _id: undefined,
+      createdAt: f.createdAt instanceof Date ? f.createdAt.toISOString() : f.createdAt,
+      updatedAt: f.updatedAt instanceof Date ? f.updatedAt.toISOString() : f.updatedAt
     })) as unknown as FAQ[]
   } catch (error) {
     console.error("Fetch FAQ Error:", error)
@@ -684,7 +722,7 @@ export interface LegalPage {
   slug: string;
   title: string;
   content: string;
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 export async function getLegalPage(slug: string): Promise<LegalPage | null> {
@@ -696,16 +734,18 @@ export async function getLegalPage(slug: string): Promise<LegalPage | null> {
         slug,
         title: slug === 'privacy' ? 'Privacy Policy' : 'Terms of Service',
         content: `This is the default content for the ${slug} page. Please update it in the admin panel.`,
-        updatedAt: new Date()
+        updatedAt: new Date().toISOString()
       }
-      await db.collection("LegalPage").insertOne(defaultPage)
-      return { ...defaultPage, id: "temp-id" } as LegalPage
+      const res = await db.collection("LegalPage").insertOne(defaultPage)
+      return { ...defaultPage, id: res.insertedId.toString() } as any
     }
-    return {
-      ...page,
+    return serialize({
       id: page._id.toString(),
-      _id: undefined
-    } as unknown as LegalPage
+      slug: page.slug,
+      title: page.title,
+      content: page.content,
+      updatedAt: page.updatedAt instanceof Date ? page.updatedAt.toISOString() : page.updatedAt
+    }) as unknown as LegalPage
   } catch (error) {
     console.error(`Fetch Legal Page ${slug} Error:`, error)
     return null
@@ -740,11 +780,14 @@ export async function getSocialLinks() {
   try {
     const db = await getDirectDb()
     const links = await db.collection("SocialLink").find({}).sort({ createdAt: 1 }).toArray()
-    return links.map(l => ({
-      ...l,
+    return serialize(links.map(l => ({
       id: l._id.toString(),
-      _id: undefined
-    }))
+      platform: l.platform,
+      url: l.url,
+      isActive: l.isActive,
+      createdAt: l.createdAt instanceof Date ? l.createdAt.toISOString() : l.createdAt,
+      updatedAt: l.updatedAt instanceof Date ? l.updatedAt.toISOString() : l.updatedAt
+    })))
   } catch (error) {
     console.error("Fetch Social Links Error:", error)
     return []
@@ -810,7 +853,7 @@ export interface PageContent {
   heroTabletUrl?: string | null;
   contentUrl?: string | null;
   fontSize?: string | null;
-  updatedAt: Date;
+  updatedAt: string;
   metadata?: {
     mission: string;
     vision: string;
@@ -830,17 +873,26 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
         title: slug.charAt(0).toUpperCase() + slug.slice(1),
         description: `Custom content for the ${slug} page.`,
         heroText: 'KITCHENS • BATHROOMS • CABINETS',
-        updatedAt: new Date()
+        updatedAt: new Date().toISOString()
       }
-      await db.collection("PageContent").insertOne(defaultContent)
-      return { ...defaultContent, id: "temp-id" } as PageContent
+      const res = await db.collection("PageContent").insertOne(defaultContent)
+      return { ...defaultContent, id: res.insertedId.toString() } as any
     }
 
-    return {
-      ...content,
+    return serialize({
       id: content._id.toString(),
-      _id: undefined
-    } as unknown as PageContent
+      slug: content.slug,
+      title: content.title,
+      description: content.description,
+      heroText: content.heroText,
+      heroUrl: content.heroUrl,
+      heroMobileUrl: content.heroMobileUrl,
+      heroTabletUrl: content.heroTabletUrl,
+      contentUrl: content.contentUrl,
+      fontSize: content.fontSize,
+      updatedAt: content.updatedAt instanceof Date ? content.updatedAt.toISOString() : content.updatedAt,
+      metadata: content.metadata
+    }) as unknown as PageContent
   } catch (error) {
     console.error(`Failed to fetch content for ${slug}:`, error)
     return null
@@ -973,19 +1025,25 @@ export interface GalleryImage {
   category: string;
   order: number;
   isActive?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export async function getGalleryImages(): Promise<GalleryImage[]> {
   try {
     const db = await getDirectDb()
     const images = await db.collection("GalleryImage").find({}).sort({ order: 1 }).toArray()
-    return images.map(img => ({
-      ...img,
+    return serialize(images.map(img => ({
       id: img._id.toString(),
-      _id: undefined
-    })) as unknown as GalleryImage[]
+      url: img.url,
+      title: img.title,
+      description: img.description,
+      category: img.category,
+      order: img.order,
+      isActive: img.isActive,
+      createdAt: img.createdAt instanceof Date ? img.createdAt.toISOString() : img.createdAt,
+      updatedAt: img.updatedAt instanceof Date ? img.updatedAt.toISOString() : img.updatedAt
+    }))) as unknown as GalleryImage[]
   } catch (error) {
     console.error("Failed to fetch gallery images:", error)
     return []
@@ -1105,7 +1163,7 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
       .sort({ order: 1 })
       .toArray()
 
-    return categories.map(cat => ({
+    return serialize(categories.map(cat => ({
       id: cat._id.toString(),
       title: cat.title,
       subtitle: cat.subtitle,
@@ -1115,8 +1173,8 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
       uses: cat.uses || [],
       color: cat.color,
       order: cat.order || 0,
-      updatedAt: cat.updatedAt
-    }))
+      updatedAt: cat.updatedAt instanceof Date ? cat.updatedAt.toISOString() : cat.updatedAt
+    })))
   } catch (error) {
     console.error("Get Product Categories Error:", error)
     return []

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { HiOutlineArrowNarrowRight, HiX, HiPhotograph } from 'react-icons/hi';
 import { getPageContent, getGalleryImages, type PageContent, type GalleryImage } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
@@ -109,7 +110,7 @@ export default function GalleryPage() {
           ) : filteredImages.length > 0 ? (
             <motion.div
               layout
-              className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               <AnimatePresence mode='popLayout'>
                 {filteredImages.map((img) => (
@@ -120,7 +121,7 @@ export default function GalleryPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3 }}
-                    className="relative break-inside-avoid bg-white rounded-lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-shadow duration-300"
+                    className="relative bg-white rounded-lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-shadow duration-300 h-fit"
                     onClick={() => setSelectedImage(img)}
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">
@@ -209,9 +210,12 @@ export default function GalleryPage() {
                   {selectedImage.description || "Detailed view of our professional warehouse installation and material handling project."}
                 </p>
 
-                <button className="bg-red-600 text-white font-bold py-4 px-8 rounded-md hover:bg-red-700 transition-colors shadow-lg shadow-red-100 self-start">
+                <Link 
+                  href={`/contact?project=${encodeURIComponent(selectedImage.title)}`}
+                  className="bg-red-600 text-white font-bold py-4 px-8 rounded-md hover:bg-red-700 transition-colors shadow-lg shadow-red-100 self-start text-center"
+                >
                   Inquire About This Project
-                </button>
+                </Link>
               </div>
             </motion.div>
           </motion.div>

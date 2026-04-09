@@ -15,7 +15,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) return null
+        if (!credentials?.email || !credentials?.password) {
+          console.log("Auth: Missing credentials");
+          return null;
+        }
+
+        console.log(`Auth: Attempting login for ${credentials.email}`);
 
         // Direct MongoDB Bypass
         const db = await getDirectDb();
@@ -23,14 +28,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: credentials.email as string 
         });
 
-        if (!user || !user.password) return null
+        if (!user) {
+          console.log(`Auth: User not found - ${credentials.email}`);
+          return null;
+        }
+
+        if (!user.password) {
+          console.log(`Auth: User has no password set - ${credentials.email}`);
+          return null;
+        }
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.password
-        )
+        );
 
-        if (!isValid) return null
+        if (!isValid) {
+          console.log(`Auth: Invalid password for ${credentials.email}`);
+          return null;
+        }
+
+        console.log(`Auth: Login successful for ${credentials.email} (Role: ${user.role})`);
 
         return {
           id: user._id.toString(),

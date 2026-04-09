@@ -1,6 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+
+@theme {
+  --color-brand-orange: #f97316;
+  --color-brand-navy: #0f172a;
+  --color-brown: #8B5E3C;
+}
+
+/* Base styles for the project */
+@layer base {
+  body {
+    @apply antialiased bg-white text-gray-900;
+  }
+}
+
 
 /* Quill Rich Text Styles for Public Site */
 .ql-editor {
