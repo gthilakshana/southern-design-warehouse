@@ -80,6 +80,7 @@ export default function ProductsClient({ content, categories }: { content: PageC
           alt="Product Categories"
           opacity="opacity-80"
           brightness="brightness-[0.4]"
+          priority={true}
         />
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#a68966]/10 to-transparent" />
         

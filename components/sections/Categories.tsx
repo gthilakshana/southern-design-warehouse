@@ -21,7 +21,8 @@ const defaultCategories: ProductCategory[] = [
     order: 1, 
     benefits: ['Premium Quality', 'Custom Fits'], 
     uses: ['Residential', 'Commercial'], 
-    updatedAt: new Date().toISOString() 
+    imageUrl: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop',
+    updatedAt: '2024-01-01T00:00:00.000Z' 
   },
   { 
     id: '2', 
@@ -31,7 +32,8 @@ const defaultCategories: ProductCategory[] = [
     order: 2, 
     benefits: ['Waterproof', 'Stylish'], 
     uses: ['Homes', 'Hotels'], 
-    updatedAt: new Date().toISOString() 
+    imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?q=80&w=1974&auto=format&fit=crop',
+    updatedAt: '2024-01-01T00:00:00.000Z' 
   },
   { 
     id: '3', 
@@ -41,7 +43,8 @@ const defaultCategories: ProductCategory[] = [
     order: 3, 
     benefits: ['Durable', 'Easy Clean'], 
     uses: ['Interior', 'Exterior'], 
-    updatedAt: new Date().toISOString() 
+    imageUrl: 'https://images.unsplash.com/photo-1581850518616-bcb8186c3940?q=80&w=2070&auto=format&fit=crop',
+    updatedAt: '2024-01-01T00:00:00.000Z' 
   },
 ];
 
@@ -111,9 +114,10 @@ export default function Categories({ categories }: CategoriesProps) {
               <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none">
                 <div className="relative h-full w-full">
                   <Image 
-                    src={cat.imageUrl || `https://source.unsplash.com/800x800/?${cat.title}`}
+                    src={cat.imageUrl || `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070&auto=format&fit=crop`}
                     alt={cat.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover"
                     style={{
                         maskImage: 'linear-gradient(to left, black 20%, transparent 100%)',

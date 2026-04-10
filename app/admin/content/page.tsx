@@ -1548,11 +1548,46 @@ const SiteContentPage = () => {
                 if (res.success) {
                   setIsCategoryModalOpen(false)
                   fetchProductCategories()
+                  setPendingFiles({})
                 } else {
                   alert(res.error)
                 }
                 setIsSaving(false)
               }} className="p-8 space-y-6 flex-1 overflow-y-auto">
+                <div className="space-y-4">
+                  <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Category Visual Asset (Homepage Card)</label>
+                  <div className="relative h-48 border-2 border-dashed border-gray-200 rounded bg-slate-50/30 flex flex-col items-center justify-center overflow-hidden group">
+                    {(editingCategory?.imageUrl || pendingFiles['categoryImg']) ? (
+                      <Image
+                        src={pendingFiles['categoryImg'] ? URL.createObjectURL(pendingFiles['categoryImg']) : editingCategory?.imageUrl || ''}
+                        alt="Category Preview"
+                        fill
+                        unoptimized
+                        className="absolute inset-0 object-cover"
+                      />
+                    ) : (
+                      <div className="text-center space-y-2">
+                        <HiPhotograph size={32} className="mx-auto text-slate-200" />
+                        <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Select Visual Representative</p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      name="image"
+                      className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setPendingFiles(prev => ({ ...prev, categoryImg: file }));
+                      }}
+                    />
+                    {(editingCategory?.imageUrl || pendingFiles['categoryImg']) && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">Replace Imagery</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Main Title</label>

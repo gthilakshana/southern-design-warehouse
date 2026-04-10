@@ -18,8 +18,13 @@ export async function testSupabaseConnectivity() {
 
 // Serialization helper to ensure data is safe for Next.js Server Actions
 function serialize<T>(data: T): T {
-  if (!data) return data;
-  return JSON.parse(JSON.stringify(data));
+  if (data === null || data === undefined) return data;
+  try {
+    return JSON.parse(JSON.stringify(data));
+  } catch (error) {
+    console.error("Serialization failed for:", data);
+    return data;
+  }
 }
 
 // --- AUTH ACTIONS ---
@@ -94,13 +99,13 @@ export async function getInventory() {
       .sort({ updatedAt: -1 })
       .toArray()
     
-    return items.map(i => ({
+    return serialize(items.map(i => ({
       ...i,
       id: i._id.toString(),
       _id: undefined,
       createdAt: i.createdAt instanceof Date ? i.createdAt.toISOString() : i.createdAt,
       updatedAt: i.updatedAt instanceof Date ? i.updatedAt.toISOString() : i.updatedAt
-    }))
+    })))
   } catch (error) {
     console.error("Fetch Inventory Error:", error)
     return []
@@ -311,6 +316,7 @@ export interface ProductCategory {
   benefits: string[];
   uses: string[];
   color?: string;
+  imageUrl?: string | null;
   order: number;
   updatedAt: string;
 }
@@ -473,13 +479,13 @@ export async function getQuoteRequests() {
       .sort({ createdAt: -1 })
       .toArray();
 
-    return requests.map(r => ({
+    return serialize(requests.map(r => ({
       ...r,
       id: r._id.toString(),
       _id: undefined, // Don't pass non-serializable ObjectId to client
       createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
       updatedAt: r.updatedAt instanceof Date ? r.updatedAt.toISOString() : r.updatedAt
-    }));
+    })));
   } catch (error) {
     console.error("Failed to fetch quote requests:", error)
     return []
@@ -550,7 +556,8 @@ export async function updateQuoteStatus(id: string, status: string) {
 export async function getNewQuoteCount() {
   try {
     const db = await getDirectDb()
-    return await db.collection("QuoteRequest").countDocuments({ status: "NEW" })
+    const count = await db.collection("QuoteRequest").countDocuments({ status: "NEW" })
+    return serialize(count)
   } catch (error) {
     console.error("Failed to fetch new quote count:", error)
     return 0
@@ -939,10 +946,24 @@ export async function updatePageContent(formData: FormData) {
     const heroTabletFile = formData.get("heroTabletImage") as File | null
     const contentFile = formData.get("contentImage") as File | null
 
-    const { url: heroUrl } = await uploadImage(heroFile)
-    const { url: heroMobileUrl } = await uploadImage(heroMobileFile)
-    const { url: heroTabletUrl } = await uploadImage(heroTabletFile)
-    const { url: contentUrl } = await uploadImage(contentFile)
+    // Parallelize uploads for performance and reliability
+    const [heroRes, heroMobileRes, heroTabletRes, contentRes] = await Promise.all([
+      heroFile && heroFile.size > 0 ? uploadImage(heroFile) : Promise.resolve({ url: null, error: null }),
+      heroMobileFile && heroMobileFile.size > 0 ? uploadImage(heroMobileFile) : Promise.resolve({ url: null, error: null }),
+      heroTabletFile && heroTabletFile.size > 0 ? uploadImage(heroTabletFile) : Promise.resolve({ url: null, error: null }),
+      contentFile && contentFile.size > 0 ? uploadImage(contentFile) : Promise.resolve({ url: null, error: null }),
+    ])
+
+    // Log any upload errors but continue if possible
+    if (heroRes.error) console.error("Hero upload error:", heroRes.error)
+    if (heroMobileRes.error) console.error("Hero Mobile upload error:", heroMobileRes.error)
+    if (heroTabletRes.error) console.error("Hero Tablet upload error:", heroTabletRes.error)
+    if (contentRes.error) console.error("Content upload error:", contentRes.error)
+
+    const heroUrl = heroRes.url
+    const heroMobileUrl = heroMobileRes.url
+    const heroTabletUrl = heroTabletRes.url
+    const contentUrl = contentRes.url
 
     const updateData: any = { title, description, heroText, fontSize, updatedAt: new Date() }
     
@@ -1186,6 +1207,7 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
       benefits: cat.benefits || [],
       uses: cat.uses || [],
       color: cat.color,
+      imageUrl: cat.imageUrl || null,
       order: cat.order || 0,
       updatedAt: cat.updatedAt instanceof Date ? cat.updatedAt.toISOString() : cat.updatedAt
     })))
@@ -1210,11 +1232,16 @@ export async function upsertProductCategory(formData: FormData) {
   const uses = (formData.get("uses") as string)?.split("\n").filter(u => u.trim()) || []
   const color = formData.get("color") as string
   const order = parseInt(formData.get("order") as string) || 0
+  
+  const imageFile = formData.get("image") as File | null
+  const removeImage = formData.get("removeImage") === "true"
 
   if (!title || !desc) return { error: "Title and Description are required" }
 
   try {
     const db = await getDirectDb()
+    const existing = id ? await db.collection("ProductCategory").findOne({ _id: new ObjectId(id) }) : null
+    
     const data: any = {
       title,
       subtitle,
@@ -1225,6 +1252,17 @@ export async function upsertProductCategory(formData: FormData) {
       color,
       order,
       updatedAt: new Date()
+    }
+
+    // Handle Image upload/delete
+    if (removeImage) {
+      if (existing?.imageUrl) await deleteImageFromStorage(existing.imageUrl)
+      data.imageUrl = null
+    } else if (imageFile && imageFile.size > 0) {
+      if (existing?.imageUrl) await deleteImageFromStorage(existing.imageUrl)
+      const { url, error: uploadError } = await uploadImage(imageFile)
+      if (uploadError) return { error: `Image Upload Failed: ${uploadError}` }
+      data.imageUrl = url
     }
 
     if (id) {
@@ -1238,6 +1276,7 @@ export async function upsertProductCategory(formData: FormData) {
 
     revalidatePath("/products")
     revalidatePath("/admin/content")
+    revalidatePath("/")
     return { success: true }
   } catch (error: any) {
     console.error("Upsert Product Category Error:", error)
@@ -1253,6 +1292,9 @@ export async function deleteProductCategory(id: string) {
 
   try {
     const db = await getDirectDb()
+    const existing = await db.collection("ProductCategory").findOne({ _id: new ObjectId(id) })
+    if (existing?.imageUrl) await deleteImageFromStorage(existing.imageUrl)
+    
     await db.collection("ProductCategory").deleteOne({ _id: new ObjectId(id) })
 
     revalidatePath("/products")
@@ -1278,22 +1320,22 @@ export async function getSystemHealth() {
     // 3. Storage Gateway Integrity
     const isSupabaseConfigured = !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.SUPABASE_SERVICE_ROLE_KEY
     
-    return [
+    return serialize([
       { name: "SDW-Inventory-Service", status: "Running", metric: `Lat-${dbLatency}ms`, time: "99.9%" },
       { name: "SDW-Sync-Engine", status: "Synced", metric: `Opt-${invCount > 0 ? 100 : 0}%`, time: "100%" },
       { name: "SDW-Security-Auth", status: "Healthy", metric: "200 OK", time: "98.5%" },
       { name: "SDW-Resource-Worker", status: "Standby", metric: "IDLE", time: "100%" },
       { name: "SDW-Network-Gateway", status: isSupabaseConfigured ? "Running" : "Offline", metric: isSupabaseConfigured ? "SSL-Secure" : "Env Missing", time: "99.4%" },
-    ]
+    ])
   } catch (err) {
     console.error("Health Check Error:", err)
-    return [
+    return serialize([
       { name: "SDW-Inventory-Service", status: "Error", metric: "Connect Fail", time: "0%" },
       { name: "SDW-Sync-Engine", status: "Warning", metric: "Retrying...", time: "0%" },
       { name: "SDW-Security-Auth", status: "Healthy", metric: "Shield Active", time: "98.5%" },
       { name: "SDW-Resource-Worker", status: "Standby", metric: "IDLE", time: "100%" },
       { name: "SDW-Network-Gateway", status: "Checking", metric: "Wait...", time: "0%" },
-    ]
+    ])
   }
 }
 

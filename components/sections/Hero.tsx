@@ -68,6 +68,7 @@ export const Hero = () => {
             fallbackUrl=""
             alt="Warehouse Hero"
             brightness="brightness-[0.4]"
+            priority={true}
           />
         </motion.div>
       ) : (

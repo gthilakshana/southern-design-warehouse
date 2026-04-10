@@ -128,10 +128,11 @@ export const Navbar = () => {
                 <Link 
                   key={link.name} 
                   href={link.href} 
-                  className="text-[11px] xl:text-[12px] font-black uppercase tracking-tighter text-[#1a1a1a] hover:text-[#b33a2b] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100 whitespace-nowrap"
+                  className="relative group text-[11px] xl:text-[12px] font-black uppercase tracking-tighter text-[#1a1a1a] hover:text-[#dc2626] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100 whitespace-nowrap py-2"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {link.name}
+                  <div className="absolute bottom-0 left-0 h-[2px] bg-[#dc2626] w-0 group-hover:w-full transition-all duration-500 ease-out" />
                 </Link>
               ))}
             </div>

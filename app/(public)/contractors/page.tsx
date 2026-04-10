@@ -35,6 +35,7 @@ export default async function ContractorsPage() {
           fallbackUrl=""
           alt="Contractor Background"
           brightness="brightness-[0.25]"
+          priority={true}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000">
@@ -103,7 +104,7 @@ export default async function ContractorsPage() {
                 src={contentImage}
                 alt="Contractor professional"
                 fill
-                sizes="(max-width: 1280px) 100vw, 50vw"
+                sizes="(max-width: 1280px) 100vw, 40vw"
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>

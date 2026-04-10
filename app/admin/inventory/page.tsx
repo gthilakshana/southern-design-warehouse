@@ -62,7 +62,6 @@ const InventoryPage = () => {
     setIsLoading(true)
     try {
       const data = await getInventory()
-      console.log("Fetched Inventory Data Structure:", data[0]); // Debug first item
       setItems(data as any)
     } catch (err) {
       console.error("Failed to fetch inventory:", err)

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
     default: "Southern Design Warehouse | Premium Remodeling Materials",
     template: "%s | Southern Design Warehouse"
@@ -45,6 +47,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col antialiased bg-white text-gray-900 scroll-smooth" style={{ fontFamily: 'Arial, sans-serif' }}>
+        <NextTopLoader
+          color="#dc2626"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #dc2626,0 0 5px #dc2626"
+        />
         <main className="flex-grow">
           {children}
         </main>

@@ -1,8 +1,6 @@
-"use client"
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import {
   HiOutlineCheck,
   HiOutlineUsers,
@@ -12,32 +10,16 @@ import {
   HiOutlineLightningBolt,
   HiOutlineGlobe
 } from 'react-icons/hi'
-import { getPageContent, getSiteSettings, type PageContent } from '@/lib/actions'
+import { getPageContent, type PageContent } from '@/lib/actions'
 
-// Helper to clean up any &nbsp; or hidden characters from rich text editors
 const sanitizeText = (html: string) => {
   if (!html) return html;
   return html.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ');
 };
 
-const AboutPage = () => {
-  const [content, setContent] = useState<PageContent | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getPageContent('about')
-        setContent(data)
-      } catch (err) {
-        console.error("Failed to fetch about content:", err)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
-
+export default async function AboutPage() {
+  const content = await getPageContent('about')
+  
   const stats = [
     { label: 'Inventory Items', value: '5k+', icon: HiOutlineViewGrid },
     { label: 'Industry Partners', value: '200+', icon: HiOutlineUsers },
@@ -73,35 +55,23 @@ const AboutPage = () => {
     <div className="min-h-screen bg-gray-100 font-[arial]" style={{ fontSize: content?.fontSize || 'inherit' }}>
 
       {/* HERO */}
-      <section className="relative h-[60vh] flex items-center justify-center">
-        {content?.heroUrl ? (
-          <Image
-            src={content.heroUrl}
-            alt="About Hero"
-            fill
-            sizes="100vw"
-            className="object-cover brightness-[0.4]"
-            priority
-          />
-        ) : (
-          <Image
-            src="/images/contractors.jpg"
-            alt="Warehouse"
-            fill
-            sizes="100vw"
-            className="object-cover brightness-[0.4]"
-            priority
-          />
-        )}
+      <section className="relative h-[60vh] flex items-center justify-center text-center text-white px-6">
+        <Image
+          src={content?.heroUrl || "/images/contractors.jpg"}
+          alt="About Southern Design Warehouse"
+          fill
+          sizes="100vw"
+          className="object-cover brightness-[0.4]"
+          priority
+        />
         <div className="absolute inset-0 bg-black/60" />
 
-        <div className="relative z-10 text-center px-6">
-          <span className="text-red-500 font-bold uppercase tracking-widest text-sm">{content?.heroText ? "" : (content?.heroText)}</span>
-          <h1 className="text-3xl md:text-6xl font-bold  uppercase tracking-tighter text-white mt-2">
-            {content?.title}
+        <div className="relative z-10 max-w-4xl space-y-6 animate-in fade-in duration-1000">
+          <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tighter text-white mt-2">
+            {content?.title || "Bridging Professional Distribution with Design Excellence"}
           </h1>
-          <p className="mt-4 text-gray-200 max-w-2xl mx-auto text-lg leading-relaxed">
-            {content?.description}
+          <p className="mt-4 text-gray-200 max-w-2xl mx-auto text-lg leading-relaxed font-light">
+            {content?.description || "Operating at the intersection of logistical scale and architectural precision."}
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -127,13 +97,13 @@ const AboutPage = () => {
                 src="images/20260225_093348.jpg"
                 alt="Our Logistical Hub"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
             </div>
 
-            {/* Floating Detail */}
-            <div className="absolute -bottom-8 -right-8 bg-white p-6 shadow-xl border border-gray-100 hidden md:block animate-in fade-in slide-in-from-right-8 duration-1000">
+            <div className="absolute -bottom-8 -right-8 bg-white p-6 shadow-xl border border-gray-100 hidden md:block">
               <div className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-1">Scale of Operations</div>
               <div className="text-2xl font-bold text-slate-900 leading-tight">75,000+ <br />Square Feet</div>
             </div>
@@ -152,8 +122,7 @@ const AboutPage = () => {
               style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
               dangerouslySetInnerHTML={{
                 __html: sanitizeText(metadata.story) || `
-                  <p>Southern Design Warehouse was founded on a simple realization: the gap between large-scale industrial supply and high-end design was too wide. We set out to bridge that gap by providing a facility that offers the <strong>massive inventory capacity</strong> of a commercial warehouse with the <strong>curated precision</strong> of a design studio.</p>
-                  <p>Today, we operate as a central hub for the construction and renovation industry. Our facility houses thousands of unique items, ranging from foundational building materials to luxury finishing touches, ensuring our clients never have to compromise on vision or volume.</p>
+                  <p>Southern Design Warehouse was founded on a simple realization: the gap between large-scale industrial supply and high-end design was too wide.</p>
                 `
               }}
             />
@@ -180,8 +149,7 @@ const AboutPage = () => {
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
 
-          {/* MISSION PILLAR */}
-          <div className="relative group overflow-hidden bg-slate-900 p-12 md:p-16 rounded-sm shadow-2xl animate-in fade-in slide-in-from-left-8 duration-700">
+          <div className="relative group overflow-hidden bg-slate-900 p-12 md:p-16 rounded-sm shadow-2xl">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#dc2626]/20 transition-colors" />
 
             <div className="relative z-10 space-y-6">
@@ -192,14 +160,12 @@ const AboutPage = () => {
               <div className="w-16 h-1 bg-red-600" />
               <div
                 className="text-gray-400 text-lg leading-relaxed font-medium about-rich-text text-left"
-                style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
                 dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.mission) || 'To empower the builders of tomorrow by providing a streamlined, efficient, and technologically advanced material sourcing experience today.' }}
               />
             </div>
           </div>
 
-          {/* VISION PILLAR */}
-          <div className="relative group overflow-hidden bg-white p-12 md:p-16 rounded-sm shadow-2xl border border-gray-100 animate-in fade-in slide-in-from-right-8 duration-700">
+          <div className="relative group overflow-hidden bg-white p-12 md:p-16 rounded-sm shadow-2xl border border-gray-100">
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#dc2626]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 group-hover:bg-[#dc2626]/10 transition-colors" />
 
             <div className="relative z-10 space-y-6">
@@ -210,41 +176,11 @@ const AboutPage = () => {
               <div className="w-16 h-1 bg-red-600" />
               <div
                 className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
-                style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
-                dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.vision) || 'To be the most customer-centric and technologically forward material hub in the Southeast, where quality and scale coexist seamlessly.' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.vision) || 'To be the most customer-centric and technologically forward material hub in the Southeast.' }}
               />
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* --- SECTION 3: CORE VALUES (REFINED GRID) --- */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-[11px] font-black uppercase tracking-[0.4em] text-red-600 mb-4">Our Integrity</h2>
-              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 leading-none uppercase">
-                The Core <br />Principles.
-              </h3>
-            </div>
-            <p className="text-slate-500 max-w-sm text-sm leading-relaxed border-l-2 border-red-600 pl-6">
-              The foundational values that guide every shipment, consultation, and strategic partnership we build.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {values.map((v, i) => (
-              <div key={i} className="group bg-white p-12 border border-gray-100 hover:border-red-600/30 hover:shadow-2xl transition-all duration-500 rounded-sm">
-                <div className="w-16 h-16 bg-[#fafafa] flex items-center justify-center rounded-sm mb-8 group-hover:bg-red-600 transition-colors duration-500">
-                  <v.icon className="text-slate-900 group-hover:text-white transition-colors duration-500" size={32} />
-                </div>
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-tighter text-slate-900">{v.title}</h3>
-                <p className="text-slate-600 leading-relaxed font-medium text-[15px]">{v.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -254,14 +190,7 @@ const AboutPage = () => {
 
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="space-y-4"
-            >
+            <div key={stat.label} className="space-y-4">
               <div className="flex justify-center text-red-600/40">
                 <stat.icon size={40} strokeWidth={1} />
               </div>
@@ -273,24 +202,22 @@ const AboutPage = () => {
                   {stat.label}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
 
       {/* --- SECTION 5: SPECIALIZED SERVICES --- */}
-      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
-
-            {/* Owner Support */}
             <div className="group border border-gray-100 p-12 md:p-16 hover:border-[#dc2626]/30 transition-all duration-500 bg-[#fafafa]">
               <div className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mb-6">Homeowner Design Support</div>
               <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase leading-tight">Expert <br />Consultations.</h3>
               <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">
                 Take the guesswork out of your renovation. We offer expert material matching,
                 high-resolution samples, and a guided showroom experience to help you visualize
-                your dream spaces with professional-grade supplies.
+                your dream spaces.
               </p>
               <Link href="/showroom" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
                 Learn More
@@ -298,21 +225,19 @@ const AboutPage = () => {
               </Link>
             </div>
 
-            {/* Contractor Support */}
-            <div className="group border border-gray-100 p-12 md:p-16 hover:border-slate-900/30 transition-all duration-500 bg-white">
+            <div className="group border border-gray-100 p-12 md:p-16 hover:border-slate-900/30 transition-all duration-500 bg-white shadow-2xl">
               <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-6">Contractor Logistical Partner</div>
               <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase leading-tight">Scale Your <br />Operations.</h3>
               <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">
                 Operate with a partner that acts as an extension of your warehouse.
                 Get exclusive volume pricing, prioritized job-site logistics, and
-                dedicated account specialist support for large-scale development projects.
+                dedicated account specialist support.
               </p>
               <Link href="/contact" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
                 Partner With Us
                 <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#dc2626] transition-all duration-300" />
               </Link>
             </div>
-
           </div>
         </div>
       </section>
@@ -322,8 +247,9 @@ const AboutPage = () => {
         <div className="absolute inset-0 opacity-10">
           <Image
             src="images/contractors2.jpg"
-            alt="Luxury Material"
+            alt="Southern Design Logistics"
             fill
+            sizes="100vw"
             className="object-cover"
           />
         </div>
@@ -353,7 +279,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .about-rich-text p { 
           margin-bottom: 1.5rem; 
           overflow-wrap: break-word !important; 
@@ -363,19 +289,14 @@ const AboutPage = () => {
           word-spacing: normal !important;
         }
         .about-rich-text strong { color: #1f2937; font-weight: 800; }
-        .about-rich-text img { max-width: 100%; height: auto; border-radius: 2px; }
-        .about-rich-text iframe { max-width: 100%; border: 0; }
         .about-rich-text h1, .about-rich-text h2, .about-rich-text h3 {
           font-weight: 800;
           text-transform: uppercase;
           margin-top: 2rem;
           margin-bottom: 1rem;
           color: #111827;
-          overflow-wrap: break-word;
         }
-      `}</style>
+      `}} />
     </div>
   )
 }
-
-export default AboutPage

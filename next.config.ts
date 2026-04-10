@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -39,10 +40,10 @@ const nextConfig: NextConfig = {
         hostname: "*.s3.eu-west-1.amazonaws.com",
       },
     ],
-    // Increase timeout for remote image optimization
-    minimumCacheTTL: 3600,
-    // Disable optimization for external URLs to improve performance
-    unoptimized: process.env.NODE_ENV === 'production' ? false : true,
+    // Optimized loading settings
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 

@@ -32,6 +32,7 @@ export default async function ShowroomPage() {
           fallbackUrl={defaultHero}
           alt="Southern Design Showroom"
           brightness="brightness-[0.3]"
+          priority={true}
         />
 
         <div className="relative z-10 max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
@@ -166,7 +167,7 @@ export default async function ShowroomPage() {
                     src={display.image}
                     alt={display.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all" />
@@ -271,7 +272,7 @@ export default async function ShowroomPage() {
                     src={material.image}
                     alt={material.label}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>

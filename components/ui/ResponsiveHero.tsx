@@ -11,6 +11,7 @@ interface ResponsiveHeroProps {
   alt: string;
   opacity?: string;
   brightness?: string;
+  priority?: boolean;
 }
 
 export default function ResponsiveHero({
@@ -20,7 +21,8 @@ export default function ResponsiveHero({
   fallbackUrl,
   alt,
   opacity = "opacity-100",
-  brightness = "brightness-[0.3]"
+  brightness = "brightness-[0.3]",
+  priority = true
 }: ResponsiveHeroProps) {
   
   const isValidSrc = (src: any) => typeof src === 'string' && src.trim().length > 0;

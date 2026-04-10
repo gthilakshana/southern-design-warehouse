@@ -29,18 +29,26 @@ const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
 
   // Fetch new inquiry count
   const fetchInquiryCount = async () => {
+    // skip if tab is not active or already fetching to avoid noise
+    if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return;
+
     try {
       const count = await getNewQuoteCount()
       setNewInquiryCount(count)
     } catch (error) {
-      console.error("Failed to fetch inquiry count")
+      console.error("Failed to fetch inquiry count:", error)
     }
   }
 
   useEffect(() => {
+    // Initial fetch
     fetchInquiryCount()
+    
     // Poll every 30 seconds for new inquiries
-    const interval = setInterval(fetchInquiryCount, 30000)
+    const interval = setInterval(() => {
+      fetchInquiryCount()
+    }, 30000)
+    
     return () => clearInterval(interval)
   }, [])
 

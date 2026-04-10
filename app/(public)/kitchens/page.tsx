@@ -20,7 +20,7 @@ export default async function KitchensPage() {
     : ["Cabinets", "Granite", "Flooring", "Backsplash tiles"];
 
   
-  const contentImage = content?.contentUrl || "images/warehouse.jpg";
+  const contentImage = content?.contentUrl || "/images/warehouse.jpg";
 
   return (
       <div className="min-h-screen bg-[#F9F7F2] font-[arial]">
@@ -159,21 +159,21 @@ export default async function KitchensPage() {
           num: '01',
           description: 'Sleek design with clean lines, minimalist styling, and modern materials',
           features: ['Flat panel cabinets', 'Quartz countertops', 'Stainless steel'],
-          image: 'kitchens/cabinets.jpg'
+          image: '/kitchens/cabinets.jpg'
         },
         { 
           title: 'Traditional', 
           num: '02',
           description: 'Classic design elements with warm finishes and timeless appeal',
           features: ['Wood cabinetry', 'Granite counters', 'Warm lighting'],
-          image: 'kitchens/Countertops.jpeg'
+          image: '/kitchens/Countertops.jpeg'
         },
         { 
           title: 'Modern Farmhouse', 
           num: '03',
           description: 'Blend of rustic charm with contemporary functionality and comfort',
           features: ['Open shelving', 'Mixed materials', 'Neutral palette'],
-          image: 'kitchens/Cabinetry.jpeg'
+          image: '/kitchens/Cabinetry.jpeg'
         }
       ].map((style, index) => (
         <div key={index} className="group relative">
@@ -292,7 +292,7 @@ export default async function KitchensPage() {
     {/* Bottom Decorative Section with Unsplash Image */}
     <div className="mt-32 relative h-[300px] w-full overflow-hidden">
       <Image 
-        src="kitchens/paint.jpg" 
+        src="/kitchens/paint.jpg" 
         alt="Technical Kitchen Planning"
         fill
         sizes="100vw"
@@ -324,14 +324,14 @@ export default async function KitchensPage() {
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {[
-        { label: 'Cabinetry', count: '500+ Products', image: 'kitchens/Cabinetry.jpeg' },
-        { label: 'Countertops', count: '320+ Products', image: 'kitchens/Countertops.jpeg' },
-        { label: 'Backsplash Tiles', count: '280+ Products', image: 'kitchens/Tiles.jpeg' },
-        { label: 'Flooring', count: '350+ Products', image: 'kitchens/Flooring.jpeg' },
-        { label: 'Lighting Fixtures', count: '220+ Products', image: 'kitchens/Light.jpg' },
-        { label: 'Sinks & Faucets', count: '280+ Products', image: 'kitchens/Sinks.jpg' },
-        { label: 'Paint & Finishes', count: '180+ Products', image: 'kitchens/paint.jpg' },
-        { label: 'Hardware & Accessories', count: '420+ Products', image: 'kitchens/hardware.jpg' }
+        { label: 'Cabinetry', count: '500+ Products', image: '/kitchens/Cabinetry.jpeg' },
+        { label: 'Countertops', count: '320+ Products', image: '/kitchens/Countertops.jpeg' },
+        { label: 'Backsplash Tiles', count: '280+ Products', image: '/kitchens/Tiles.jpeg' },
+        { label: 'Flooring', count: '350+ Products', image: '/kitchens/Flooring.jpeg' },
+        { label: 'Lighting Fixtures', count: '220+ Products', image: '/kitchens/Light.jpg' },
+        { label: 'Sinks & Faucets', count: '280+ Products', image: '/kitchens/Sinks.jpg' },
+        { label: 'Paint & Finishes', count: '180+ Products', image: '/kitchens/paint.jpg' },
+        { label: 'Hardware & Accessories', count: '420+ Products', image: '/kitchens/hardware.jpg' }
       ].map((category, index) => (
         <button 
           key={index} 
@@ -380,7 +380,7 @@ export default async function KitchensPage() {
   {/* Background Unsplash Image with Parallax-like feel */}
   <div className="absolute inset-0 z-0">
     <Image
-      src="kitchens/paint.jpg"
+      src="/kitchens/paint.jpg"
       alt="Modern Kitchen Showroom Archive"
       fill
       sizes="100vw"
