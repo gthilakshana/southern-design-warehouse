@@ -43,6 +43,10 @@ const InventoryPage = () => {
   const [draggedFile, setDraggedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Dynamic Category State
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false)
+  const [customCategory, setCustomCategory] = useState('')
+
   // UX State
   const [isDragging, setIsDragging] = useState(false)
   const [formValues, setFormValues] = useState({
@@ -87,6 +91,8 @@ const InventoryPage = () => {
       setPreviewUrl('')
       setIsRemovingImage(false)
     }
+    setIsAddingNewCategory(false)
+    setCustomCategory('')
   }, [editingItem, isModalOpen])
 
   const filteredItems = useMemo(() => {
@@ -140,6 +146,8 @@ const InventoryPage = () => {
       setPreviewUrl('')
       setDraggedFile(null)
       setIsRemovingImage(false)
+      setIsAddingNewCategory(false)
+      setCustomCategory('')
     } else {
       alert(result.error)
       setIsLoading(false)
@@ -185,8 +193,11 @@ const InventoryPage = () => {
           <button
             onClick={() => {
               setEditingItem(null)
+              setFormValues({ name: '', sku: '', category: 'KITCHEN', price: 0, stock: 0 })
               setPreviewUrl('')
               setDraggedFile(null)
+              setIsAddingNewCategory(false)
+              setCustomCategory('')
               setIsModalOpen(true)
             }}
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 bg-[#ff9900] text-[#232f3e] text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#e68a00] transition-all shadow-sm active:scale-95"
@@ -278,6 +289,17 @@ const InventoryPage = () => {
                         <button
                           onClick={() => {
                             setEditingItem(item)
+                            setFormValues({
+                                name: item.name,
+                                sku: item.sku,
+                                category: item.category,
+                                price: item.price,
+                                stock: item.stock
+                            })
+                            setPreviewUrl(item.imageUrl || '')
+                            setIsRemovingImage(false)
+                            setIsAddingNewCategory(false)
+                            setCustomCategory('')
                             setIsModalOpen(true)
                           }}
                           className="p-2 text-slate-400 hover:text-slate-900 border border-transparent hover:border-gray-200 rounded transition-all"
@@ -334,7 +356,11 @@ const InventoryPage = () => {
                  </button>
               </div>
 
-              <form onSubmit={handleSave} className="flex-1 flex flex-col min-h-0 font-[arial]">
+              <form 
+                key={editingItem ? `edit-${editingItem.id}` : 'new-product'}
+                onSubmit={handleSave} 
+                className="flex-1 flex flex-col min-h-0 font-[arial]"
+              >
                 <div className="p-8 space-y-8 flex-1 overflow-y-auto">
                     {/* Hardware Visualization (Image) */}
                     <div className="space-y-4">
@@ -444,18 +470,60 @@ const InventoryPage = () => {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Storage Category</label>
-                            <select
-                               name="category"
-                               defaultValue={formValues.category}
-                               className="w-full px-3 py-2 border border-gray-300 rounded text-xs font-black uppercase outline-none focus:border-[#ff9900] bg-white cursor-pointer"
-                            >
-                               <option value="KITCHEN">KITCHEN</option>
-                               <option value="BATHROOM">BATHROOM</option>
-                               <option value="FLOORING">FLOORING</option>
-                               <option value="COUNTERTOP">COUNTERTOP</option>
-                               <option value="TOOLS">TOOLS</option>
-                            </select>
+                            <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Product Classification</label>
+                            
+                            {!isAddingNewCategory ? (
+                              <div className="relative">
+                                <select
+                                  name="category"
+                                  defaultValue={formValues.category}
+                                  onChange={(e) => {
+                                    if (e.target.value === 'ADD_NEW') {
+                                      setIsAddingNewCategory(true);
+                                    }
+                                  }}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded text-xs font-black uppercase outline-none focus:border-[#ff9900] bg-white cursor-pointer appearance-none"
+                                >
+                                  <option value="KITCHEN">KITCHEN</option>
+                                  <option value="BATHROOM">BATHROOM</option>
+                                  <option value="FLOORING">FLOORING</option>
+                                  <option value="COUNTERTOP">COUNTERTOP</option>
+                                  <option value="STORAGE">STORAGE</option>
+                                  <option value="TOOLS">TOOLS</option>
+                                  
+                                  {/* Dynamic categories from existing items */}
+                                  {Array.from(new Set(items.map(i => i.category.toUpperCase())))
+                                    .filter(cat => !['KITCHEN', 'BATHROOM', 'FLOORING', 'COUNTERTOP', 'STORAGE', 'TOOLS'].includes(cat))
+                                    .map(cat => (
+                                      <option key={cat} value={cat}>{cat}</option>
+                                    ))
+                                  }
+                                  
+                                  <option value="ADD_NEW" className="text-[#ff9900] font-black italic">+ Create New Category</option>
+                                </select>
+                                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                  <HiFilter className="text-gray-300" size={14} />
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex gap-2 animate-in slide-in-from-right-1 duration-300">
+                                <input
+                                  name="category"
+                                  autoFocus
+                                  placeholder="ENTER NEW CATEGORY..."
+                                  className="flex-1 px-3 py-2 border border-[#ff9900] bg-orange-50/30 rounded text-xs font-black uppercase outline-none"
+                                  onChange={(e) => setCustomCategory(e.target.value.toUpperCase())}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setIsAddingNewCategory(false)}
+                                  className="px-3 bg-slate-100 text-slate-500 rounded hover:bg-slate-200 transition-colors"
+                                  title="Cancel"
+                                >
+                                  <HiX size={16} />
+                                </button>
+                              </div>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <label className="text-[11px] font-black text-slate-500 uppercase tracking-tight">Market Valuation ($)</label>

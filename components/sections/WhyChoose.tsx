@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Star } from 'lucide-react'; // Using Lucide for the star icon
+import { Star } from 'lucide-react';
+import Image from 'next/image';
 
+// The specific features for the "Why Choose" section
 const features = [
   {
     id: "01",
@@ -40,61 +42,96 @@ const trustPoints = [
 
 export default function WhyChoose() {
   return (
-    <section className="bg-[#1a1a1a] text-white py-24 px-6 md:px-16 lg:px-24">
+    <section className="bg-[#121212] text-white py-24 px-6 md:px-16 lg:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header Section */}
-        <div className="flex flex-col items-center text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-semibold mb-6 max-w-3xl leading-tight">
+        {/* --- Header Section --- */}
+        <div className="relative mb-24">
+          <span className="text-white text-xs font-bold uppercase tracking-[0.5em] block mb-4">The Warehouse Edge</span>
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-light mb-8 max-w-4xl leading-[1.1] tracking-tight">
             Why Choose Southern Design Warehouse
           </h2>
-          <div className="w-20 h-[1.5px] bg-[#a68966]" />
+          <div className="w-24 h-[1px] bg-white/30" />
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mb-24">
-          {features.map((item) => (
-            <div key={item.id} className="flex group">
-              <div className="w-[1px] bg-[#a68966] shrink-0 mr-6 h-full opacity-80 group-hover:opacity-100 transition-opacity" />
-              <div className="flex flex-col">
-                <span className="text-[#a68966] text-sm font-medium mb-3 tracking-widest">{item.id}</span>
-                <h3 className="text-xl md:text-2xl font-medium mb-4 text-gray-100">{item.title}</h3>
-                <p className="text-gray-400 leading-relaxed text-base">{item.description}</p>
+        {/* --- Features Grid --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32">
+          
+          {/* Left Side: Interactive List */}
+          <div className="lg:col-span-7 space-y-12">
+            {features.map((item) => (
+              <div key={item.id} className="group flex items-start gap-8 cursor-default">
+                <span className="text-white font-serif italic text-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                  {item.id}
+                </span>
+                <div className="space-y-3">
+                  <h3 className="text-2xl md:text-3xl font-medium text-gray-100 group-hover:text-red-600 transition-colors duration-500">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed text-lg max-w-md">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Right Side: Sticky Feature Image */}
+          <div className="lg:col-span-5 relative h-[500px] lg:h-[700px] hidden md:block">
+             <div className="sticky top-10 w-full h-full">
+                {/* Decorative border frame */}
+                <div className="absolute inset-0 border border-white/10 translate-x-4 translate-y-4" />
+                <div className="relative w-full h-full overflow-hidden">
+                   <Image 
+                    src="/images/warehouse.jpg" 
+                    alt="Professional Warehouse Contractor"
+                    fill
+                    className="object-cover  hover:grayscale-0 transition-all duration-700"
+                   />
+                   {/* Gradient overlay to help text transition */}
+                   <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60" />
+                </div>
+             </div>
+          </div>
         </div>
 
-        {/* --- NEW: Customer Trust Section --- */}
-        <div className="bg-[#2A2621] py-16 px-8 md:px-12 text-center flex flex-col items-center">
-          {/* Star Icon */}
-          <Star className="text-[#a68966] w-10 h-10 mb-6" strokeWidth={1} />
+        {/* --- Refined Customer Trust Section --- */}
+        <div className="relative border border-white/5 bg-[#1a1a1a] p-8 md:p-20 overflow-hidden">
+          {/* Background Decoration blur */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#a68966]/5 rounded-full blur-3xl -mr-32 -mt-32" />
           
-          <h2 className="text-3xl md:text-4xl font-medium mb-6">Customer Trust</h2>
-          
-          <p className="text-gray-300 max-w-2xl mb-10 leading-relaxed">
-            Contractors, designers, and homeowners trust Southern Design Warehouse for their remodeling projects.
-          </p>
+          <div className="relative z-10 flex flex-col items-center text-center">
+            <div className="bg-[#a68966]/10 p-4 rounded-full mb-8">
+               <Star className="text-white w-8 h-8" fill="currentColor" strokeWidth={0} />
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-medium mb-6 tracking-tight">Customer Trust</h2>
+            
+            <p className="text-gray-400 max-w-2xl mb-12 text-lg leading-relaxed">
+              Contractors, designers, and homeowners trust Southern Design Warehouse for their remodeling projects.
+            </p>
 
-          <div className="mb-12">
-            <span className="text-[#a68966] text-xs uppercase tracking-[0.2em] font-bold">We focus on:</span>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 mb-16">
               {trustPoints.map((point, index) => (
                 <div 
                   key={index} 
-                  className="bg-[#1C1C1C] py-4 px-6 border border-white/5 text-sm font-medium text-gray-200"
+                  className="bg-[#1a1a1a] py-8 px-4 flex flex-col items-center group hover:bg-[#222] transition-colors"
                 >
-                  {point}
+                  <span className="text-white/40 mb-2 text-[10px] uppercase tracking-widest font-bold">Priority</span>
+                  <span className="text-gray-200 font-medium">{point}</span>
                 </div>
               ))}
             </div>
-          </div>
 
-          <p className="text-[#a68966] text-xl md:text-2xl font-serif italic italic font-light tracking-wide mt-4">
-            &quot;Our goal is to make your renovation process easier and more efficient.&quot;
-          </p>
+            <blockquote className="relative">
+               <span className="text-6xl font-serif text-red-600/20 absolute -top-10 -left-8">"</span>
+               <p className="text-white text-2xl md:text-3xl font-serif italic font-light tracking-wide">
+                 Our goal is to make your renovation process easier and more efficient.
+               </p>
+               <span className="text-6xl font-serif text-[#a68966]/20 absolute -bottom-16 -right-8">"</span>
+            </blockquote>
+          </div>
         </div>
-        {/* --- End Customer Trust --- */}
 
       </div>
     </section>

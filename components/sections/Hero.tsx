@@ -89,7 +89,7 @@ export const Hero = () => {
             className="flex items-center gap-3 mb-6"
           >
             <div className="w-10 h-[2px] bg-red-600" />
-            <span className="text-red-600 uppercase tracking-[0.3em] text-[10px] font-black">
+            <span className="text-white uppercase tracking-[0.3em] text-[10px] font-black">
               {settings?.siteName || "Warehouse Supply"}
             </span>
           </motion.div>
@@ -138,7 +138,7 @@ export const Hero = () => {
             className="mt-12 flex flex-col sm:flex-row gap-5 items-center"
           >
             {/* PRIMARY */}
-            <Link href="/contact" className="w-full sm:w-auto">
+            <Link href="/contact#quote-form" className="w-full sm:w-auto">
               <button className="w-full bg-red-600 hover:bg-black text-white px-10 py-5 font-black uppercase tracking-[0.2em] text-[11px] shadow-2xl transition-all active:scale-95">
                 Request Quote
               </button>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   HiChevronRight,
@@ -189,9 +190,11 @@ export default function InventoryGallery({
 
                 </div>
 
-                <button className="bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-semibold transition shadow-md active:scale-95">
-                  Add to Quote
-                </button>
+                <Link href="/contact#quote-form" className="block">
+                  <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-semibold transition shadow-md active:scale-95">
+                    Add to Quote
+                  </button>
+                </Link>
 
               </div>
             </div>

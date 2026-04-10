@@ -14,6 +14,12 @@ import {
 } from 'react-icons/hi'
 import { getPageContent, getSiteSettings, type PageContent } from '@/lib/actions'
 
+// Helper to clean up any &nbsp; or hidden characters from rich text editors
+const sanitizeText = (html: string) => {
+  if (!html) return html;
+  return html.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ');
+};
+
 const AboutPage = () => {
   const [content, setContent] = useState<PageContent | null>(null)
   const [loading, setLoading] = useState(true)
@@ -79,7 +85,7 @@ const AboutPage = () => {
           />
         ) : (
           <Image
-            src="/about-hero.png"
+            src="/images/contractors.jpg"
             alt="Warehouse"
             fill
             sizes="100vw"
@@ -113,15 +119,15 @@ const AboutPage = () => {
 
       {/* ABOUT CONTENT - STORY */}
       <section className="py-20 px-6 bg-gray-100">
-        <div className="max-w-4xl mx-auto bg-white border border-gray-200 p-8 md:p-16 shadow-sm overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-white border border-gray-200 p-8 md:p-16 shadow-sm overflow-hidden text-left">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 uppercase tracking-tight">
             The Southern Design Warehouse Story
           </h2>
 
           <div
-            className="prose max-w-none prose-gray text-gray-600 leading-relaxed font-medium about-rich-text break-words w-full"
+            className="prose max-w-none prose-gray text-gray-600 leading-relaxed font-medium about-rich-text text-left"
             dangerouslySetInnerHTML={{
-              __html: metadata.story || `
+              __html: sanitizeText(metadata.story) || `
                 <p class="mb-4">Southern Design Warehouse was founded on a simple realization: the gap between large-scale industrial supply and high-end design was too wide. We set out to bridge that gap by providing a facility that offers the <strong>massive inventory capacity</strong> of a commercial warehouse with the <strong>curated precision</strong> of a design studio.</p>
                 <p class="mb-4">Today, we operate as a central hub for the construction and renovation industry. Our facility houses over 5,000 unique SKUs, ranging from foundational building materials to high-end finishing touches.</p>
               `
@@ -141,8 +147,8 @@ const AboutPage = () => {
             </h2>
             <div className="w-20 h-1.5 bg-red-600" />
             <div 
-              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text"
-              dangerouslySetInnerHTML={{ __html: metadata.mission || 'To empower the builders of tomorrow by simplifying the supply chain today.' }}
+              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
+              dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.mission) || 'To empower the builders of tomorrow by simplifying the supply chain today.' }}
             />
           </div>
 
@@ -153,8 +159,8 @@ const AboutPage = () => {
             </h2>
             <div className="w-20 h-1.5 bg-green-700" />
             <div 
-              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text"
-              dangerouslySetInnerHTML={{ __html: metadata.vision || 'To be the most technologically advanced and customer-centric warehouse in the Southern region.' }}
+              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
+              dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.vision) || 'To be the most technologically advanced and customer-centric warehouse in the Southern region.' }}
             />
           </div>
 
@@ -265,7 +271,14 @@ const AboutPage = () => {
       </section>
 
       <style jsx global>{`
-        .about-rich-text p { margin-bottom: 1.5rem; overflow-wrap: break-word; }
+        .about-rich-text p { 
+          margin-bottom: 1.5rem; 
+          overflow-wrap: break-word !important; 
+          word-break: normal !important; 
+          hyphens: none !important;
+          text-align: left !important; 
+          word-spacing: normal !important;
+        }
         .about-rich-text strong { color: #1f2937; font-weight: 800; }
         .about-rich-text img { max-width: 100%; height: auto; border-radius: 2px; }
         .about-rich-text iframe { max-width: 100%; border: 0; }

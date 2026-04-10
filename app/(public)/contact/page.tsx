@@ -238,10 +238,11 @@ function ContactForm({ content, settings, socialLinks, loading, defaultHero }: a
           </motion.div>
 
           <motion.div
+            id="quote-form"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-8 bg-white shadow p-10"
+            className="lg:col-span-8 bg-white shadow p-10 scroll-mt-32"
           >
             <h2 className="text-2xl font-bold mb-8">Request Quote</h2>
             <form onSubmit={handleSubmit} className="space-y-8">
@@ -310,7 +311,7 @@ function ContactForm({ content, settings, socialLinks, loading, defaultHero }: a
       </section>
 
       {/* MAP SECTION */}
-      <section className="pb-20 px-6 md:px-12">
+      <section id="location" className="pb-20 px-6 md:px-12 scroll-mt-32">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white p-4 shadow-xl">
             <div className="flex items-center gap-2 mb-6">

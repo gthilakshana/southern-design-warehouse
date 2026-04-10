@@ -55,29 +55,28 @@ export default async function CabinetsPage() {
             {/* LEFT SIDE: Text and Actions (Col-span 5) */}
             <div className="lg:col-span-5 space-y-12 order-2 lg:order-1">
               <div className="space-y-8">
-                <div className="inline-block px-4 py-1 bg-[#a68966]/10 border-l-2 border-[#a68966]">
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#a68966]">Design Excellence</span>
+                <div className="inline-block px-4 py-1 bg-green-100 border-l-2 border-green-800">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-green-800">Design Excellence</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 uppercase mb-6">
                   Custom Cabinetry <br />
-                  <span className="text-[#a68966]">Design & Selection</span>
+                  <span className="text-green-800">Design & Selection</span>
                 </h2>
-                <div className="w-16 h-1.5 bg-[#b33e2f]" />
-                <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-light font-sans">
+                <div className="w-16 h-1.5 bg-green-800" />
+                <p className="text-gray-600 text-lg ">
                   Our design experts help you navigate through various door styles, wood types, and finishes to find the perfect fit for your lifestyle. We focus on maximizing storage efficiency without compromising on elegance.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex w-full items-stretch gap-4">
                 <Link href="/contact" className="flex-1">
-                  <button className="w-full bg-[#1a1a1a] hover:bg-[#b33e2f] text-white py-6 px-8 font-black uppercase tracking-[0.2em] text-[10px] transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-95 group">
-                    <TbMessageDots className="text-xl group-hover:rotate-12 transition-transform" />
+                  <button className="w-full h-[80px] bg-[#1a1a1a] hover:bg-[#b33e2f] border-2 border-transparent text-white px-4 font-black uppercase tracking-[0.2em] text-[10px] transition-all flex items-center justify-center text-center whitespace-nowrap shadow-2xl active:scale-95 group">
                     Connect With Designer
                   </button>
                 </Link>
 
                 <Link href="/showroom" className="flex-1">
-                  <button className="w-full border-2 border-gray-200 text-gray-900 py-6 px-8 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-gray-50 transition-all flex items-center justify-center gap-3 active:scale-95">
+                  <button className="w-full h-[80px] border-2 border-gray-200 text-gray-900 px-4 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-gray-50 transition-all flex items-center justify-center text-center whitespace-nowrap active:scale-95">
                     Explore Showroom
                   </button>
                 </Link>
@@ -101,7 +100,7 @@ export default async function CabinetsPage() {
               {/* Overlapping Options Box */}
               <div className="absolute -bottom-10 lg:-bottom-12 -left-4 lg:-left-20 bg-white p-8 lg:p-12 shadow-[20px_20px_60px_rgba(0,0,0,0.1)] border-t-4 border-[#a68966] max-w-[90%] lg:max-w-[480px] animate-in slide-in-from-left-10 duration-1000">
                 <h3 className="text-2xl font-black text-gray-900 mb-8 uppercase tracking-tight">
-                  Premium <span className="text-[#a68966]">Configurations</span>
+                  Premium <span className="text-green-800">Configurations</span>
                 </h3>
 
                 <div className="grid grid-cols-1 gap-4">
@@ -112,7 +111,7 @@ export default async function CabinetsPage() {
                     >
                       <span className="text-gray-500 font-bold uppercase text-[9px] tracking-[0.2em] group-hover:text-black transition-colors">{item}</span>
                       <div className="flex-1 border-b border-dotted border-gray-200 mx-4 h-2 opacity-30" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#a68966] group-hover:scale-150 transition-transform" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-700 group-hover:scale-150 transition-transform" />
                     </div>
                   ))}
                 </div>
@@ -229,7 +228,7 @@ export default async function CabinetsPage() {
             ].map((tip, index) => (
               <div key={index} className="flex gap-6">
                 <div className="flex-shrink-0">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-[#b33e2f] text-white flex items-center justify-center font-black text-xl">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xl">
                     {tip.number}
                   </div>
                 </div>
@@ -277,7 +276,7 @@ export default async function CabinetsPage() {
               <div className="space-y-6">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 uppercase mb-6">
                   Engineered for <br />
-                  <span className="text-[#a68966]">Lifelong Performance</span>
+                  <span className="text-red-600">Lifelong Performance</span>
                 </h2>
                 <div className="w-20 h-1.5 bg-[#b33e2f]" />
                 <p className="text-gray-600 text-lg leading-relaxed font-light">
@@ -292,7 +291,7 @@ export default async function CabinetsPage() {
                   { title: 'Custom Sizing', desc: 'We build to your exact dimensions, maximizing every inch of your space.' }
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-6 p-6 border border-gray-100 hover:border-[#a68966] transition-all bg-[#F9F8F6]/50">
-                    <div className="text-[#a68966] text-xl font-bold">0{i + 1}</div>
+                    <div className="text-red-600 text-xl font-bold">0{i + 1}</div>
                     <div>
                       <h4 className="font-black uppercase text-[11px] tracking-widest text-gray-900 mb-1">{feature.title}</h4>
                       <p className="text-sm text-gray-500">{feature.desc}</p>

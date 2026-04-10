@@ -40,7 +40,7 @@ export const Navbar = () => {
     <header className="sticky top-0 left-0 right-0 z-50 font-sans">
       {/* 1. TOP BAR (Only on Desktop) */}
 <div
-  className={`hidden md:block transition-all duration-500 overflow-hidden ${
+  className={`hidden lg:block transition-all duration-500 overflow-hidden ${
     isScrolled ? "max-h-0 opacity-0" : "max-h-20 opacity-100"
   }`}
 >
@@ -103,13 +103,13 @@ export const Navbar = () => {
 
       {/* 2. MAIN NAVIGATION */}
       <nav className={`transition-all    duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
-        <div className="container mx-auto px-6 flex items-center justify-between relative ">
+        <div className="container mx-auto px-6 flex items-center justify-between relative">
           
-          {/* Mobile Menu Placeholder (To balance flex layout) */}
-          <div className="w-10 lg:hidden" />
+          {/* MOBILE PLACEHOLDER (To balance absolute logo) */}
+          <div className="lg:hidden w-10" />
 
-          {/* LOGO - CENTERED ON MOBILE */}
-          <div className="flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 lg:left-auto">
+          {/* 1. LOGO SECTION */}
+          <div className="flex-shrink-0 flex items-center z-10 lg:static absolute left-1/2 lg:left-auto -translate-x-1/2 lg:translate-x-0">
             <Link href="/" className="relative block w-[160px] md:w-[200px] h-[50px] md:h-[65px]">
               <Image 
                 src={settings?.logoUrl || "/logo.png"} 
@@ -121,31 +121,41 @@ export const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-7">
-            {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} className="text-[13px] font-black uppercase tracking-tight text-[#1a1a1a] hover:text-[#b33a2b] transition-colors">
-                {link.name}
+          {/* 2. DESKTOP LINKS SECTION (Centered in remaining space) */}
+          <div className="hidden lg:flex flex-1 justify-center items-center px-8">
+            <div className="flex items-center space-x-4 xl:space-x-8">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className="text-[11px] xl:text-[12px] font-black uppercase tracking-tighter text-[#1a1a1a] hover:text-[#b33a2b] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100 whitespace-nowrap"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. DESKTOP BUTTON & MOBILE TOGGLE SECTION */}
+          <div className="flex items-center gap-4 z-10">
+            {/* Desktop Button - Now ONLY on lg+ */}
+            <div className="hidden lg:block text-right">
+              <Link href="/contact#quote-form">
+                <button className="bg-red-600 hover:bg-[#1a1a1a] text-white px-5 xl:px-8 py-3 font-bold text-[11px] xl:text-[12px] uppercase tracking-widest transition-all whitespace-nowrap shadow-lg hover:shadow-red-600/20">
+                  Request Quote
+                </button>
               </Link>
-            ))}
-          </div>
+            </div>
 
-          {/* Desktop Button */}
-          <div className="hidden md:block">
-            <Link href="/contact">
-              <button className="bg-red-600 hover:bg-[#1a1a1a] text-white px-6 py-3 font-bold text-[12px] uppercase tracking-widest transition-all">
-                Request Quote
-              </button>
-            </Link>
+            {/* MOBILE TOGGLE */}
+            <button 
+              className="lg:hidden bg-[#1a1a1a] text-white p-2.5 rounded-sm shadow-md hover:bg-red-600 transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <HiOutlineMenu size={22} />
+            </button>
           </div>
-
-          {/* MOBILE TOGGLE - Professional Icon Box */}
-          <button 
-            className="lg:hidden bg-[#1a1a1a] text-white p-2 rounded-sm shadow-lg"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <HiOutlineMenu size={24} />
-          </button>
         </div>
       </nav>
 

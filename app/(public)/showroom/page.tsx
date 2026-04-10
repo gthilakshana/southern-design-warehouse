@@ -21,7 +21,7 @@ export default async function ShowroomPage() {
   const contentImage = content?.contentUrl || "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1200&auto=format&fit=crop";
 
   return (
-      <div className="min-h-screen bg-[#F4F1EE] font-[arial]">
+    <div className="min-h-screen bg-[#F4F1EE] font-[arial]">
 
       {/* --- HERO SECTION --- */}
       <section className="relative h-[65vh] flex items-center justify-center text-center text-white px-6 overflow-hidden">
@@ -57,78 +57,78 @@ export default async function ShowroomPage() {
 
       {/* --- EXPERIENCE SECTION --- */}
       <section className="bg-gray-100 py-20 px-6 md:px-12 lg:px-20">
-  <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
 
-    {/* LEFT SIDE */}
-    <div>
-      <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-10">
-        What You Can Explore
-      </h2>
+          {/* LEFT SIDE */}
+          <div>
+            <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-10">
+              What You Can Explore
+            </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-        {[
-          "Flooring",
-          "Cabinets",
-          "Tiles",
-          "Vanities",
-          "Granite",
-          "Wall panels"
-        ].map((item, index) => (
-          <div
-            key={index}
-            className="bg-white py-10 text-center rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-red-600 transition duration-300 cursor-pointer"
-          >
-            <span className="text-gray-800 text-lg font-medium">
-              {item}
-            </span>
+              {[
+                "Flooring",
+                "Cabinets",
+                "Tiles",
+                "Vanities",
+                "Granite",
+                "Wall panels"
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white py-10 text-center rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-red-600 transition duration-300 cursor-pointer"
+                >
+                  <span className="text-gray-800 text-lg font-medium">
+                    {item}
+                  </span>
+                </div>
+              ))}
+
+            </div>
           </div>
-        ))}
 
-      </div>
-    </div>
+          {/* RIGHT SIDE */}
+          <div className="bg-white p-10 md:p-12 rounded-xl shadow-lg border border-gray-200 relative">
 
-    {/* RIGHT SIDE */}
-    <div className="bg-white p-10 md:p-12 rounded-xl shadow-lg border border-gray-200 relative">
+            {/* TOP BORDER LINE */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-red-600 rounded-t-xl"></div>
 
-      {/* TOP BORDER LINE */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-red-600 rounded-t-xl"></div>
+            <h2 className="text-3xl font-semibold text-gray-900 mb-10">
+              Showroom Benefits
+            </h2>
 
-      <h2 className="text-3xl font-semibold text-gray-900 mb-10">
-        Showroom Benefits
-      </h2>
+            <div className="space-y-8">
 
-      <div className="space-y-8">
+              {[
+                "Compare materials side by side",
+                "Get guidance from material specialists",
+                "Find design inspiration"
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-6">
 
-        {[
-          "Compare materials side by side",
-          "Get guidance from material specialists",
-          "Find design inspiration"
-        ].map((item, index) => (
-          <div key={index} className="flex items-center gap-6">
+                  {/* NUMBER BOX */}
+                  <div className="w-10 h-10 flex items-center justify-center bg-gray-100 text-red-600 font-bold rounded">
+                    {index + 1}
+                  </div>
 
-            {/* NUMBER BOX */}
-            <div className="w-10 h-10 flex items-center justify-center bg-gray-100 text-red-600 font-bold rounded">
-              {index + 1}
+                  <p className="text-gray-600 text-lg">
+                    {item}
+                  </p>
+                </div>
+              ))}
+
             </div>
 
-            <p className="text-gray-600 text-lg">
-              {item}
-            </p>
+            {/* BUTTON */}
+            <button className="mt-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-md font-semibold text-lg shadow-md transition duration-300">
+              Schedule a Visit
+            </button>
+
           </div>
-        ))}
 
-      </div>
-
-      {/* BUTTON */}
-      <button className="mt-12 w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-md font-semibold text-lg shadow-md transition duration-300">
-        Schedule a Visit
-      </button>
-
-    </div>
-
-  </div>
-</section>
+        </div>
+      </section>
       {/* --- FEATURED DISPLAYS SECTION --- */}
       <section className="py-28 px-6 md:px-12 lg:px-24 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -141,20 +141,20 @@ export default async function ShowroomPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { 
-                title: 'Kitchen Gallery', 
+              {
+                title: 'Kitchen Gallery',
                 description: 'Complete kitchen setups with cabinetry, countertops, and appliances',
                 features: 'Contemporary • Traditional • Modern Farmhouse styles',
                 image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop'
               },
-              { 
-                title: 'Bathroom Showroom', 
+              {
+                title: 'Bathroom Showroom',
                 description: 'Full bathroom displays with vanities, fixtures, and tile combinations',
                 features: 'Spa style • Classic • Minimalist designs',
                 image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop'
               },
-              { 
-                title: 'Flooring Center', 
+              {
+                title: 'Flooring Center',
                 description: 'Extensive selection of flooring materials for every room and style',
                 features: 'Tile • Wood • Laminate • Natural stone options',
                 image: 'https://images.unsplash.com/photo-1568762868663-67ebf45b8272?w=600&h=400&fit=crop'
