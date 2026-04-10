@@ -141,11 +141,15 @@ export default function ProductsClient({ content, categories }: { content: PageC
                 
                 <div className="w-20 h-[2px] mb-10" style={{ backgroundColor: cat.color || '#b33e2f' }} />
 
-                <div 
-                    className="prose prose-lg md:prose-xl  max-w-none prose-slate mb-12 ql-editor !p-0 !min-h-0"
-                    style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
-                    dangerouslySetInnerHTML={{ __html: cat.desc }} 
-                />
+                {(() => {
+                  const cleanedDesc = cat.desc.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ');
+                  return (
+                    <div 
+                      className="prose prose-lg md:prose-xl max-w-none prose-slate mb-12 !p-0 !min-h-0 text-slate-700 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: cleanedDesc }} 
+                    />
+                  );
+                })()}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                   {cat.benefits && (

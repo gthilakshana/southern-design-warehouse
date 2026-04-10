@@ -96,12 +96,12 @@ const AboutPage = () => {
         <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 text-center px-6">
-          <span className="text-red-500 font-bold uppercase tracking-widest text-sm">{content?.heroText ? "" : (content?.heroText || 'Established Excellence')}</span>
+          <span className="text-red-500 font-bold uppercase tracking-widest text-sm">{content?.heroText ? "" : (content?.heroText)}</span>
           <h1 className="text-3xl md:text-6xl font-bold  uppercase tracking-tighter text-white mt-2">
-            {content?.title || 'About Our Warehouse'}
+            {content?.title}
           </h1>
           <p className="mt-4 text-gray-200 max-w-2xl mx-auto text-lg leading-relaxed">
-            {content?.description || 'Leading the industry with precision logistics, massive inventory scales, and a commitment to quality that builds the future.'}
+            {content?.description}
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -117,156 +117,239 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* ABOUT CONTENT - STORY */}
-      <section className="py-20 px-6 bg-gray-100">
-        <div className="max-w-4xl mx-auto bg-white border border-gray-200 p-8 md:p-16 shadow-sm overflow-hidden text-left">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 uppercase tracking-tight">
-            The Southern Design Warehouse Story
-          </h2>
+      {/* --- SECTION 1: THE STORY (NARRATIVE LAYOUT) --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
+          <div className="lg:w-1/2 relative group">
+            <div className="absolute -inset-4 bg-[#c5a358]/10 rounded-sm -rotate-2 group-hover:rotate-0 transition-transform duration-700" />
+            <div className="relative aspect-square md:aspect-[4/3] rounded-sm overflow-hidden shadow-2xl border border-gray-100">
+              <Image
+                src="images/20260225_093348.jpg"
+                alt="Our Logistical Hub"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
+            </div>
 
-          <div
-            className="prose max-w-none prose-gray text-gray-600 leading-relaxed font-medium about-rich-text text-left"
-            dangerouslySetInnerHTML={{
-              __html: sanitizeText(metadata.story) || `
-                <p class="mb-4">Southern Design Warehouse was founded on a simple realization: the gap between large-scale industrial supply and high-end design was too wide. We set out to bridge that gap by providing a facility that offers the <strong>massive inventory capacity</strong> of a commercial warehouse with the <strong>curated precision</strong> of a design studio.</p>
-                <p class="mb-4">Today, we operate as a central hub for the construction and renovation industry. Our facility houses over 5,000 unique SKUs, ranging from foundational building materials to high-end finishing touches.</p>
-              `
-            }}
-          />
+            {/* Floating Detail */}
+            <div className="absolute -bottom-8 -right-8 bg-white p-6 shadow-xl border border-gray-100 hidden md:block animate-in fade-in slide-in-from-right-8 duration-1000">
+              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-1">Scale of Operations</div>
+              <div className="text-2xl font-bold text-slate-900 leading-tight">75,000+ <br />Square Feet</div>
+            </div>
+          </div>
+
+          <div className="lg:w-1/2 space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-[11px] font-black uppercase tracking-[0.3em] text-red-600">The Narrative</h2>
+              <h3 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight uppercase">
+                Bridging Industrial <br />Scale with <span className="text-red-600">Design.</span>
+              </h3>
+            </div>
+
+            <div
+              className="prose prose-lg max-w-none text-gray-600 leading-relaxed font-medium about-rich-text text-left"
+              style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeText(metadata.story) || `
+                  <p>Southern Design Warehouse was founded on a simple realization: the gap between large-scale industrial supply and high-end design was too wide. We set out to bridge that gap by providing a facility that offers the <strong>massive inventory capacity</strong> of a commercial warehouse with the <strong>curated precision</strong> of a design studio.</p>
+                  <p>Today, we operate as a central hub for the construction and renovation industry. Our facility houses thousands of unique items, ranging from foundational building materials to luxury finishing touches, ensuring our clients never have to compromise on vision or volume.</p>
+                `
+              }}
+            />
+
+            <div className="pt-6 border-t border-gray-100 flex items-center gap-12">
+              <div>
+                <p className="text-2xl font-bold text-slate-900">5k+</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-600">Unique SKUs</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-slate-900">15yrs</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-600">Experience</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-slate-900">100%</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-600">Professional Grade</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* MISSION + VISION */}
-      <section className="py-20 px-6 bg-white border-y border-gray-200">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
+      {/* --- SECTION 2: PILLARS (MISSION & VISION) --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#fafafa]">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
 
-          {/* MISSION */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-800 uppercase tracking-tight">
-              Our Mission
-            </h2>
-            <div className="w-20 h-1.5 bg-red-600" />
-            <div 
-              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
-              dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.mission) || 'To empower the builders of tomorrow by simplifying the supply chain today.' }}
-            />
+          {/* MISSION PILLAR */}
+          <div className="relative group overflow-hidden bg-slate-900 p-12 md:p-16 rounded-sm shadow-2xl animate-in fade-in slide-in-from-left-8 duration-700">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#c5a358]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#c5a358]/20 transition-colors" />
+
+            <div className="relative z-10 space-y-6">
+              <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-red-600">Our Mission</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight uppercase">
+                Simplifying the Supply Chain.
+              </h3>
+              <div className="w-16 h-1 bg-red-600" />
+              <div
+                className="text-gray-400 text-lg leading-relaxed font-medium about-rich-text text-left"
+                style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.mission) || 'To empower the builders of tomorrow by providing a streamlined, efficient, and technologically advanced material sourcing experience today.' }}
+              />
+            </div>
           </div>
 
-          {/* VISION */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-800 uppercase tracking-tight">
-              Our Vision
-            </h2>
-            <div className="w-20 h-1.5 bg-green-700" />
-            <div 
-              className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
-              dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.vision) || 'To be the most technologically advanced and customer-centric warehouse in the Southern region.' }}
-            />
+          {/* VISION PILLAR */}
+          <div className="relative group overflow-hidden bg-white p-12 md:p-16 rounded-sm shadow-2xl border border-gray-100 animate-in fade-in slide-in-from-right-8 duration-700">
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#c5a358]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 group-hover:bg-[#c5a358]/10 transition-colors" />
+
+            <div className="relative z-10 space-y-6">
+              <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-red-600">Our Vision</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight uppercase">
+                Defining the Distribution Standard.
+              </h3>
+              <div className="w-16 h-1 bg-red-600" />
+              <div
+                className="text-gray-600 text-lg leading-relaxed font-medium about-rich-text text-left"
+                style={{ wordBreak: 'normal', overflowWrap: 'break-word', whiteSpace: 'normal', hyphens: 'none' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeText(metadata.vision) || 'To be the most customer-centric and technologically forward material hub in the Southeast, where quality and scale coexist seamlessly.' }}
+              />
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* CORE VALUES */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 uppercase tracking-tight">Our Core Values</h2>
-            <p className="text-gray-500 mt-2 font-bold uppercase text-[10px] tracking-widest italic">The principles that guide every shipment and every interaction.</p>
+      {/* --- SECTION 3: CORE VALUES (REFINED GRID) --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div className="max-w-xl">
+              <h2 className="text-[11px] font-black uppercase tracking-[0.4em] text-red-600 mb-4">Our Integrity</h2>
+              <h3 className="text-4xl md:text-5xl font-bold text-slate-900 leading-none uppercase">
+                The Core <br />Principles.
+              </h3>
+            </div>
+            <p className="text-slate-500 max-w-sm text-sm leading-relaxed border-l-2 border-red-600 pl-6">
+              The foundational values that guide every shipment, consultation, and strategic partnership we build.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {values.map((v, i) => (
-              <div key={i} className="bg-white p-10 border border-gray-200 hover:border-red-600 transition-colors group">
-                <v.icon className="text-red-600 mb-6 group-hover:scale-110 transition-transform" size={40} />
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-tighter">{v.title}</h3>
-                <p className="text-gray-600 leading-relaxed font-medium text-sm">{v.desc}</p>
+              <div key={i} className="group bg-white p-12 border border-gray-100 hover:border-red-600/30 hover:shadow-2xl transition-all duration-500 rounded-sm">
+                <div className="w-16 h-16 bg-[#fafafa] flex items-center justify-center rounded-sm mb-8 group-hover:bg-red-600 transition-colors duration-500">
+                  <v.icon className="text-slate-900 group-hover:text-white transition-colors duration-500" size={32} />
+                </div>
+                <h3 className="text-xl font-bold mb-4 uppercase tracking-tighter text-slate-900">{v.title}</h3>
+                <p className="text-slate-600 leading-relaxed font-medium text-[15px]">{v.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="py-16 px-6 bg-gray-100">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {/* --- SECTION 4: OPERATIONAL SCALE (STATS) --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#111111] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#c5a358]/10 to-transparent" />
+
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 border border-gray-200 shadow-sm"
+              className="space-y-4"
             >
-              <div className="flex justify-center mb-4 text-red-600">
-                <stat.icon size={32} />
+              <div className="flex justify-center text-red-600/40">
+                <stat.icon size={40} strokeWidth={1} />
               </div>
-              <div className="text-3xl font-extrabold text-gray-800">
-                {stat.value}
-              </div>
-              <div className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 mt-2">
-                {stat.label}
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2 font-[serif]">
+                  {stat.value}
+                </div>
+                <div className="text-[10px] uppercase font-black tracking-[0.3em] text-white">
+                  {stat.label}
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="border border-gray-200 p-10 hover:border-red-600 transition-all">
-              <HiOutlineUsers className="text-red-600 mb-4" size={36} />
-              <h3 className="font-bold text-2xl mb-4 text-gray-800 uppercase tracking-tighter">For Homeowners</h3>
-              <p className="text-gray-600 mb-6 text-lg leading-relaxed font-medium">
-                Take the guesswork out of your renovation. We offer expert consultations,
-                material samples, and a guided showroom to help you visualize your dream home
-                with professional-grade supplies.
+      {/* --- SECTION 5: SPECIALIZED SERVICES --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12">
+
+            {/* Owner Support */}
+            <div className="group border border-gray-100 p-12 md:p-16 hover:border-[#c5a358]/30 transition-all duration-500 bg-[#fafafa]">
+              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mb-6">Homeowner Design Support</div>
+              <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase leading-tight">Expert <br />Consultations.</h3>
+              <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">
+                Take the guesswork out of your renovation. We offer expert material matching,
+                high-resolution samples, and a guided showroom experience to help you visualize
+                your dream spaces with professional-grade supplies.
               </p>
-              <Link href="/contact" className="inline-flex items-center text-red-600 font-black text-[11px] uppercase tracking-widest hover:underline">
-                Visit Our Design Showroom <span className="ml-2">→</span>
+              <Link href="/showroom" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
+                Learn More
+                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#c5a358] transition-all duration-300" />
               </Link>
             </div>
 
-            <div className="border border-gray-200 p-10 bg-gray-50 hover:border-red-600 transition-all">
-              <HiOutlineTruck className="text-red-600 mb-4" size={36} />
-              <h3 className="font-bold text-2xl mb-4 text-gray-800 uppercase tracking-tighter">For Contractors</h3>
-              <p className="text-gray-600 mb-6 text-lg leading-relaxed font-medium">
-                Scale your business with a warehouse that acts as your partner.
-                Get exclusive volume pricing, prioritized job-site delivery,
-                and specialized account management for large-scale projects.
+            {/* Contractor Support */}
+            <div className="group border border-gray-100 p-12 md:p-16 hover:border-slate-900/30 transition-all duration-500 bg-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-6">Contractor Logistical Partner</div>
+              <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase leading-tight">Scale Your <br />Operations.</h3>
+              <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">
+                Operate with a partner that acts as an extension of your warehouse.
+                Get exclusive volume pricing, prioritized job-site logistics, and
+                dedicated account specialist support for large-scale development projects.
               </p>
-              <Link href="/contact" className="inline-flex items-center text-red-600 font-black text-[11px] uppercase tracking-widest hover:underline">
-                Visit Our Design Showroom <span className="ml-2">→</span>
+              <Link href="/contact" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
+                Partner With Us
+                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#c5a358] transition-all duration-300" />
               </Link>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 px-6 bg-[#182330] text-center ">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 uppercase tracking-tighter ">
-          Ready to Start Your Next Project?
-        </h2>
-        <p className="text-slate-400 mb-10 max-w-2xl mx-auto text-lg font-medium">
-          Whether you are building a single home or a commercial complex, our warehouse has the inventory and the expertise to help you succeed.
-        </p>
-        <div className="flex flex-col md:flex-row gap-4 justify-center">
-          <Link
-            href="/contact"
-            className="px-10 py-5 bg-red-600 text-white font-black hover:bg-black transition-all uppercase tracking-[0.2em] text-[11px] shadow-2xl active:scale-95"
-          >
-            Request a Quote
-          </Link>
-          <Link
-            href="/inventory"
-            className="px-10 py-5 bg-transparent border-2 border-white text-white font-black hover:bg-white hover:text-black transition-all uppercase tracking-[0.2em] text-[11px] active:scale-95"
-          >
-            Browse Inventory
-          </Link>
+      {/* --- SECTION 6: THE CAPSTONE CTA --- */}
+      <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#111111] text-center overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10">
+          <Image
+            src="images/contractors2.jpg"
+            alt="Luxury Material"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div className="relative z-10 max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-6xl font-bold text-white uppercase tracking-tighter leading-none">
+            Build Your <br /><span className="text-white">Future Standard.</span>
+          </h2>
+          <p className="text-slate-400 text-lg font-medium leading-relaxed">
+            Whether you are building a boutique residence or a massive commercial complex,
+            our warehouse infrastructure and material expertise are ready to support your vision.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+            <Link
+              href="/contact"
+              className="px-12 py-5 bg-red-600 text-white font-black hover:bg-white hover:text-slate-900 transition-all uppercase tracking-[0.2em] text-[11px] active:scale-95 shadow-xl"
+            >
+              Request a Project Quote
+            </Link>
+            <Link
+              href="/showroom"
+              className="px-12 py-5 bg-transparent border border-white/30 text-white font-black hover:bg-white hover:text-slate-900 transition-all uppercase tracking-[0.2em] text-[11px] active:scale-95"
+            >
+              Schedule Showroom Tour
+            </Link>
+          </div>
         </div>
       </section>
 

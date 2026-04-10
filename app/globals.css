@@ -19,8 +19,9 @@
 /* Quill Rich Text Styles for Public Site */
 .ql-editor {
   line-height: 1.6;
-  white-space: pre-wrap !important;
-  word-wrap: break-word !important;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 .ql-editor p {
   margin-bottom: 1.5rem !important;
@@ -65,5 +66,10 @@
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
   content: 'Monospace';
   font-family: monospace;
+}
+/* Typography safety net for rich text to ensure sentences wrap at word boundaries */
+.prose p, .prose span, .prose li, .prose div {
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
