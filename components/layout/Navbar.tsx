@@ -52,7 +52,7 @@ export const Navbar = () => {
 
         {/* ADDRESS */}
         <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiLocationMarker className="text-[#c5a358] group-hover:scale-110 transition-transform" />
+          <HiLocationMarker className="text-[#dc2626] group-hover:scale-110 transition-transform" />
           <span className="truncate max-w-[180px] md:max-w-none">
             {settings?.address || "8524 E Adamo Dr, Tampa, FL"}
           </span>
@@ -60,7 +60,7 @@ export const Navbar = () => {
 
         {/* PHONE */}
         <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiPhone className="text-[#c5a358] group-hover:scale-110 transition-transform" />
+          <HiPhone className="text-[#dc2626] group-hover:scale-110 transition-transform" />
           <a
             href={`tel:${settings?.phone}`}
             className="hover:text-white"
@@ -71,7 +71,7 @@ export const Navbar = () => {
 
         {/* EMAIL */}
         <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiMail className="text-[#c5a358] group-hover:scale-110 transition-transform" />
+          <HiMail className="text-[#dc2626] group-hover:scale-110 transition-transform" />
           <a
             href={`mailto:${settings?.email}`}
             className="lowercase tracking-normal font-sans"
@@ -92,7 +92,7 @@ export const Navbar = () => {
           href="/login"
           className="relative text-gray-300 hover:text-white transition duration-300"
         >
-          <span className="after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#c5a358] after:transition-all after:duration-300 hover:after:w-full">
+          <span className="after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#dc2626] after:transition-all after:duration-300 hover:after:w-full">
             Staff Login
           </span>
         </Link>
@@ -206,7 +206,7 @@ export const Navbar = () => {
                       <HiPhone size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#c5a358] uppercase tracking-widest mb-0.5">Direct Sales</p>
+                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Direct Sales</p>
                       <p className="text-[#1a1a1a] font-black text-sm">{settings?.phone || "1-800-555-0199"}</p>
                     </div>
                   </a>
@@ -216,7 +216,7 @@ export const Navbar = () => {
                       <HiLocationMarker size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#c5a358] uppercase tracking-widest mb-0.5">Showroom</p>
+                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Showroom</p>
                       <p className="text-[#1a1a1a] font-black text-xs leading-relaxed max-w-[200px]">{settings?.address || "8524 E Adamo Dr, Tampa, FL"}</p>
                     </div>
                   </div>
@@ -226,7 +226,7 @@ export const Navbar = () => {
                       <HiMail size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#c5a358] uppercase tracking-widest mb-0.5">Inquiries</p>
+                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Inquiries</p>
                       <p className="text-[#1a1a1a] font-black text-xs break-all lowercase font-sans">{settings?.email || "support@southerndesign.com"}</p>
                     </div>
                   </a>

@@ -121,7 +121,7 @@ const AboutPage = () => {
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
           <div className="lg:w-1/2 relative group">
-            <div className="absolute -inset-4 bg-[#c5a358]/10 rounded-sm -rotate-2 group-hover:rotate-0 transition-transform duration-700" />
+            <div className="absolute -inset-4 bg-[#dc2626]/10 rounded-sm -rotate-2 group-hover:rotate-0 transition-transform duration-700" />
             <div className="relative aspect-square md:aspect-[4/3] rounded-sm overflow-hidden shadow-2xl border border-gray-100">
               <Image
                 src="images/20260225_093348.jpg"
@@ -182,7 +182,7 @@ const AboutPage = () => {
 
           {/* MISSION PILLAR */}
           <div className="relative group overflow-hidden bg-slate-900 p-12 md:p-16 rounded-sm shadow-2xl animate-in fade-in slide-in-from-left-8 duration-700">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#c5a358]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#c5a358]/20 transition-colors" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#dc2626]/20 transition-colors" />
 
             <div className="relative z-10 space-y-6">
               <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-red-600">Our Mission</h2>
@@ -200,7 +200,7 @@ const AboutPage = () => {
 
           {/* VISION PILLAR */}
           <div className="relative group overflow-hidden bg-white p-12 md:p-16 rounded-sm shadow-2xl border border-gray-100 animate-in fade-in slide-in-from-right-8 duration-700">
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#c5a358]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 group-hover:bg-[#c5a358]/10 transition-colors" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#dc2626]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 group-hover:bg-[#dc2626]/10 transition-colors" />
 
             <div className="relative z-10 space-y-6">
               <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-red-600">Our Vision</h2>
@@ -250,7 +250,7 @@ const AboutPage = () => {
 
       {/* --- SECTION 4: OPERATIONAL SCALE (STATS) --- */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#111111] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#c5a358]/10 to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#dc2626]/10 to-transparent" />
 
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {stats.map((stat, index) => (
@@ -284,7 +284,7 @@ const AboutPage = () => {
           <div className="grid md:grid-cols-2 gap-12">
 
             {/* Owner Support */}
-            <div className="group border border-gray-100 p-12 md:p-16 hover:border-[#c5a358]/30 transition-all duration-500 bg-[#fafafa]">
+            <div className="group border border-gray-100 p-12 md:p-16 hover:border-[#dc2626]/30 transition-all duration-500 bg-[#fafafa]">
               <div className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 mb-6">Homeowner Design Support</div>
               <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase leading-tight">Expert <br />Consultations.</h3>
               <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">
@@ -294,7 +294,7 @@ const AboutPage = () => {
               </p>
               <Link href="/showroom" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
                 Learn More
-                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#c5a358] transition-all duration-300" />
+                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#dc2626] transition-all duration-300" />
               </Link>
             </div>
 
@@ -309,7 +309,7 @@ const AboutPage = () => {
               </p>
               <Link href="/contact" className="inline-flex items-center gap-4 text-slate-900 font-black text-[11px] uppercase tracking-[0.2em] group/link">
                 Partner With Us
-                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#c5a358] transition-all duration-300" />
+                <div className="w-12 h-[1px] bg-slate-400 group-hover/link:w-20 group-hover/link:bg-[#dc2626] transition-all duration-300" />
               </Link>
             </div>
 

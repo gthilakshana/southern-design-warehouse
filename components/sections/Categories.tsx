@@ -17,7 +17,7 @@ const defaultCategories: ProductCategory[] = [
     id: '1', 
     title: 'Kitchens', 
     desc: 'Premium cabinetry and stone surfaces for modern kitchens.', 
-    color: '#c5a358', 
+    color: '#dc2626', 
     order: 1, 
     benefits: ['Premium Quality', 'Custom Fits'], 
     uses: ['Residential', 'Commercial'], 
