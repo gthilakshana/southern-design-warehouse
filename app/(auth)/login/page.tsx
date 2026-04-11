@@ -14,21 +14,21 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4">
 
-      {/* ✅ BACKGROUND IMAGE */}
+      {/*  BACKGROUND IMAGE */}
       <div className="fixed inset-0 z-0">
         <Image
-          src="/images/20260225_092039.jpg" // <-- your JPG image
+          src="/images/20260225_092039.webp" 
           alt="Warehouse Background"
           fill
           className="object-cover"
           priority
         />
 
-        {/* ✅ CLEAN OVERLAY */}
+        {/*  CLEAN OVERLAY */}
         <div className="absolute inset-0 bg-black/50" />
       </div>
 
-      {/* ✅ NAVBAR */}
+      {/* NAVBAR */}
       <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center z-20">
         <span className="text-sm font-semibold text-gray-700 uppercase">
           Warehouse System

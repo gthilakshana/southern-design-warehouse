@@ -116,6 +116,7 @@ export const Navbar = () => {
                 alt={settings?.siteName || "Logo"} 
                 fill 
                 priority 
+                sizes="(max-width: 768px) 160px, 200px"
                 className="object-contain" 
               />
             </Link>

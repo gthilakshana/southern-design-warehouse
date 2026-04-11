@@ -164,6 +164,7 @@ export const Footer = () => {
                   src={settings.logoUrl || "/logo.png"} 
                   alt={settings.siteName || "Southern Design Warehouse"} 
                   fill 
+                  sizes="(max-width: 768px) 200px, 200px"
                   className="object-contain object-left brightness-0 invert" // Ensures it shows white/silver on dark background
                 />
               </div>

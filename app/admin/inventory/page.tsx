@@ -249,9 +249,9 @@ const InventoryPage = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded border border-gray-200 bg-slate-50 relative overflow-hidden shrink-0 shadow-inner">
-                            {(item.imageUrl || (item as any).image) ? (
+                            {(item.imageUrl?.trim() || (item as any).image?.trim()) ? (
                                 <Image
-                                  src={item.imageUrl || (item as any).image}
+                                  src={(item.imageUrl || (item as any).image)?.trim()}
                                   alt={item.name}
                                   fill
                                   sizes="40px"
@@ -365,11 +365,11 @@ const InventoryPage = () => {
                     <div className="space-y-4">
                        <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">A. Product Visualization</h3>
                        
-                       {(editingItem?.imageUrl || (editingItem as any)?.image) && !isRemovingImage ? (
+                       {(editingItem?.imageUrl?.trim() || (editingItem as any)?.image?.trim()) && !isRemovingImage ? (
                           <div className="flex items-center gap-6 p-4 bg-gray-50 border border-gray-200 rounded group">
                              <div className="relative w-24 h-24 rounded overflow-hidden border border-gray-300 shadow-sm bg-white">
                                 <Image
-                                  src={(editingItem?.imageUrl || (editingItem as any)?.image) || ''}
+                                  src={(editingItem?.imageUrl || (editingItem as any)?.image)?.trim() || ''}
                                   alt="Current Asset"
                                   fill
                                   sizes="96px"
@@ -411,13 +411,14 @@ const InventoryPage = () => {
                                 className="absolute inset-0 opacity-0 cursor-pointer z-10" 
                                 onChange={(e) => handleFileChange(e.target.files?.[0])}
                              />
-                             {previewUrl ? (
+                             {previewUrl?.trim() ? (
                                  <div className="relative w-full h-40">
                                    <Image
-                                     src={previewUrl}
+                                     src={previewUrl?.trim()}
                                      alt="Preview"
                                      fill
                                      unoptimized
+                                     sizes="(max-width: 640px) 100vw, 640px"
                                      className="object-cover group-hover:opacity-60 transition-all"
                                    />
                                  </div>

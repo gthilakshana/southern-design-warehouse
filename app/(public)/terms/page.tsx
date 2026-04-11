@@ -12,7 +12,7 @@ export default async function TermsPage() {
       {/* HERO SECTION */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
         <Image
-          src="/images/20260225_092039.jpg"
+          src="/images/20260225_092039.webp"
           alt="Terms Background"
           fill
           sizes="100vw"

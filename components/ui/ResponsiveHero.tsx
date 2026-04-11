@@ -40,42 +40,42 @@ export default function ResponsiveHero({
     <div className={`absolute inset-0 z-0 ${opacity}`}>
       {/* Desktop View (Large Screens) */}
       <div className="hidden lg:block absolute inset-0">
-        {desktopSrc && (
+        {isValidSrc(desktopSrc) && (
           <Image
-            src={desktopSrc}
+            src={desktopSrc!.trim()}
             alt={alt}
             fill
             sizes="100vw"
             className={`object-cover ${brightness}`}
-            priority
+            priority={priority}
           />
         )}
       </div>
 
       {/* Tablet View (Medium Screens) */}
       <div className="hidden md:block lg:hidden absolute inset-0">
-        {tabletSrc && (
+        {isValidSrc(tabletSrc) && (
           <Image
-            src={tabletSrc}
+            src={tabletSrc!.trim()}
             alt={alt}
             fill
             sizes="100vw"
             className={`object-cover ${brightness}`}
-            priority
+            priority={priority}
           />
         )}
       </div>
 
       {/* Mobile View (Small Screens) */}
       <div className="block md:hidden absolute inset-0">
-        {mobileSrc && (
+        {isValidSrc(mobileSrc) && (
           <Image
-            src={mobileSrc}
+            src={mobileSrc!.trim()}
             alt={alt}
             fill
             sizes="100vw"
             className={`object-cover ${brightness}`}
-            priority
+            priority={priority}
           />
         )}
       </div>

@@ -71,7 +71,7 @@ export default async function BathroomsPage() {
     <div className="lg:col-span-5 order-2 lg:order-1 relative">
       <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
         <Image 
-          src="/bathrooms/water.jpg" 
+          src="/bathrooms/waterproof.webp" 
           alt="Bathroom Design Planning"
           fill
           sizes="(max-width: 1024px) 100vw, 40vw"
@@ -158,21 +158,21 @@ export default async function BathroomsPage() {
           num: '01',
           description: 'Clean lines and sleek fixtures for a contemporary architectural aesthetic.',
           features: ['Floating vanities', 'Frameless glass', 'Polished concrete'],
-          image: '/bathrooms/vanities.jpg'
+          image: '/bathrooms/vanities.webp'
         },
         { 
           title: 'Classic Elegance', 
           num: '02',
           description: 'Timeless design elements with quality materials that define heritage luxury.',
           features: ['Double vanities', 'Marble finishes', 'Traditional fixtures'],
-          image: '/bathrooms/marble.jpg'
+          image: '/bathrooms/marble.webp'
         },
         { 
           title: 'Spa Retreat', 
           num: '03',
           description: 'Restorative materials and soothing elements to create a private sanctuary.',
           features: ['Soaking tubs', 'Natural stone', 'Ambient lighting'],
-          image: '/bathrooms/natural.jpg'
+          image: '/bathrooms/natural.webp'
         }
       ].map((style, index) => (
         <div key={index} className="group relative flex flex-col bg-white border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl">
@@ -317,14 +317,14 @@ export default async function BathroomsPage() {
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {[
-        { label: 'Shower Solutions', count: '250+ Products', image: '/bathrooms/shower.jpg' },
-        { label: 'Bathtubs', count: '180+ Products', image: '/bathrooms/bathtubs.jpg' },
-        { label: 'Vanities & Sinks', count: '320+ Products', image: '/bathrooms/natural.jpg' },
-        { label: 'Wall & Floor Tiles', count: '450+ Products', image: '/bathrooms/tile.jpg' },
-        { label: 'Mirrors & Lighting', count: '200+ Products', image: '/bathrooms/mirror.jpg' },
-        { label: 'Plumbing Fixtures', count: '290+ Products', image: '/bathrooms/plumbing.jpg' },
-        { label: 'Paint & Finishes', count: '150+ Products', image: '/bathrooms/painting.jpg' },
-        { label: 'Cabinetry', count: '180+ Products', image: '/bathrooms/cabinet.jpg' }
+        { label: 'Shower Solutions', count: '250+ Products', image: '/bathrooms/shower.webp' },
+        { label: 'Bathtubs', count: '180+ Products', image: '/bathrooms/bathtubs.webp' },
+        { label: 'Vanities & Sinks', count: '320+ Products', image: '/bathrooms/natural.webp' },
+        { label: 'Wall & Floor Tiles', count: '450+ Products', image: '/bathrooms/tile.webp' },
+        { label: 'Mirrors & Lighting', count: '200+ Products', image: '/bathrooms/mirror.webp' },
+        { label: 'Plumbing Fixtures', count: '290+ Products', image: '/bathrooms/plumbing.webp' },
+        { label: 'Paint & Finishes', count: '150+ Products', image: '/bathrooms/painting.webp' },
+        { label: 'Cabinetry', count: '180+ Products', image: '/bathrooms/cabinet.webp' }
       ].map((category, index) => (
         <button 
           key={index} 
@@ -372,7 +372,7 @@ export default async function BathroomsPage() {
   {/* Background Unsplash Image with Subtle Motion */}
   <div className="absolute inset-0 z-0">
     <Image
-      src="/bathrooms/bathroom1.jpg"
+      src="/bathrooms/bathroom1.webp"
       alt="Luxury Bathroom Showroom"
       fill
       sizes="100vw"

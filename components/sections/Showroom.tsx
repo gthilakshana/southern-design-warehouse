@@ -28,7 +28,7 @@ export default function ShowroomEditorial() {
           className="relative w-full h-full"
         >
           <Image
-            src="/kitchens/Cabinetry.jpeg"
+            src="/kitchens/Cabinetry.webp"
             alt="Showroom"
             fill
             className="object-cover  hover:grayscale-0 transition-all duration-1000 cursor-pointer"

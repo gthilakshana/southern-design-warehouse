@@ -83,7 +83,7 @@ export default function WhyChoose() {
                 <div className="absolute inset-0 border border-white/10 translate-x-4 translate-y-4" />
                 <div className="relative w-full h-full overflow-hidden">
                    <Image 
-                    src="/images/warehouse.jpg" 
+                    src="/images/warehouse1.webp" 
                     alt="Professional Warehouse Contractor"
                     fill
                     className="object-cover  hover:grayscale-0 transition-all duration-700"

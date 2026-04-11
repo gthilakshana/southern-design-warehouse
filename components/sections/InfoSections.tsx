@@ -23,10 +23,10 @@ export const InfoSections = () => {
   ]
 
   const images = [
-    "/images/info1.jpg", // Main Hero Image
-    "/images/info2.jpg", // Industrial Warehouse
-    "/images/info3.jpg", // Minimalist Wood
-    "/images/info4.jpg"  // Stone Texture
+    "/images/info1.webp", // Main Hero Image
+    "/images/info2.webp", // Industrial Warehouse
+    "/images/info3.webp", // Minimalist Wood
+    "/images/info4.webp"  // Stone Texture
   ];
 
   return (

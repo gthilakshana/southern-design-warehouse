@@ -94,7 +94,7 @@ export default async function AboutPage() {
             <div className="absolute -inset-4 bg-[#dc2626]/10 rounded-sm -rotate-2 group-hover:rotate-0 transition-transform duration-700" />
             <div className="relative aspect-square md:aspect-[4/3] rounded-sm overflow-hidden shadow-2xl border border-gray-100">
               <Image
-                src="images/20260225_093348.jpg"
+                src="/images/20260225_093348.webp"
                 alt="Our Logistical Hub"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -246,7 +246,7 @@ export default async function AboutPage() {
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#111111] text-center overflow-hidden relative">
         <div className="absolute inset-0 opacity-10">
           <Image
-            src="images/contractors2.jpg"
+            src="/images/contractors2.jpg"
             alt="Southern Design Logistics"
             fill
             sizes="100vw"

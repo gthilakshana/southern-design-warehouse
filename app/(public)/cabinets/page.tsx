@@ -18,7 +18,7 @@ export default async function CabinetsPage() {
       "Cabinet Finishes"
     ];
 
-  const contentImage = content?.contentUrl || "/cabinets/img1.jpg";
+  const contentImage = content?.contentUrl || "/cabinets/img1.webp";
 
   return (
     <div className="min-h-screen bg-[#F4F1EE] font-[arial]">
@@ -183,21 +183,21 @@ export default async function CabinetsPage() {
           num: '01',
           description: 'Timeless cabinetry with clean lines that complement both traditional and modern homes.',
           features: ['Flat panels', 'Minimalist', 'Clean edges'],
-          image: '/cabinets/img7.jpg'
+          image: '/cabinets/img7.webp'
         },
         {
           title: 'Flat',
           num: '02',
           description: 'Sleek, handle-less designs for a seamless, high-performance architectural look.',
           features: ['High-gloss', 'Push-to-open', 'Modern'],
-          image: '/cabinets/img8.jpg'
+          image: '/cabinets/img8.webp'
         },
         {
           title: 'Raised',
           num: '03',
           description: 'Sophisticated cabinetry with intricate detailing for a classic heritage aesthetic.',
           features: ['Detailed profiles', 'Antique', 'Traditional'],
-          image: '/cabinets/img9.jpg'
+          image: '/cabinets/img9.webp'
         },
       ].map((style, index) => (
         <div key={index} className="group relative w-full h-[500px] md:h-full overflow-hidden bg-gray-900">
@@ -337,10 +337,10 @@ export default async function CabinetsPage() {
             {/* Left: Detail Grid */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                {  img: '/cabinets/img5.jpg' },
-                { img: '/cabinets/img2.jpg' },
-                {  img: '/cabinets/img3.jpg' },
-                {  img: '/cabinets/img4.jpg' }
+                {  img: '/cabinets/img5.webp' },
+                { img: '/cabinets/img2.webp' },
+                {  img: '/cabinets/img3.webp' },
+                {  img: '/cabinets/img4.webp' }
               ].map((item, index) => (
                 <div key={index} className="relative h-48 md:h-64 group overflow-hidden first:rounded-tl-[60px] last:rounded-br-[60px]">
                   <Image
@@ -420,28 +420,28 @@ export default async function CabinetsPage() {
       label: 'Core Structure',
       title: 'Frameless Engineering',
       desc: 'Maximum volume utilization with 19mm high-density core panels for structural rigidity.',
-      img: '/cabinets/img6.jpg'
+      img: '/cabinets/img6.webp'
     },
     {
       id: 'SYS-02',
       label: 'Kinetic Hardware',
       title: 'Soft-Close Systems',
       desc: 'Precision-calibrated hinges tested for 200,000 cycles of seamless operational movement.',
-      img: '/cabinets/img10.jpg'
+      img: '/cabinets/img10.webp'
     },
     {
       id: 'SYS-03',
       label: 'Surface Tech',
       title: 'Nanotech Finishes',
       desc: 'Anti-fingerprint thermal healing surfaces that maintain architectural purity over time.',
-      img: '/cabinets/img11.jpg'
+      img: '/cabinets/img11.webp'
     },
     {
       id: 'SYS-04',
       label: 'Organization',
       title: 'Internal Architecture',
       desc: 'Customizable divider systems engineered to optimize every cubic centimeter of storage.',
-      img: '/cabinets/img5.jpg'
+      img: '/cabinets/img5.webp'
     }
       ].map((box, index) => (
         <div key={index} className="group relative flex flex-col h-[600px] bg-gray-50 overflow-hidden border border-gray-100">
