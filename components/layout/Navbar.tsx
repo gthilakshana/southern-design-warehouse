@@ -101,7 +101,7 @@ export const Navbar = () => {
       </div>
 
       {/* 2. MAIN NAVIGATION */}
-      <nav className={`transition-all    duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
+      <nav className={`transition-all    duration-300 ${isScrolled ? 'bg-white py-3 lg:py-3 shadow-xl' : 'bg-[#f9f7f2] py-5 lg:py-3'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between relative">
 
           {/* MOBILE PLACEHOLDER (To balance absolute logo) */}
@@ -109,13 +109,13 @@ export const Navbar = () => {
 
           {/* 1. LOGO SECTION */}
           <div className="flex-shrink-0 flex items-center z-10 lg:static absolute left-1/2 lg:left-auto -translate-x-1/2 lg:translate-x-0">
-            <Link href="/" className="relative block w-[160px] md:w-[200px] h-[50px] md:h-[65px]">
+            <Link href="/" className="relative block w-[190px] md:w-[200px] h-[60px] md:h-[65px]">
               <Image
                 src={settings?.logoUrl || "/logo.png"}
                 alt={settings?.siteName || "Logo"}
                 fill
                 priority
-                sizes="(max-width: 768px) 160px, 200px"
+                sizes="(max-width: 768px) 190px, 200px"
                 className="object-contain"
               />
             </Link>
@@ -199,26 +199,26 @@ export const Navbar = () => {
 
               {/* Warehouse Quick Info - PROFESSIONAL FOOTER BLOCK */}
               <div className="mt-16 space-y-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Warehouse Support</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Warehouse Support</p>
 
                 <div className="grid gap-6">
                   <a href={`tel:${settings?.phone}`} className="flex items-start gap-5 group">
-                    <div className="w-10 h-10 bg-gray-50 flex items-center justify-center text-[#1a1a1a] group-hover:bg-[#1a1a1a] group-hover:text-white transition-all">
+                    <div className="w-10 h-10 bg-gray-50 flex items-center  justify-center text-gray-900 group-hover:bg-[#1a1a1a] group-hover:text-white transition-all">
                       <HiPhone size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Direct Sales</p>
-                      <p className="text-[#1a1a1a] font-black text-sm">{settings?.phone || "1-800-555-0199"}</p>
+                      <p className="text-[9px] font-bold text-[#dc2626] uppercase tracking-widest mb-0.5">Direct Sales</p>
+                      <p className="text-gray-900 font-bold text-sm">{settings?.phone}</p>
                     </div>
                   </a>
 
                   <div className="flex items-start gap-5">
-                    <div className="w-10 h-10 bg-gray-50 flex items-center justify-center text-[#1a1a1a]">
+                    <div className="w-10 h-10 bg-gray-50 flex items-center justify-center text-gray-900">
                       <HiLocationMarker size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Showroom</p>
-                      <p className="text-[#1a1a1a] font-black text-xs leading-relaxed max-w-[200px]">{settings?.address || "8524 E Adamo Dr, Tampa, FL"}</p>
+                      <p className="text-[9px] font-bold text-[#dc2626] uppercase tracking-widest mb-0.5">Showroom</p>
+                      <p className="text-[#1a1a1a] font-bold text-xs leading-relaxed max-w-[200px]">{settings?.address}</p>
                     </div>
                   </div>
 
@@ -227,8 +227,8 @@ export const Navbar = () => {
                       <HiMail size={18} />
                     </div>
                     <div>
-                      <p className="text-[9px] font-extrabold text-[#dc2626] uppercase tracking-widest mb-0.5">Inquiries</p>
-                      <p className="text-[#1a1a1a] font-black text-xs break-all lowercase font-sans">{settings?.email || "support@southerndesign.com"}</p>
+                      <p className="text-[9px] font-bold text-[#dc2626] uppercase tracking-widest mb-0.5">Inquiries</p>
+                      <p className="text-[#1a1a1a] font-bold text-xs break-all lowercase font-sans">{settings?.email}</p>
                     </div>
                   </a>
                 </div>
@@ -238,14 +238,14 @@ export const Navbar = () => {
             {/* Mobile Footer Action - BOX TYPE SHARP */}
             <div className="px-8 py-8 bg-white border-t border-gray-100">
               <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                <button className="w-full bg-[#b33a2b] text-white py-5 font-black uppercase tracking-[0.2em] text-[11px] shadow-2xl active:scale-[0.98] transition-all">
+                <button className="w-full bg-[#b33a2b] text-white py-5 font-bold uppercase tracking-[0.2em] text-[11px] shadow-2xl active:scale-[0.98] transition-all">
                   Get Instant Quote
                 </button>
               </Link>
               <Link
                 href="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-center mt-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:text-[#1a1a1a] transition-colors"
+                className="block text-center mt-6 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] hover:text-[#1a1a1a] transition-colors"
               >
                 Staff Portal Access
               </Link>
