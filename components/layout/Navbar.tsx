@@ -39,85 +39,84 @@ export const Navbar = () => {
   return (
     <header className="sticky top-0 left-0 right-0 z-50 font-sans">
       {/* 1. TOP BAR (Only on Desktop) */}
-<div
-  className={`hidden lg:block transition-all duration-500 overflow-hidden ${
-    isScrolled ? "max-h-0 opacity-0" : "max-h-20 opacity-100"
-  }`}
->
-  <div className="bg-[#111111]/95 backdrop-blur-md border-b border-white/5">
-    <div className="container mx-auto px-6 py-2 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-wider font-semibold">
+      <div
+        className={`hidden lg:block transition-all duration-500 overflow-hidden ${isScrolled ? "max-h-0 opacity-0" : "max-h-20 opacity-100"
+          }`}
+      >
+        <div className="bg-[#111111]/95 backdrop-blur-md border-b border-white/5">
+          <div className="container mx-auto px-6 py-2 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-wider font-semibold">
 
-      {/* LEFT SIDE */}
-      <div className="flex flex-wrap justify-center md:justify-start items-center gap-6 text-gray-400">
+            {/* LEFT SIDE */}
+            <div className="flex flex-wrap justify-center md:justify-start items-center gap-6 text-gray-400">
 
-        {/* ADDRESS */}
-        <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiLocationMarker className="text-[#dc2626] group-hover:scale-110 transition-transform" />
-          <span className="truncate max-w-[180px] md:max-w-none">
-            {settings?.address || "8524 E Adamo Dr, Tampa, FL"}
-          </span>
-        </div>
+              {/* ADDRESS */}
+              <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
+                <HiLocationMarker className="text-[#dc2626] group-hover:scale-110 transition-transform" />
+                <span className="truncate max-w-[180px] md:max-w-none">
+                  {settings?.address || "8524 E Adamo Dr, Tampa, FL"}
+                </span>
+              </div>
 
-        {/* PHONE */}
-        <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiPhone className="text-[#dc2626] group-hover:scale-110 transition-transform" />
-          <a
-            href={`tel:${settings?.phone}`}
-            className="hover:text-white"
-          >
-            {settings?.phone || "1-800-555-0199"}
-          </a>
-        </div>
+              {/* PHONE */}
+              <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
+                <HiPhone className="text-[#dc2626] group-hover:scale-110 transition-transform" />
+                <a
+                  href={`tel:${settings?.phone}`}
+                  className="hover:text-white"
+                >
+                  {settings?.phone || "1-800-555-0199"}
+                </a>
+              </div>
 
-        {/* EMAIL */}
-        <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
-          <HiMail className="text-[#dc2626] group-hover:scale-110 transition-transform" />
-          <a
-            href={`mailto:${settings?.email}`}
-            className="lowercase tracking-normal font-sans"
-          >
-            {settings?.email || "support@southerndesign.com"}
-          </a>
+              {/* EMAIL */}
+              <div className="flex items-center gap-2 hover:text-white transition duration-300 group">
+                <HiMail className="text-[#dc2626] group-hover:scale-110 transition-transform" />
+                <a
+                  href={`mailto:${settings?.email}`}
+                  className="lowercase tracking-normal font-sans"
+                >
+                  {settings?.email || "support@southerndesign.com"}
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT SIDE */}
+            <div className="flex items-center gap-4 mt-2 md:mt-0">
+
+              {/* Divider */}
+              <div className="hidden md:block h-4 w-px bg-white/20"></div>
+
+              {/* LOGIN BUTTON */}
+              <Link
+                href="/login"
+                className="relative text-gray-300 hover:text-white transition duration-300"
+              >
+                <span className="after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#dc2626] after:transition-all after:duration-300 hover:after:w-full">
+                  Staff Login
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* RIGHT SIDE */}
-      <div className="flex items-center gap-4 mt-2 md:mt-0">
-
-        {/* Divider */}
-        <div className="hidden md:block h-4 w-px bg-white/20"></div>
-
-        {/* LOGIN BUTTON */}
-        <Link
-          href="/login"
-          className="relative text-gray-300 hover:text-white transition duration-300"
-        >
-          <span className="after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-0 after:bg-[#dc2626] after:transition-all after:duration-300 hover:after:w-full">
-            Staff Login
-          </span>
-        </Link>
-      </div>
-    </div>
-  </div>
-</div>
 
       {/* 2. MAIN NAVIGATION */}
       <nav className={`transition-all    duration-300 ${isScrolled ? 'bg-white py-3 shadow-xl' : 'bg-[#f9f7f2] py-3'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between relative">
-          
+
           {/* MOBILE PLACEHOLDER (To balance absolute logo) */}
           <div className="lg:hidden w-10" />
 
           {/* 1. LOGO SECTION */}
           <div className="flex-shrink-0 flex items-center z-10 lg:static absolute left-1/2 lg:left-auto -translate-x-1/2 lg:translate-x-0">
             <Link href="/" className="relative block w-[160px] md:w-[200px] h-[50px] md:h-[65px]">
-              <Image 
-                src={settings?.logoUrl || "/logo.png"} 
-                alt={settings?.siteName || "Logo"} 
-                fill 
-                priority 
+              <Image
+                src={settings?.logoUrl || "/logo.png"}
+                alt={settings?.siteName || "Logo"}
+                fill
+                priority
                 sizes="(max-width: 768px) 160px, 200px"
-                className="object-contain" 
+                className="object-contain"
               />
             </Link>
           </div>
@@ -126,9 +125,9 @@ export const Navbar = () => {
           <div className="hidden lg:flex flex-1 justify-center items-center px-8">
             <div className="flex items-center space-x-4 xl:space-x-8">
               {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.href} 
+                <Link
+                  key={link.name}
+                  href={link.href}
                   className="relative group text-[11px] xl:text-[12px] font-black uppercase tracking-tighter text-[#1a1a1a] hover:text-[#dc2626] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100 whitespace-nowrap py-2"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
@@ -151,7 +150,7 @@ export const Navbar = () => {
             </div>
 
             {/* MOBILE TOGGLE */}
-            <button 
+            <button
               className="lg:hidden bg-[#1a1a1a] text-white p-2.5 rounded-sm shadow-md hover:bg-red-600 transition-colors"
               onClick={() => setIsMobileMenuOpen(true)}
             >
@@ -164,17 +163,17 @@ export const Navbar = () => {
       {/* 3. PROFESSIONAL MOBILE OVERLAY */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ x: '100%' }} 
-            animate={{ x: 0 }} 
-            exit={{ x: '100%' }} 
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 bg-white z-[70] lg:hidden flex flex-col font-sans"
           >
             {/* Mobile Header */}
             <div className="flex justify-end items-center px-8 py-6 border-b border-gray-100">
-              <button 
-                onClick={() => setIsMobileMenuOpen(false)} 
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="w-10 h-10 flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-[#1a1a1a] transition-colors"
               >
                 <HiOutlineX size={24} />
@@ -186,9 +185,9 @@ export const Navbar = () => {
               <div className="space-y-1">
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6">Menu</p>
                 {navLinks.map((link) => (
-                  <Link 
-                    key={link.name} 
-                    href={link.href} 
+                  <Link
+                    key={link.name}
+                    href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-between py-5 border-b border-gray-50 group active:bg-gray-50 px-2 -mx-2"
                   >
@@ -201,7 +200,7 @@ export const Navbar = () => {
               {/* Warehouse Quick Info - PROFESSIONAL FOOTER BLOCK */}
               <div className="mt-16 space-y-8">
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Warehouse Support</p>
-                
+
                 <div className="grid gap-6">
                   <a href={`tel:${settings?.phone}`} className="flex items-start gap-5 group">
                     <div className="w-10 h-10 bg-gray-50 flex items-center justify-center text-[#1a1a1a] group-hover:bg-[#1a1a1a] group-hover:text-white transition-all">
@@ -243,9 +242,9 @@ export const Navbar = () => {
                   Get Instant Quote
                 </button>
               </Link>
-              <Link 
-                href="/login" 
-                onClick={() => setIsMobileMenuOpen(false)} 
+              <Link
+                href="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block text-center mt-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:text-[#1a1a1a] transition-colors"
               >
                 Staff Portal Access

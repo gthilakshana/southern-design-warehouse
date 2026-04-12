@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"
 import { signIn, auth } from "@/auth"
 import { AuthError } from "next-auth"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { uploadImage, deleteImageFromStorage, testStorageConnectivity } from "./storage"
 import { getDirectDb } from "./mongodb-direct"
 import { ObjectId } from "mongodb"
@@ -73,7 +74,10 @@ export async function registerUser(formData: FormData) {
 export async function loginUser(prevState: any, formData: FormData) {
   try {
     console.log(`Action: loginUser initiated for ${formData.get("email")}`);
-    await signIn("credentials", formData)
+    await signIn("credentials", {
+      ...Object.fromEntries(formData),
+      redirect: false,
+    })
   } catch (error) {
     if (error instanceof AuthError) {
       console.log(`Action: AuthError caught - ${error.type}`);
@@ -84,9 +88,14 @@ export async function loginUser(prevState: any, formData: FormData) {
           return { error: "Something went wrong." }
       }
     }
-    // IMPORTANT: Re-throw the error so Next.js can handle redirects
+    // IMPORTANT: If it's not an AuthError, it might be a redirect "error" from Next.js
+    // but since we set redirect:false, it shouldn't throw on success.
     throw error
   }
+
+  // If we reach here, signIn was successful
+  revalidatePath("/admin/dashboard")
+  redirect("/admin/dashboard")
 }
 
 // --- INVENTORY ACTIONS ---
@@ -873,6 +882,7 @@ export interface PageContent {
   heroMobileUrl?: string | null;
   heroTabletUrl?: string | null;
   contentUrl?: string | null;
+  virtualTourUrl?: string | null;
   fontSize?: string | null;
   updatedAt: string;
   metadata?: {
@@ -910,6 +920,7 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
       heroMobileUrl: content.heroMobileUrl,
       heroTabletUrl: content.heroTabletUrl,
       contentUrl: content.contentUrl,
+      virtualTourUrl: content.virtualTourUrl,
       fontSize: content.fontSize,
       updatedAt: content.updatedAt instanceof Date ? content.updatedAt.toISOString() : content.updatedAt,
       metadata: content.metadata
@@ -931,6 +942,7 @@ export async function updatePageContent(formData: FormData) {
     const title = formData.get("title") as string
     const description = formData.get("description") as string
     const heroText = formData.get("heroText") as string
+    const virtualTourUrl = formData.get("virtualTourUrl") as string | null
     const fontSize = formData.get("fontSize") as string | null
 
     const mission = formData.get("mission") as string | null
@@ -965,7 +977,7 @@ export async function updatePageContent(formData: FormData) {
     const heroTabletUrl = heroTabletRes.url
     const contentUrl = contentRes.url
 
-    const updateData: any = { title, description, heroText, fontSize, updatedAt: new Date() }
+    const updateData: any = { title, description, heroText, virtualTourUrl, fontSize, updatedAt: new Date() }
     
     // Handle Metadata for About Page
     if (slug === 'about') {

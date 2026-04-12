@@ -932,6 +932,38 @@ const SiteContentPage = () => {
                           />
                         </div>
 
+                        {selectedPage === 'showroom' && (
+                          <div className="space-y-4 pt-4 border-t border-gray-100 animate-in fade-in slide-in-from-top-4 duration-500">
+                            <label className="text-[11px] font-black text-[#ff9900] uppercase tracking-widest block mb-2">Virtual Tour Configuration</label>
+                            <div className="flex flex-col gap-2">
+                              <label className="text-[10px] font-bold text-slate-500 uppercase">Virtual Tour URL</label>
+                              <div className="flex gap-2">
+                                <div className="flex-1 relative">
+                                  <HiLink className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                  <input
+                                    name="virtualTourUrl"
+                                    defaultValue={pageContent?.virtualTourUrl || ''}
+                                    className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded text-xs font-bold outline-none focus:border-[#ff9900] bg-white shadow-sm"
+                                    placeholder="https://my.matterport.com/show/?m=..."
+                                    key={`${selectedPage}-tour`}
+                                  />
+                                </div>
+                                {pageContent?.virtualTourUrl && (
+                                  <a 
+                                    href={pageContent.virtualTourUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-gray-100 border border-gray-200 rounded text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-gray-200 transition-all"
+                                  >
+                                    <HiExternalLink size={14} /> Test
+                                  </a>
+                                )}
+                              </div>
+                              <p className="text-[9px] text-slate-400 font-bold uppercase mt-1 italic tracking-tighter">This URL will be linked to the "Launch Virtual Tour" button on the showroom page.</p>
+                            </div>
+                          </div>
+                        )}
+
                         {selectedPage === 'about' && (
                           <div className="space-y-8 pt-8 border-t border-gray-100 animate-in fade-in slide-in-from-top-4 duration-500">
                             <div className="space-y-3">

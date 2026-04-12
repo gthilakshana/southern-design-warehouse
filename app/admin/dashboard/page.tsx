@@ -10,9 +10,11 @@ import {
 } from 'react-icons/hi'
 import { MdInventory, MdPeople, MdAttachMoney, MdMessage } from 'react-icons/md'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { getInventory, getUsers, getQuoteRequests, getSystemHealth } from '@/lib/actions'
 
 const DashboardPage = () => {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [stats, setStats] = useState([
     { title: 'Inventory Items', value: '0', change: '+12%', icon: MdInventory, color: 'text-[#232f3e]', bg: 'bg-slate-50', link: '/admin/inventory', sparkData: [20, 45, 28, 80, 40, 90, 60] },
@@ -85,6 +87,10 @@ const DashboardPage = () => {
   }
 
   useEffect(() => {
+    // Force a router refresh on mount to ensure session state is synced
+    // This helps resolve the issue where initial server actions might fail 
+    // due to a "stale" or "not yet recognized" session immediately after login.
+    router.refresh()
     fetchDashboardData()
   }, [])
 
