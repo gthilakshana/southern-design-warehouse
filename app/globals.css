@@ -101,3 +101,31 @@
   );
   animation: shimmer 1.5s infinite;
 }
+
+/* --- Custom Branded Scrollbar --- */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-left: 1px solid #e9ecef;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #dc2626; /* red-600 */
+    border: 3px solid #f8f9fa;
+    border-radius: 100vh;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b91c1c; /* red-700 */
+  }
+
+  /* Firefox Support */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #dc2626 #f8f9fa;
+  }
+}

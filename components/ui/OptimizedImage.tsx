@@ -71,7 +71,7 @@ export default function OptimizedImage({
           scale: (isLoaded && !hasError) ? 1 : 1.02
         }}
         transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full h-full"
+        className="w-full h-full relative"
       >
         <Image
           ref={imageRef}
