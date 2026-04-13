@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { 
   Grid3X3, 
@@ -14,20 +13,17 @@ import {
 import { Ruler, Lightbulb, MessageSquare, Microscope, NotebookPen } from 'lucide-react';
 import { Maximize2, Map, Navigation, Info } from 'lucide-react';
 import { 
- 
   Maximize, 
- 
   Droplets, 
-  
   Palette, 
   Settings2,
-  MapPin,
   PhoneCall,
   CalendarCheck
 } from 'lucide-react';
 import { getPageContent } from '@/lib/actions';
 import { ArrowRight } from 'lucide-react';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 export default async function ShowroomPage() {
   const content = await getPageContent('showroom');
@@ -215,7 +211,7 @@ export default async function ShowroomPage() {
         <div key={index} className="bg-gray-100 border-l-4 border-l-transparent hover:border-l-red-600 transition-all duration-500 group shadow-sm">
           {/* IMAGE CONTAINER */}
           <div className="relative h-80 overflow-hidden">
-            <Image
+            <OptimizedImage
               src={display.image}
               alt={display.title}
               fill
@@ -259,7 +255,6 @@ export default async function ShowroomPage() {
     </div>
   </div>
 </section>
-
 
 
      {/* --- SHOWROOM EXPERIENCE TIPS SECTION --- */}
@@ -355,7 +350,7 @@ export default async function ShowroomPage() {
     {/* LEFT SIDE: INTERACTIVE IMAGE */}
     <div className="relative group overflow-hidden border-8 border-white shadow-2xl">
       <div className="relative h-[600px] w-full">
-        <Image 
+        <OptimizedImage 
           src="images/20260225_092039.webp" 
           alt="Showroom Layout"
           fill
@@ -475,10 +470,11 @@ export default async function ShowroomPage() {
         <button key={index} className="group relative bg-gray-100 h-[320px] overflow-hidden border border-gray-100 transition-all duration-500">
           {/* Background Image with Desaturation */}
           <div className="absolute inset-0  transition-all duration-700 ">
-            <Image
+            <OptimizedImage
               src={material.image}
               alt={material.label}
               fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover"
             />
           </div>
@@ -504,7 +500,7 @@ export default async function ShowroomPage() {
 <section className="relative py-32 px-6 md:px-12 lg:px-24 overflow-hidden">
   {/* Background with Dark Industrial Overlay */}
   <div className="absolute inset-0">
-    <Image 
+    <OptimizedImage 
       src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069" 
       alt="Showroom interior" 
       fill 
@@ -530,8 +526,6 @@ export default async function ShowroomPage() {
         <CalendarCheck size={18} />
         Schedule Visit
       </Link>
-      
-     
       
       <Link 
         href="/contact"

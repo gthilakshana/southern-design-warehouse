@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 
 interface ResponsiveHeroProps {
   heroUrl?: string | null;
@@ -41,7 +40,7 @@ export default function ResponsiveHero({
       {/* Desktop View (Large Screens) */}
       <div className="hidden lg:block absolute inset-0">
         {isValidSrc(desktopSrc) && (
-          <Image
+          <OptimizedImage
             src={desktopSrc!.trim()}
             alt={alt}
             fill
@@ -55,7 +54,7 @@ export default function ResponsiveHero({
       {/* Tablet View (Medium Screens) */}
       <div className="hidden md:block lg:hidden absolute inset-0">
         {isValidSrc(tabletSrc) && (
-          <Image
+          <OptimizedImage
             src={tabletSrc!.trim()}
             alt={alt}
             fill
@@ -69,7 +68,7 @@ export default function ResponsiveHero({
       {/* Mobile View (Small Screens) */}
       <div className="block md:hidden absolute inset-0">
         {isValidSrc(mobileSrc) && (
-          <Image
+          <OptimizedImage
             src={mobileSrc!.trim()}
             alt={alt}
             fill

@@ -1,9 +1,9 @@
 import React from 'react';
-import Image from 'next/image';
 import { LuCheck } from "react-icons/lu";
 import Link from 'next/link'
 import { getPageContent } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 export default async function KitchensPage() {
   const content = await getPageContent('kitchens');
@@ -93,7 +93,7 @@ export default async function KitchensPage() {
     <div className="lg:col-span-5 relative">
       <div className="relative z-10 bg-white p-2 shadow-[20px_20px_60px_-15px_rgba(0,0,0,0.1)]">
         <div className="relative h-[450px] w-full overflow-hidden mb-8">
-          <Image
+          <OptimizedImage
             src={contentImage}
             alt="Kitchen Showroom Support"
             fill
@@ -179,12 +179,12 @@ export default async function KitchensPage() {
         <div key={index} className="group relative">
           {/* Image Container with Custom Aspect Ratio */}
           <div className="relative aspect-[4/5] overflow-hidden mb-8 transition-all duration-700 ">
-            <Image
+            <OptimizedImage
               src={style.image}
               alt={style.title}
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             {/* Number Overlay */}
             <span className="absolute top-6 right-6 text-6xl font-black text-white/10 italic group-hover:text-[#dc2626]/20 transition-colors">
@@ -291,7 +291,7 @@ export default async function KitchensPage() {
 
     {/* Bottom Decorative Section with Unsplash Image */}
     <div className="mt-32 relative h-[300px] w-full overflow-hidden">
-      <Image 
+      <OptimizedImage 
         src="/kitchens/paint.webp" 
         alt="Technical Kitchen Planning"
         fill
@@ -339,12 +339,12 @@ export default async function KitchensPage() {
         >
           {/* Background Image Layer */}
           <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110">
-            <Image
+            <OptimizedImage
               src={category.image}
               alt={category.label}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/90 transition-colors duration-500" />
@@ -379,7 +379,7 @@ export default async function KitchensPage() {
 <section className="relative py-32 px-6 md:px-12 lg:px-24 overflow-hidden">
   {/* Background Unsplash Image with Parallax-like feel */}
   <div className="absolute inset-0 z-0">
-    <Image
+    <OptimizedImage
       src="/kitchens/paint.webp"
       alt="Modern Kitchen Showroom Archive"
       fill

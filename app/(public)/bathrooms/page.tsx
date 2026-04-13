@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { TbMessageDots, TbArmchair } from 'react-icons/tb';
 import { getPageContent } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 export default async function BathroomsPage() {
   // 7. This is the line that was missing!
@@ -70,7 +70,7 @@ export default async function BathroomsPage() {
     {/* LEFT SIDE: Visual Content (Moved to prioritize visual impact) */}
     <div className="lg:col-span-5 order-2 lg:order-1 relative">
       <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
-        <Image 
+        <OptimizedImage 
           src="/bathrooms/waterproof.webp" 
           alt="Bathroom Design Planning"
           fill
@@ -185,12 +185,12 @@ export default async function BathroomsPage() {
 
           {/* Image Container */}
           <div className="relative h-80 overflow-hidden">
-            <Image
+            <OptimizedImage
               src={style.image}
               alt={style.title}
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover transition-transform duration-[2s] group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
@@ -332,12 +332,12 @@ export default async function BathroomsPage() {
         >
           {/* Background Visual Layer */}
           <div className="absolute inset-0 transition-transform duration-[1.5s] ease-out group-hover:scale-110 ">
-            <Image
+            <OptimizedImage
               src={category.image}
               alt={category.label}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             {/* Gradient Industrial Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:via-black/20 transition-all duration-500" />
@@ -371,7 +371,7 @@ export default async function BathroomsPage() {
 <section className="relative py-15 px-6 md:px-12 lg:px-18 overflow-hidden group">
   {/* Background Unsplash Image with Subtle Motion */}
   <div className="absolute inset-0 z-0">
-    <Image
+    <OptimizedImage
       src="/bathrooms/bathroom1.webp"
       alt="Luxury Bathroom Showroom"
       fill

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -14,6 +13,7 @@ import {
 import { BiSortAlt2 } from 'react-icons/bi';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
 import { PageContent } from '@/lib/actions';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 interface Product {
   id: string;
@@ -143,13 +143,13 @@ export default function InventoryGallery({
 
               <div className="relative w-full h-[420px] rounded-lg border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
                 {selectedProduct.image ? (
-                  <Image
-                    src={selectedProduct.image}
-                    alt={selectedProduct.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
+                    <OptimizedImage
+                      src={selectedProduct.image}
+                      alt={selectedProduct.name}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                      className="object-cover"
+                    />
                 ) : (
                   <div className="flex flex-col items-center text-gray-300">
                     <HiSearch size={64} />
@@ -244,18 +244,18 @@ export default function InventoryGallery({
                       visible: { 
                         opacity: 1, 
                         y: 0,
-                        transition: { duration: 0.5, ease: "easeOut" }
+                        transition: { duration: 0.3, ease: "easeOut" }
                       }
                     }}
                     className="group bg-white border border-gray-200 hover:shadow-xl hover:border-red-600 transition-all cursor-pointer rounded-sm overflow-hidden"
                   >
                     <div className="relative h-64 overflow-hidden bg-gray-50 flex items-center justify-center">
                       {product.image ? (
-                        <Image
+                        <OptimizedImage
                           src={product.image}
                           alt={product.name}
                           fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 40vw, 25vw"
                           className="object-cover group-hover:scale-110 transition duration-700"
                         />
                       ) : (

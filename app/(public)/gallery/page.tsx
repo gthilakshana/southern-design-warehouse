@@ -1,11 +1,12 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { HiOutlineArrowNarrowRight, HiX, HiPhotograph } from 'react-icons/hi';
 import { getPageContent, getGalleryImages, type PageContent, type GalleryImage } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // Interface moved to lib/actions.ts
 
@@ -135,16 +136,16 @@ export default function GalleryPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.15 }}
                     className="relative bg-white rounded-lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-shadow duration-300 h-fit"
                     onClick={() => setSelectedImage(img)}
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <Image
+                      <OptimizedImage
                         src={img.url}
                         alt={img.title}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                         className="object-cover group-hover:scale-105 transition duration-700"
                       />
                     </div>
@@ -202,7 +203,7 @@ export default function GalleryPage() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
               <div className="relative w-full h-full group">
-                <Image
+                <OptimizedImage
                   src={selectedImage.url}
                   alt={selectedImage.title}
                   fill

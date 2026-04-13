@@ -1,10 +1,11 @@
 "use client"
-import Image from 'next/image'
+
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiOutlineMenu, HiOutlineX, HiLocationMarker, HiPhone, HiChevronRight, HiMail } from 'react-icons/hi'
 import { getSiteSettings } from '@/lib/actions'
+import OptimizedImage from '../ui/OptimizedImage'
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -110,7 +111,7 @@ export const Navbar = () => {
           {/* 1. LOGO SECTION */}
           <div className="flex-shrink-0 flex items-center z-10 lg:static absolute left-1/2 lg:left-auto -translate-x-1/2 lg:translate-x-0">
             <Link href="/" className="relative block w-[190px] md:w-[200px] h-[60px] md:h-[65px]">
-              <Image
+              <OptimizedImage
                 src={settings?.logoUrl || "/logo.png"}
                 alt={settings?.siteName || "Logo"}
                 fill

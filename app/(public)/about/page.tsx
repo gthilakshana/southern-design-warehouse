@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import {
   HiOutlineCheck,
@@ -11,6 +10,8 @@ import {
   HiOutlineGlobe
 } from 'react-icons/hi'
 import { getPageContent, type PageContent } from '@/lib/actions'
+import OptimizedImage from '@/components/ui/OptimizedImage'
+import ResponsiveHero from '@/components/ui/ResponsiveHero'
 
 const sanitizeText = (html: string) => {
   if (!html) return html;
@@ -56,15 +57,15 @@ export default async function AboutPage() {
 
       {/* HERO */}
       <section className="relative h-[60vh] flex items-center justify-center text-center text-white px-6">
-        <Image
-          src={content?.heroUrl || "/images/contractors.jpg"}
+        <ResponsiveHero
+          heroUrl={content?.heroUrl}
+          heroTabletUrl={content?.heroTabletUrl}
+          heroMobileUrl={content?.heroMobileUrl}
+          fallbackUrl="/images/contractors.jpg"
           alt="About Southern Design Warehouse"
-          fill
-          sizes="100vw"
-          className="object-cover brightness-[0.4]"
-          priority
+          brightness="brightness-[0.4]"
+          priority={true}
         />
-        <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative z-10 max-w-4xl space-y-6 animate-in fade-in duration-1000">
           <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tighter text-white mt-2">
@@ -93,7 +94,7 @@ export default async function AboutPage() {
           <div className="lg:w-1/2 relative group">
             <div className="absolute -inset-4 bg-[#dc2626]/10 rounded-sm -rotate-2 group-hover:rotate-0 transition-transform duration-700" />
             <div className="relative aspect-square md:aspect-[4/3] rounded-sm overflow-hidden shadow-2xl border border-gray-100">
-              <Image
+              <OptimizedImage
                 src="/images/20260225_093348.webp"
                 alt="Our Logistical Hub"
                 fill
@@ -245,7 +246,7 @@ export default async function AboutPage() {
       {/* --- SECTION 6: THE CAPSTONE CTA --- */}
       <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#111111] text-center overflow-hidden relative">
         <div className="absolute inset-0 opacity-10">
-          <Image
+          <OptimizedImage
             src="/images/contractors2.jpg"
             alt="Southern Design Logistics"
             fill

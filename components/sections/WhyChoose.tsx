@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Star } from 'lucide-react';
-import Image from 'next/image';
+import OptimizedImage from '../ui/OptimizedImage';
 
 // The specific features for the "Why Choose" section
 const features = [
@@ -82,7 +82,7 @@ export default function WhyChoose() {
                 {/* Decorative border frame */}
                 <div className="absolute inset-0 border border-white/10 translate-x-4 translate-y-4" />
                 <div className="relative w-full h-full overflow-hidden">
-                   <Image 
+                   <OptimizedImage 
                     src="/images/warehouse1.webp" 
                     alt="Professional Warehouse Contractor"
                     fill

@@ -4,7 +4,7 @@ import { HiOutlineArrowRight } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { ProductCategory } from "@/lib/actions";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import OptimizedImage from "../ui/OptimizedImage";
 
 
 
@@ -113,11 +113,11 @@ export default function Categories({ categories }: CategoriesProps) {
             >
               <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none">
                 <div className="relative h-full w-full">
-                  <Image 
+                  <OptimizedImage 
                     src={cat.imageUrl || `https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070&auto=format&fit=crop`}
                     alt={cat.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 50vw, 25vw"
                     className="object-cover"
                     style={{
                         maskImage: 'linear-gradient(to left, black 20%, transparent 100%)',

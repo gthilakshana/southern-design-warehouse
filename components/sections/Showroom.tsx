@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { MapPin, ArrowRight, Sparkles, Layers, Eye, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedImage from '../ui/OptimizedImage';
 
 export default function ShowroomEditorial() {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -27,10 +27,11 @@ export default function ShowroomEditorial() {
           transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
           className="relative w-full h-full"
         >
-          <Image
+          <OptimizedImage
             src="/kitchens/Cabinetry.webp"
             alt="Showroom"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover  hover:grayscale-0 transition-all duration-1000 cursor-pointer"
             onClick={() => setIsZoomed(true)}
           />
@@ -126,7 +127,7 @@ export default function ShowroomEditorial() {
                 <button className="text-[10px] uppercase tracking-widest font-bold border-b border-black">Close [X]</button>
               </div>
               <div className="relative flex-1">
-                <Image 
+                <OptimizedImage 
                   src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000" 
                   alt="Showroom Full" 
                   fill 

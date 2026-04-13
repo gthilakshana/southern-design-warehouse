@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { TbMessageDots, TbArmchair } from 'react-icons/tb';
 import { getPageContent } from '@/lib/actions';
 import ResponsiveHero from '@/components/ui/ResponsiveHero';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 export default async function CabinetsPage() {
   const content = await getPageContent('cabinets');
@@ -94,37 +94,41 @@ export default async function CabinetsPage() {
         <div className="grid grid-cols-2 gap-4">
           {/* Large Main Image */}
           <div className="relative h-[300px] md:h-[400px] overflow-hidden group">
-            <Image
+            <OptimizedImage
               src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?q=80&w=800"
               alt="Cabinet detail 1"
               fill
-              className="object-cover  transition-all duration-700"
+              sizes="(max-width: 1024px) 50vw, 30vw"
+              className="object-cover transition-all duration-700"
             />
           </div>
           {/* Vertical Detail Image */}
           <div className="relative h-[300px] md:h-[400px] mt-8 overflow-hidden group">
-            <Image
+            <OptimizedImage
               src="https://images.unsplash.com/photo-1556909211-36987daf7b4d?q=80&w=800"
               alt="Cabinet detail 2"
               fill
-              className="object-cover  transition-all duration-700"
+              sizes="(max-width: 1024px) 50vw, 30vw"
+              className="object-cover transition-all duration-700"
             />
           </div>
           {/* Lower Image 1 */}
           <div className="relative h-[250px] md:h-[350px] -mt-8 overflow-hidden group">
-            <Image
+            <OptimizedImage
               src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=800"
               alt="Cabinet detail 3"
               fill
-              className="object-cover  transition-all duration-700"
+              sizes="(max-width: 1024px) 50vw, 30vw"
+              className="object-cover transition-all duration-700"
             />
           </div>
           {/* Lower Image 2 */}
           <div className="relative h-[250px] md:h-[350px] overflow-hidden group">
-            <Image
+            <OptimizedImage
               src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?q=80&w=800"
               alt="Cabinet detail 4"
               fill
+              sizes="(max-width: 1024px) 50vw, 30vw"
               className="object-cover transition-all duration-700"
             />
           </div>
@@ -203,13 +207,13 @@ export default async function CabinetsPage() {
         <div key={index} className="group relative w-full h-[500px] md:h-full overflow-hidden bg-gray-900">
           
           {/* Main Style Image */}
-          <Image
-            src={style.image}
-            alt={style.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition-all duration-[1.5s] ease-out  group-hover:scale-110 opacity-80 group-hover:opacity-100"
-          />
+            <OptimizedImage
+              src={style.image}
+              alt={style.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-all duration-700 ease-out group-hover:scale-110 opacity-80 group-hover:opacity-100"
+            />
 
           {/* Static Title (Always Visible) */}
           <div className="absolute inset-x-0 bottom-0 p-10 z-10 group-hover:translate-y-full transition-transform duration-500">
@@ -343,7 +347,7 @@ export default async function CabinetsPage() {
                 {  img: '/cabinets/img4.webp' }
               ].map((item, index) => (
                 <div key={index} className="relative h-48 md:h-64 group overflow-hidden first:rounded-tl-[60px] last:rounded-br-[60px]">
-                  <Image
+                  <OptimizedImage
                     src={item.img}
                     alt="Craftsmanship Detail"
                     fill
@@ -457,11 +461,12 @@ export default async function CabinetsPage() {
 
           {/* Image Area */}
           <div className="relative flex-1 overflow-hidden transition-all duration-1000">
-            <Image
+            <OptimizedImage
               src={box.img}
               alt={box.title}
               fill
-              className="object-cover group-hover:scale-110 transition-transform duration-[2s]"
+              sizes="(max-width: 1024px) 50vw, 25vw"
+              className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-black/5 group-hover:bg-red-600/10 transition-colors" />
           </div>
